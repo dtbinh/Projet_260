@@ -1,0 +1,142 @@
+package MainPackage.Agents;
+
+import MainPackage.World;
+
+
+public abstract class Agent {
+
+    static final int redId = 0;
+    static final int greenId = 1;
+    static final int blueId = 2;
+    
+    protected World _world;
+    protected int _x;
+    protected int _y;
+    protected int _etat;
+    protected int _redValue;
+    protected int _greenValue;
+    protected int _blueValue;
+    
+    protected boolean _alive; //Si l'agent est vivant. Sinon il décède
+    protected int _moveSpeed; //0=rapide, grand = pas rapide (nb d'itérations entre chaque déplacements)
+    protected int _reprod; //nbr d'itératiosn entre chaque reprod
+    protected int _faim;
+    protected int _faimMax;
+    protected int _vision;
+    protected int _age;
+    protected int _ageMax;
+    
+    protected int[] _objectif;
+    protected boolean _fuis;
+    
+    private int _itMS;
+    private int _itReprod;
+    private int _orient;
+    
+    public int getX(){return _x;}
+    public int getY(){return _y;}
+    public int[] getColors(){int ret[]={_redValue, _greenValue, _blueValue}; return ret;}
+    
+    public Agent(int __x, int __y, World __w) {
+        //partie commune à tout les agents
+        _x = __x;
+        _y = __y;
+        _world = __w;
+
+        _orient = 0;
+        _objectif = new int[2];
+        _objectif[0]=_x;
+        _objectif[1]=_y;
+        _alive = true;
+        _itMS = 0;
+        _itReprod = 0;
+        _fuis = false;
+        _age=0;
+        
+        //partie à C/C dans les nouveaux agents
+        _redValue = 255;
+        _greenValue = 0;
+        _blueValue = 0;
+
+        _moveSpeed = 0;
+        _vision = 5;
+        
+        _reprod = -1;
+        _faim=100;
+        _faimMax = 999999;
+        _ageMax=999999;
+        
+    }
+
+    abstract public void step();
+
+    public void move() {
+        if (_itMS <= 0) {
+            _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
+            if(_fuis){ //inverse l'orientation si on fuit l'objectif
+                _orient=(_orient+2)%4;
+            }
+            
+// met a jour: la position de l'agent (depend de l'orientation)
+            switch (_orient) {
+                case 0: // nord	
+                    _y = (_y - 1 + _world.getHeight()) % _world.getHeight();
+                    break;
+                case 1:	// est
+                    _x = (_x + 1 + _world.getWidth()) % _world.getWidth();
+                    break;
+                case 2:	// sud
+                    _y = (_y + 1 + _world.getHeight()) % _world.getHeight();
+                    break;
+                case 3:	// ouest
+                    _x = (_x - 1 + _world.getWidth()) % _world.getWidth();
+                    break;
+                    // 4 ou autre = pas bouger
+            }
+            _itMS = _moveSpeed;
+        } else {
+            _itMS--;
+        }
+    }
+    
+    public void temps(){
+        if (_faim <= 0) {
+            setmort();
+        } else {
+            _faim--;
+        }
+        if(_age>=_ageMax){
+            setmort();
+        } else {
+            _age++;
+        }
+    }
+
+    public void setmort() {
+        _alive = false;
+    }
+
+    public void estmort() {
+        if (!_alive) {
+            _world.remove(this);
+        }
+    }
+
+    public boolean getAlive() {
+        return _alive;
+    }
+    
+    public void reproduction() { 
+        if (_itReprod >= _reprod) {
+            _itReprod = 0;
+            creationBebe();
+        } else {
+            _itReprod += (int) (Math.random() * 3);
+        }
+        if (_itReprod < 0) {
+            _itReprod = 0;
+        }
+    }
+    
+    public abstract void creationBebe();
+}
