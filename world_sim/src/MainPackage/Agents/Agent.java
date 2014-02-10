@@ -63,7 +63,7 @@ public abstract class Agent {
         _itReprod = 0;
         _fuis = false;
         _age=0;
-        _ADN=(int)(Math.random()*10000);
+        _ADN=makeADN(5, 25);
         
         
         _moveSpeed = __moveSpeed;
@@ -76,7 +76,14 @@ public abstract class Agent {
     }
 
     abstract public void step();
-
+/**
+ * Crée de l'ADN (lol)
+ * potentielGénétique = nombre de points à répartir. Doit être inferieur à
+ * taille * 9 (par ex, avec taille = 2, potentielGenetique < 18
+ * @param taille: la taille de l'ADN à renvoyer
+ * @param potentielGenetique: le nombre de points à répartir
+ * @return un brin d'ADN
+ */
     private int makeADN(final int taille, int potentielGenetique)
     {
         int ret=0;
@@ -85,9 +92,15 @@ public abstract class Agent {
             for(int i=0;i<taille;i++)
             {
                 int pdix=(int)(Math.pow(10, i));
-                //
+                if(((ret/pdix)*pdix)%(pdix*10) < 9){
+                    if((1./taille)>Math.random()){
+                        ret+=pdix;
+                        potentielGenetique--;
+                    }
+                }
             }
         }
+        System.out.println(ret);
         return ret;
     }
     
