@@ -6,20 +6,9 @@ import java.util.ArrayList;
 
 public class PredatorAgent extends Agent {
 
-    boolean _predator;
-
     public PredatorAgent(int __x, int __y, World __w) {
-        super(__x, __y, __w);
-        _redValue = 0;
-        _greenValue = 0;
-        _blueValue = 0;
-        _predator = true;
-
-        _moveSpeed = 0;
-        _faim = 25;
-        _faimMax = 75;
+        super(__x, __y, __w, 0, 0, 0, 75, 300, 0, 6);
         _reprod = 75;
-        _ageMax=(int)(300+Math.random()*50-25);
     }
 
     @Override public void step() {

@@ -26,6 +26,8 @@ public abstract class Agent {
     protected int _age;
     protected int _ageMax;
     
+    protected int _ADN; // code génétique de la bestiole.
+    
     protected int[] _objectif;
     protected boolean _fuis;
     
@@ -38,6 +40,15 @@ public abstract class Agent {
     public int[] getColors(){int ret[]={_redValue, _greenValue, _blueValue}; return ret;}
     
     public Agent(int __x, int __y, World __w) {
+        this(__x, __y, __w, 255, 0, 0, 9999, 9999, 5, 3);
+    }
+    
+    public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
+            int __faimMax, int __ageMax, int __moveSpeed, int __vision) {
+        _redValue = rouge;
+        _greenValue = vert;
+        _blueValue = bleu;
+
         //partie commune à tout les agents
         _x = __x;
         _y = __y;
@@ -52,24 +63,34 @@ public abstract class Agent {
         _itReprod = 0;
         _fuis = false;
         _age=0;
+        _ADN=(int)(Math.random()*10000);
         
-        //partie à C/C dans les nouveaux agents
-        _redValue = 255;
-        _greenValue = 0;
-        _blueValue = 0;
-
-        _moveSpeed = 0;
-        _vision = 5;
+        
+        _moveSpeed = __moveSpeed;
+        _vision = __vision;
         
         _reprod = -1;
-        _faim=100;
-        _faimMax = 999999;
-        _ageMax=999999;
-        
+        _faimMax = __faimMax;
+        _faim=__faimMax/2; //les agents commencents avec 50% de faim max
+        _ageMax=(int)(__ageMax+Math.random()*(__ageMax/10))-(__ageMax/5); //ageMax = ageMax moyen +- 5%
     }
 
     abstract public void step();
 
+    private int makeADN(final int taille, int potentielGenetique)
+    {
+        int ret=0;
+        while(potentielGenetique>0)
+        {
+            for(int i=0;i<taille;i++)
+            {
+                int pdix=(int)(Math.pow(10, i));
+                //
+            }
+        }
+        return ret;
+    }
+    
     public void move() {
         if (_itMS <= 0) {
             _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif

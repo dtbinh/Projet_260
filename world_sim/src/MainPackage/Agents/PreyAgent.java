@@ -7,17 +7,8 @@ import java.util.ArrayList;
 public class PreyAgent extends Agent {
     
     public PreyAgent(int __x, int __y, World __w) {
-        super(__x, __y, __w);
-
-        _redValue = 255;
-        _greenValue = 128;
-        _blueValue = 0;
-
-        _moveSpeed = 2;
+        super(__x, __y, __w, 255, 128, 0, 50, 300, 2, 5);
         _reprod = 30;
-        _faim = 15;
-        _faimMax = 50;
-        _ageMax=(int)(300+Math.random()*50-25);
     }
 
     @Override public void step() {
