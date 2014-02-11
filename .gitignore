@@ -1,1 +1,5 @@
 /world_sim/build/
+/world_sim/build.xml
+/world_sim/manifest.mf
+/world_sim/nbproject
+

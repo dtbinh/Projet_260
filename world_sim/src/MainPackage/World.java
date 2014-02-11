@@ -164,10 +164,10 @@ public class World {
                 switch (Case.getType(tableauCourant[x][y])) {
                     case Case.VIDE:
                         if (pArbreApparait >= Math.random()) {
-                            nouveauTableau[x][y] = Case.ARBRE;
+                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
                         } else if (pluie) {
                             if (pGoutte >= Math.random()) {
-                                nouveauTableau[x][y] = Case.EAU;
+                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.EAU);
                             }
                         }
                         break;
@@ -201,19 +201,19 @@ public class World {
                         }
 
                         if (feu) {
-                            nouveauTableau[x][y] = Case.FEU;
+                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.FEU);
                         } else {
-                            nouveauTableau[x][y] = Case.ARBRE;
+                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
                         }
                         break;
 
                     case Case.FEU:
-                        nouveauTableau[x][y] = Case.CENDRES;
+                        nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.CENDRES);
                         break;
 
                     case Case.CENDRES:
                         if (pCendreDisparait >= Math.random()) {
-                            nouveauTableau[x][y] = Case.VIDE;
+                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
                         }
                         break;
 
@@ -221,7 +221,7 @@ public class World {
                         //Evaporation
                         if (Case.getVar(tableauCourant[x][y]) == 0) {
                             if (pEvaporation >= Math.random()) {
-                                nouveauTableau[x][y] = Case.VIDE;
+                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
                             }
                         } else {
                             voisins = getVoisins(tableauCourant, x, y);
@@ -254,7 +254,7 @@ public class World {
                         break;
 
                     default:
-                        nouveauTableau[x][y] = Case.VIDE;
+                        nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
                 }
 
             }
