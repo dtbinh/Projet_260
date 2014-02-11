@@ -14,6 +14,7 @@ DONE:
 	- Ont un code génétique qui modifie leur caractéristiques.
 	- Transmettent leur ADN.
 	- L'ADN transmis mute.
+	- Tares génétiques.
 
 TODO:
 	Prog:
@@ -28,12 +29,13 @@ TODO:
 	- Cycle jour/nuit
 
 	Agents:
-	- Tares génétiques
 	- Prise de décision (vaut mieux fuir et mourir de faim ou manger l'herbe et mourir mangé par le loup?)
 	- Reproduction "sexuée"
 	- Temps de gestation
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
 	- Les bestioles agissent différement en fonction du jour/nuit
+	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
+	- Cadavres et décomposition
 
 TODO FOUFOU:
 	Monde:

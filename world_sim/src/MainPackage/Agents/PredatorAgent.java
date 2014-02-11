@@ -13,7 +13,7 @@ public class PredatorAgent extends Agent {
     
     //constructeur reprod
     public PredatorAgent(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 0, 0, 0, 75, 300, 0, 6, __ADN);
+        super(__x, __y, __w, 0, 0, 0, 75, 300, 2, 5, __ADN);
         _reprod = 75;
     }
 

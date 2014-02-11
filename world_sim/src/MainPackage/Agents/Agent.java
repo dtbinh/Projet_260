@@ -16,7 +16,7 @@ public abstract class Agent {
     protected int _redValue;
     protected int _greenValue;
     protected int _blueValue;
-    protected static final int TAILLEADN=5;
+    protected static final int TAILLEADN=6;
     protected static final int POTENTIELADN=10;
     
     
@@ -38,18 +38,11 @@ public abstract class Agent {
      * 10^3 = _vision (+1/2 pts)
      * //TODO: 10^4 = _fréquenceReproduction
      * 
-     * TODO: 2 denières valeures = tares génétiques et trash
-     * avec la valeure en binaire de cette valeure, on met à true ou false
-     * des tares génétiques ou pas(ex:
-     * 1 = 01 rien,
-     * 2 = 10 jambe de bois
-     * 3 = 11 jambe en bois + rien
-     * 4 = 100 oeil de verre
-     * 5 = 101 oeil de verre + rien
-     * 6 = 110 oeil de verre + jambe en bois
-     * 7 = 111 oeil de verre + jambe en bois + rien
-     * pour que ce soit pas trop chiant, plus la valeure est grande plus les 
-     * tares sont handicapantes, puisque plus rares.
+     * 2 denières valeures = tares génétiques et trash (binaire):
+     * 1000 0000 = tetraplegique (vitesse diminuée)
+     * 0100 0000 = maladie genetique mortelle (agemax diminué)
+     * 0000 1000 = aveugle (vision = 0)
+     * 0000 0100 = estomac en carton (faimMax diminuiée)
      */
     
     protected int _ADN;
@@ -115,6 +108,10 @@ public abstract class Agent {
     private void taresADN()
     {
         //9 = 1001 (fois deux)
+        //8 = 1000 (improbable)
+        //4 = 0100 (moyenprobable)
+        //2 = 0010 (probable)
+        //1 = 0001 (très probable)
         //première moitiée
         
         if((getBrinADN(TAILLEADN-1) & 4)==4){ //estomac en carton
