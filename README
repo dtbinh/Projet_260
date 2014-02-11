@@ -20,6 +20,7 @@ TODO:
 	- TEST UNITAIRES !!!
 	
 	Monde:
+	- Générateur de monde (Bruit de Perlin)
 	- Altitudes différents
 	- Types de terrains différents
 	- Lave
@@ -28,6 +29,7 @@ TODO:
 
 	Agents:
 	- Tares génétiques
+	- Prise de décision (vaut mieux fuir et mourir de faim ou manger l'herbe et mourir mangé par le loup?)
 	- Reproduction "sexuée"
 	- Temps de gestation
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
