@@ -163,7 +163,7 @@ public class World {
                 int voisins[];
                 switch (Case.getType(tableauCourant[x][y])) {
                     case Case.VIDE:
-                        if (pArbreApparait >= Math.random()) {
+                        if (pArbreApparait >= Math.random() && Case.getTerrain(tableauCourant[x][y])==Case.TERRE) {
                             nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
                         } else if (pluie) {
                             if (pGoutte >= Math.random()) {
@@ -230,7 +230,9 @@ public class World {
                             // Etalage
                             // Sur une case vide d'abord
                             for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if (voisins[(i + rand) % 4] == Case.VIDE || voisins[(i + rand) % 4] == Case.CENDRES) {
+                                if (Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
+                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES
+                                        && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
                                     nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.EAU;
                                     nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
                                 }
@@ -239,7 +241,8 @@ public class World {
                             for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
                                 if (Case.getType(voisins[((i + rand) % 4)]) == Case.EAU
                                             && Case.getVar(voisins[((i + rand) % 4)]) < 9
-                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(nouveauTableau[x][y])) {
+                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(nouveauTableau[x][y])
+                                            && Case.getAltitude(voisins[((i + rand) % 4)])<=Case.getAltitude(tableauCourant[x][y])) {
                                     nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.setVar(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length], 1);
                                     nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
                                 }
@@ -260,7 +263,7 @@ public class World {
             }
         }
 
-        for (int x = 0; x != tableauCourant.length; x++) {
+        for (int x = 0; x != tableauCourant.length; x++){
             for (int y = 0; y != tableauCourant[0].length; y++) {
                 tableauCourant[x][y] = nouveauTableau[x][y];
             }
@@ -507,7 +510,7 @@ public class World {
      * @param x, y
      */
     public int getCellType(int x, int y) { //renvoie la val /10 *10
-        return (tableauCourant[x][y] / 10) * 10;
+        return Case.getType(tableauCourant[x][y]);
     }
 
     /**
