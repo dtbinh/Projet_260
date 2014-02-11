@@ -16,6 +16,9 @@ public abstract class Agent {
     protected int _redValue;
     protected int _greenValue;
     protected int _blueValue;
+    protected static final int TAILLEADN=5;
+    protected static final int POTENTIELADN=10;
+    
     
     protected boolean _alive; //Si l'agent est vivant. Sinon il décède
     protected int _moveSpeed; //0=rapide, grand = pas rapide (nb d'itérations entre chaque déplacements)
@@ -26,7 +29,30 @@ public abstract class Agent {
     protected int _age;
     protected int _ageMax;
     
-    protected int _ADN; // code génétique de la bestiole.
+    /*
+     * Code genetique des agents. chaque chiffre représente une variable.
+     * Cette variable varie en fonction du nbr de pts dans le chiffre.
+     * 10^0 = _faimMax (+10% par point)
+     * 10^1 = _ageMax (+10% par point)
+     * 10^2 = _moveSpeed (+1/3 pts)
+     * 10^3 = _vision (+1/2 pts)
+     * //TODO: 10^4 = _fréquenceReproduction
+     * 
+     * TODO: 2 denières valeures = tares génétiques et trash
+     * avec la valeure en binaire de cette valeure, on met à true ou false
+     * des tares génétiques ou pas(ex:
+     * 1 = 01 rien,
+     * 2 = 10 jambe de bois
+     * 3 = 11 jambe en bois + rien
+     * 4 = 100 oeil de verre
+     * 5 = 101 oeil de verre + rien
+     * 6 = 110 oeil de verre + jambe en bois
+     * 7 = 111 oeil de verre + jambe en bois + rien
+     * pour que ce soit pas trop chiant, plus la valeure est grande plus les 
+     * tares sont handicapantes, puisque plus rares.
+     */
+    
+    protected int _ADN;
     
     protected int[] _objectif;
     protected boolean _fuis;
@@ -45,6 +71,12 @@ public abstract class Agent {
     
     public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
             int __faimMax, int __ageMax, int __moveSpeed, int __vision) {
+        this(__x, __y, __w, rouge, vert, bleu, __faimMax, __ageMax,
+                __moveSpeed, __vision, makeADN(POTENTIELADN));
+    }
+    
+    public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
+            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __ADN) {
         _redValue = rouge;
         _greenValue = vert;
         _blueValue = bleu;
@@ -63,45 +95,82 @@ public abstract class Agent {
         _itReprod = 0;
         _fuis = false;
         _age=0;
-        _ADN=makeADN(5, 25);
+        _ADN=__ADN;
         
         
-        _moveSpeed = __moveSpeed;
-        _vision = __vision;
+        
+        _faimMax = __faimMax+(getBrinADN(1)* (__faimMax/10 ));
+        _faim=__faimMax/2; //les agents commencents avec 50% de faim max
+        _ageMax=(int)(__ageMax + Math.random()*(__ageMax/10))-(__ageMax/5)+(getBrinADN(2)*__ageMax/10) ; //ageMax = ageMax moyen +- 5%
+        _moveSpeed = __moveSpeed - (getBrinADN(3)/3);
+        if(_moveSpeed<0){ _moveSpeed=0; }
+        _vision = __vision + (getBrinADN(4)/2);
         
         _reprod = -1;
-        _faimMax = __faimMax;
-        _faim=__faimMax/2; //les agents commencents avec 50% de faim max
-        _ageMax=(int)(__ageMax+Math.random()*(__ageMax/10))-(__ageMax/5); //ageMax = ageMax moyen +- 5%
     }
 
     abstract public void step();
 /**
- * Crée de l'ADN (lol)
+ * Crée de l'ADN (ADN = un nombre entre 0 et 10^TAILLEADN)
  * potentielGénétique = nombre de points à répartir. Doit être inferieur à
- * taille * 9 (par ex, avec taille = 2, potentielGenetique < 18
- * @param taille: la taille de l'ADN à renvoyer
+ * TAILLEADN * 9 (par ex, avec TAILLEADN = 2, potentielGenetique < 18
  * @param potentielGenetique: le nombre de points à répartir
  * @return un brin d'ADN
  */
-    private int makeADN(final int taille, int potentielGenetique)
+    public static int makeADN(int potentielGenetique)
     {
-        int ret=0;
-        while(potentielGenetique>0)
+        return addADN(0, potentielGenetique);
+    }
+    
+    /**
+     * renvoie le brin d'adn spécifié (ex: 0 = le chiffre des unités de l'ADN)
+     * @param brin
+     * @return le chiffre 'brin' de l'ADN
+     */
+    protected final int getBrinADN(int brin)
+    {
+        return (int)(_ADN/Math.pow(10, brin))%10;
+    }
+    
+    /**
+     * prend un ADN, redistribue certains points et renvoie l'ADN modifié
+     * (redistribue jusqu'à la moitié des pts de chaque brin)
+     * @param ADN
+     * @return l'ADN modifié
+     */
+    protected int muteADN(int ADN)
+    {
+        int potentiel=0;
+        for(int i=0;i<TAILLEADN;i++){
+            int val=(int)(Math.random()*getBrinADN(i)/2);
+            potentiel+=val;
+            ADN-=(int)(val*Math.pow(10, i));
+        }
+        return addADN(ADN, potentiel);
+    }
+    
+    /**
+     * ajoute le potentiel à l'ADN en paramètre
+     * @param ADN
+     * @param potentiel
+     * @return l'ADN modifié
+     */
+    protected static int addADN(int ADN, int potentiel)
+    {
+        while(potentiel>0)
         {
-            for(int i=0;i<taille;i++)
+            for(int i=0;i<TAILLEADN;i++)
             {
                 int pdix=(int)(Math.pow(10, i));
-                if(((ret/pdix)*pdix)%(pdix*10) < 9){
-                    if((1./taille)>Math.random()){
-                        ret+=pdix;
-                        potentielGenetique--;
+                if((ADN/pdix)%10 < 9){
+                    if((1./TAILLEADN)>Math.random()){
+                        ADN+=pdix;
+                        potentiel--;
                     }
                 }
             }
         }
-        System.out.println(ret);
-        return ret;
+        return ADN;
     }
     
     public void move() {

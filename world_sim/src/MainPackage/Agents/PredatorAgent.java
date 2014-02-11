@@ -1,13 +1,20 @@
 package MainPackage.Agents;
 
-import MainPackage.World;
 import MainPackage.Case;
+import MainPackage.World;
 import java.util.ArrayList;
 
 public class PredatorAgent extends Agent {
 
+    //constructeur initial
     public PredatorAgent(int __x, int __y, World __w) {
         super(__x, __y, __w, 0, 0, 0, 75, 300, 0, 6);
+        _reprod = 75;
+    }
+    
+    //constructeur reprod
+    public PredatorAgent(int __x, int __y, World __w, int __ADN) {
+        super(__x, __y, __w, 0, 0, 0, 75, 300, 0, 6, __ADN);
         _reprod = 75;
     }
 
@@ -69,6 +76,6 @@ public class PredatorAgent extends Agent {
 
     @Override public void creationBebe()
     {
-        _world.add(new PredatorAgent(_x, _y, _world));
+        _world.add(new PredatorAgent(_x, _y, _world, muteADN(_ADN)));
     }
 }
