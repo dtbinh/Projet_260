@@ -400,10 +400,10 @@ public class World {
         for(int iP=1; iP<=portee;iP++){
             for(int j=0; j<=iP; j++){
                 for (Agent ag : agents) {
-                    if(ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy ||
-                            ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy ||
-                            ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy ||
-                            ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy){
+                    if(ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy
+                            || ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy
+                            || ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy
+                            || ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy){
                     ret[iP-1].add(ag);
                     }
                 }
