@@ -8,8 +8,7 @@ public class PredatorAgent extends Agent {
 
     //constructeur initial
     public PredatorAgent(int __x, int __y, World __w) {
-        super(__x, __y, __w, 0, 0, 0, 75, 300, 0, 6);
-        _reprod = 75;
+        this(__x, __y, __w, makeADN());
     }
     
     //constructeur reprod

@@ -1,1 +1,41 @@
-Hello world!
+Projet LI260:
+DONE:
+	Monde:
+	- Feu de foret.
+	- Eau qui s'ecoule.
+	- Herbe qui pousse.
+	- Pluie.
+	- Vent.
+
+	Agents:
+	- Se déplacent.
+	- Peuvent trouver de la nourriture.
+	- "Voient" à plusieurs cases de distance.
+	- Ont un code génétique qui modifie leur caractéristiques.
+	- Transmettent leur ADN.
+	- L'ADN transmis mute.
+
+TODO:
+	Prog:
+	- TEST UNITAIRES !!!
+	
+	Monde:
+	- Altitudes différents
+	- Types de terrains différents
+	- Lave
+	- Générateur d'eau (rivières) et de lave (volcans)
+	- Cycle jour/nuit
+
+	Agents:
+	- Tares génétiques
+	- Reproduction "sexuée"
+	- Temps de gestation
+	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
+	- Les bestioles agissent différement en fonction du jour/nuit
+
+TODO FOUFOU:
+	Monde:
+	- Générateur de monde (bruit de Perlin)
+	
+	Agents:
+	- Apprentissage des bestioles

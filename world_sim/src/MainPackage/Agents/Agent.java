@@ -66,14 +66,9 @@ public abstract class Agent {
     public int[] getColors(){int ret[]={_redValue, _greenValue, _blueValue}; return ret;}
     
     public Agent(int __x, int __y, World __w) {
-        this(__x, __y, __w, 255, 0, 0, 9999, 9999, 5, 3);
+        this(__x, __y, __w, 255, 0, 0, 9999, 9999, 5, 3, makeADN());
     }
     
-    public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
-            int __faimMax, int __ageMax, int __moveSpeed, int __vision) {
-        this(__x, __y, __w, rouge, vert, bleu, __faimMax, __ageMax,
-                __moveSpeed, __vision, makeADN(POTENTIELADN));
-    }
     
     public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
             int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __ADN) {
@@ -106,10 +101,39 @@ public abstract class Agent {
         if(_moveSpeed<0){ _moveSpeed=0; }
         _vision = __vision + (getBrinADN(4)/2);
         
+        taresADN();
+        
         _reprod = -1;
     }
 
     abstract public void step();
+    
+    
+    
+    //génétique:
+    
+    private void taresADN()
+    {
+        //9 = 1001 (fois deux)
+        //première moitiée
+        
+        if((getBrinADN(TAILLEADN-1) & 4)==4){ //estomac en carton
+            _faimMax/=3;
+        }
+        if((getBrinADN(TAILLEADN-1) & 8)==8){ //aveugle
+            _vision=0;
+        }
+        
+        //deuxième moitiée
+        
+        if((getBrinADN(TAILLEADN-2) & 4)==4){ //maladie mortelle
+            _ageMax/=3;
+        }
+        if((getBrinADN(TAILLEADN-2) & 8)==8){//paraplégique
+            _moveSpeed+=10;
+        }
+    }
+    
 /**
  * Crée de l'ADN (ADN = un nombre entre 0 et 10^TAILLEADN)
  * potentielGénétique = nombre de points à répartir. Doit être inferieur à
@@ -117,9 +141,9 @@ public abstract class Agent {
  * @param potentielGenetique: le nombre de points à répartir
  * @return un brin d'ADN
  */
-    public static int makeADN(int potentielGenetique)
+    public static int makeADN()
     {
-        return addADN(0, potentielGenetique);
+        return addADN(0, POTENTIELADN);
     }
     
     /**
@@ -173,14 +197,14 @@ public abstract class Agent {
         return ADN;
     }
     
+    //Déplacement
     public void move() {
         if (_itMS <= 0) {
             _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
             if(_fuis){ //inverse l'orientation si on fuit l'objectif
                 _orient=(_orient+2)%4;
             }
-            
-// met a jour: la position de l'agent (depend de l'orientation)
+            // met a jour: la position de l'agent (depend de l'orientation)
             switch (_orient) {
                 case 0: // nord	
                     _y = (_y - 1 + _world.getHeight()) % _world.getHeight();
@@ -202,7 +226,8 @@ public abstract class Agent {
         }
     }
     
-    public void temps(){
+    //passage du temps, morts et naissances
+    protected void temps(){
         if (_faim <= 0) {
             setmort();
         } else {
