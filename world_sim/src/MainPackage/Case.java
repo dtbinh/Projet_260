@@ -12,7 +12,7 @@ public class Case {
     // contenu dans les cases: 0X à 99X
     public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40;
     // types de terrain: 0XXX à 9XXX
-    public static final int TERRE=0000, ROCHE=1000, SABLE=2000;
+    public static final int TERRE=0000, ROCHE=1000, SABLE=2000, HERBE=3000;
     // altitudes: 0XXXX à 99XXXX, avec 0 = bas et 99 = haut          EXEMPLE: 852035 = 85 d'altitude, 2= sable, 03 = eau, 5 = profondeur moyenne
     
     public static int getVar(int i){return i%10;}
@@ -91,7 +91,7 @@ public class Case {
     
     //FIN DU CODE C/C (qu'on a adapté et compris quand meme)
     
-    public static final int NIVEAUEAU=200000, NIVEAUSABLE=300000, NIVEAUTERRE=700000;
+    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000;
     
     /**
      * Génère un monde au hasard avec le bruit de Perlin. D'abord génère la hauteur,
@@ -117,13 +117,13 @@ public class Case {
                     {
                         ret[i][j]*=10000;
                         if(getAltitude(ret[i][j]) <= NIVEAUEAU){
-                            ret[i][j] = setType(ret[i][j], EAU)+9;
+                            ret[i][j] = setType(ret[i][j], EAU)+(int)(Math.random()*5)+3;
                         }
                         
                         if(getAltitude(ret[i][j]) <= NIVEAUSABLE){
                             ret[i][j] = setTerrain(ret[i][j], SABLE);
-                        }else if(getAltitude(ret[i][j]) <= NIVEAUTERRE){
-                            ret[i][j] = setTerrain(ret[i][j], TERRE);
+                        }else if(getAltitude(ret[i][j]) <= NIVEAUHERBE){
+                            ret[i][j] = setTerrain(ret[i][j], HERBE);
                         }else{
                             ret[i][j] = setTerrain(ret[i][j], ROCHE);
                         }

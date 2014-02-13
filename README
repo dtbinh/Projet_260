@@ -17,6 +17,13 @@ DONE:
 	- L'ADN transmis mute.
 	- Tares génétiques.
 
+	Prog:
+	- Affichage en 2D
+
+	Bug:
+	- l'eau s'évapore bizarrement
+	- les moutons mangent la case entière et laissent de la terre de rrière eux
+	- les moutons mangent les arbres et pas l'herbe
 TODO:
 	Prog:
 	- TEST UNITAIRES !!!
@@ -36,11 +43,5 @@ TODO:
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
 	- Les bestioles agissent différement en fonction du jour/nuit
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
-	- Cadavres et décomposition
-
-TODO FOUFOU:
-	Monde:
-	- Générateur de monde (bruit de Perlin)
-	
-	Agents:
+	- Cadavres et décomposition.
 	- Apprentissage des bestioles

@@ -15,7 +15,7 @@ public class World {
     private boolean cloneBuffer; // if buffering, clone buffer after swith
     private int activeIndex;
     private ArrayList<Agent> agents;
-    
+    private Sprite sprite;
     
     //Environnement:
     /*
@@ -68,7 +68,7 @@ public class World {
 
         tableauCourant = new int[_dx][_dy];
         nouveauTableau = new int[_dx][_dy];
-
+        
         /*
         //Génération du monde
         for (int x = 0; x != _dx; x++) {
@@ -89,12 +89,6 @@ public class World {
         */
         
         tableauCourant = Case.generateurPerlin(_dx, _dy);
-        for(int i=0;i<_dx;i++){
-            for(int j=0;j<_dy;j++){
-                System.out.print(tableauCourant[i][j]+" ");
-            }
-            System.out.println();
-        }
         
         for(int i=0;i<_dx;i++){
             for(int j=0;j<_dy;j++){
@@ -114,6 +108,7 @@ public class World {
             }
         }
         updateColors(); //met les couleurs dès le départ
+        sprite = new Sprite(this);
     }
 
     // Fonctions itérations
@@ -148,7 +143,7 @@ public class World {
 
             activeIndex = (activeIndex + 1) % 2; // switch buffer index
         }
-
+        sprite.repaint();
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)
@@ -178,7 +173,7 @@ public class World {
                 int voisins[];
                 switch (Case.getType(tableauCourant[x][y])) {
                     case Case.VIDE:
-                        if (pArbreApparait >= Math.random() && Case.getTerrain(tableauCourant[x][y])==Case.TERRE) {
+                        if (pArbreApparait >= Math.random() && (Case.getTerrain(tableauCourant[x][y])==Case.TERRE || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)) {
                             nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
                         } else if (pluie) {
                             if (pGoutte >= Math.random()) {
@@ -248,8 +243,8 @@ public class World {
                                 if ((Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
                                         || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES)
                                         && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
-                                    System.out.println(Case.getAltitude(voisins[(i + rand) % 4]) + " et " + Case.getAltitude(tableauCourant[x][y]) );
-                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.EAU;
+                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length]
+                                            = Case.setType(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length],Case.EAU);
                                     nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
                                 }
                             }
