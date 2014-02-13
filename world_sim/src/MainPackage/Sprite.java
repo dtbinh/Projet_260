@@ -58,7 +58,6 @@ public class Sprite extends JPanel {
 
 	public void paint(Graphics g)
 	{
-            System.out.println("Paint");
 		Graphics2D g2 = (Graphics2D)g;
                 g2.clearRect(0, 0, this.getWidth(), this.getHeight());
 		for ( int i = 0 ; i < world.getWidth() ; i++ ){
@@ -115,8 +114,6 @@ public class Sprite extends JPanel {
                                             g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                             }
                                     break;
-                                /*default:
-                                    g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);*/
                             }
                         }
                     }

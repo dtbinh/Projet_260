@@ -4,15 +4,15 @@ import MainPackage.Case;
 import MainPackage.World;
 import java.util.ArrayList;
 
-public class PredatorAgent extends Agent {
+public class Loups extends Agent {
 
     //constructeur initial
-    public PredatorAgent(int __x, int __y, World __w) {
+    public Loups(int __x, int __y, World __w) {
         this(__x, __y, __w, makeADN());
     }
     
     //constructeur reprod
-    public PredatorAgent(int __x, int __y, World __w, int __ADN) {
+    public Loups(int __x, int __y, World __w, int __ADN) {
         super(__x, __y, __w, 0, 0, 0, 75, 300, 2, 5, __ADN);
         _reprod = 75;
     }
@@ -25,8 +25,8 @@ public class PredatorAgent extends Agent {
                 ArrayList<Agent> mmcase = _world.getAgentCase(this);
                 if (!mmcase.isEmpty()) {
                     for (Agent ag : mmcase) {
-                        if (ag.getClass() == PreyAgent.class) {
-                            PreyAgent proie = (PreyAgent) ag;
+                        if (ag.getClass() == Moutons.class) {
+                            Moutons proie = (Moutons) ag;
                             _faim += 50;
                             proie.setmort();
                         }
@@ -49,8 +49,8 @@ public class PredatorAgent extends Agent {
             for (int i = 0; i < _vision; i++) {
                 if (!proches[i].isEmpty()) {
                     for (Agent ag : proches[i]) {
-                        if (ag.getClass() == PreyAgent.class) {
-                            PreyAgent age = (PreyAgent) ag;
+                        if (ag.getClass() == Moutons.class) {
+                            Moutons age = (Moutons) ag;
                             if (age.getAlive()) {
                                 _objectif[0]=age._x;
                                 _objectif[1]=age._y;
@@ -75,6 +75,6 @@ public class PredatorAgent extends Agent {
 
     @Override public void creationBebe()
     {
-        _world.add(new PredatorAgent(_x, _y, _world, muteADN(_ADN)));
+        _world.add(new Loups(_x, _y, _world, muteADN(_ADN)));
     }
 }

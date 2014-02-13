@@ -361,28 +361,28 @@ public class World {
                 for(int k=0;k<4;k++){
                     switch(k){
                         case 0:
-                            if(getCellType((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) == type){
+                            if((getCellType((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 1:
-                            if(getCellType((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) == type){
+                            if((getCellType((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 2:
-                            if(getCellType((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) == type){
+                            if((getCellType((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 3:
-                            if(getCellType((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) == type){
+                            if((getCellType((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
@@ -494,13 +494,13 @@ public class World {
     }
 
     /**
-     * Renvoie true si une case adjacente à cellX/cellY contient une valeure égale à type dans tableauCourant.
+     * Renvoie true si une case adjacente à cellX/cellY contient un type égale à type dans tableauCourant.
      * @param cellX, cellY, type
      */
     public boolean containVoisins(int cellX, int cellY, int type) {
         int j = 0;
         for (int i = 1; i < 8; i += 2) {
-            if (tableauCourant[(cellX - 1 + i % 3 + tableauCourant.length) % tableauCourant.length][(cellY - 1 + i / 3 + tableauCourant[0].length) % tableauCourant[0].length] == type) {
+            if ((tableauCourant[(cellX - 1 + i % 3 + tableauCourant.length) % tableauCourant.length][(cellY - 1 + i / 3 + tableauCourant[0].length) % tableauCourant[0].length] & type) == type) {
                 return true;
             }
             j++;
@@ -522,6 +522,14 @@ public class World {
      */
     public int getCellType(int x, int y) { //renvoie la val /10 *10
         return Case.getType(tableauCourant[x][y]);
+    }
+    
+    /**
+     * Renvoie le terrain de tableauCourant à la position x/y
+     * @param x, y
+     */
+    public int getCellTerrain(int x, int y) { //renvoie la val /10 *10
+        return Case.getTerrain(tableauCourant[x][y]);
     }
 
     /**

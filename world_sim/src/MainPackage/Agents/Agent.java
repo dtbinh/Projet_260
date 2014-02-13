@@ -1,7 +1,7 @@
 package MainPackage.Agents;
 
 import MainPackage.World;
-
+import MainPackage.Case;
 
 public abstract class Agent {
 

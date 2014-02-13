@@ -4,15 +4,15 @@ import MainPackage.Case;
 import MainPackage.World;
 import java.util.ArrayList;
 
-public class PreyAgent extends Agent {
+public class Moutons extends Agent {
     
     //constructeur initial
-    public PreyAgent(int __x, int __y, World __w) {
+    public Moutons(int __x, int __y, World __w) {
         this(__x, __y, __w, makeADN());
     }
     
     //cosntructeur reprod
-    public PreyAgent(int __x, int __y, World __w, int __ADN) {
+    public Moutons(int __x, int __y, World __w, int __ADN) {
         super(__x, __y, __w, 255, 128, 0, 50, 150, 4, 5, __ADN);
         _reprod = 30;
     }
@@ -21,9 +21,9 @@ public class PreyAgent extends Agent {
         temps();
 
         if (_alive) {
-            if (_world.getCellType(_x, _y) == Case.ARBRE) {
+            if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
                 _faim += (int) (Math.random() * 5) + 10;
-                _world.setCellVal(_x, _y, Case.VIDE);
+                _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
             }
             if (_world.containVoisins(_x, _y,Case.FEU)) {
                 setmort();
@@ -41,7 +41,7 @@ public class PreyAgent extends Agent {
         for (int i = 0; i < _vision; i++) {
             if (!proches[i].isEmpty()) {
                 for (Agent ag : proches[i]) {
-                    if (ag.getClass() == PredatorAgent.class) {
+                    if (ag.getClass() == Loups.class) {
                         _objectif[0]=ag._x;
                         _objectif[1]=ag._y;
                         _fuis=true;
@@ -51,7 +51,7 @@ public class PreyAgent extends Agent {
             }
         }
         
-        int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.ARBRE);
+        int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);
         if(herbeProche[0]!=-1){
             _objectif=herbeProche;
             _fuis=false;
@@ -70,6 +70,6 @@ public class PreyAgent extends Agent {
 
     @Override public void creationBebe()
     {
-        _world.add(new PreyAgent(_x, _y, _world,muteADN(_ADN)));
+        _world.add(new Moutons(_x, _y, _world,muteADN(_ADN)));
     }
 }

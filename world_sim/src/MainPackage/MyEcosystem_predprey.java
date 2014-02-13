@@ -1,7 +1,7 @@
 package MainPackage;
 
-import MainPackage.Agents.PredatorAgent;
-import MainPackage.Agents.PreyAgent;
+import MainPackage.Agents.Loups;
+import MainPackage.Agents.Moutons;
 
 public class MyEcosystem_predprey extends CAtoolbox {
 
@@ -32,7 +32,7 @@ public class MyEcosystem_predprey extends CAtoolbox {
         }
 
 
-        int delai = 200;//100; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
+        int delai = 20;//100; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
         int displaySpeed = 1;//50; // from 1 to ...
@@ -45,10 +45,10 @@ public class MyEcosystem_predprey extends CAtoolbox {
         World world = new World(dx, dy, true, true);
 
         for (int i = 0; i != 10; i++) {
-            world.add(new PreyAgent((int) (Math.random() * dx), (int) (Math.random() * dy), world));
+            world.add(new Moutons((int) (Math.random() * dx), (int) (Math.random() * dy), world));
         }
         for (int i = 0; i != 10; i++) {
-            world.add(new PredatorAgent((int) (Math.random() * dx), (int) (Math.random() * dy), world));
+            world.add(new Loups((int) (Math.random() * dx), (int) (Math.random() * dy), world));
         }
         
         // mise a jour de l'�tat du monde
