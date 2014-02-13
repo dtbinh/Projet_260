@@ -6,6 +6,7 @@ DONE:
 	- Herbe qui pousse.
 	- Pluie.
 	- Vent.
+	- Generateur de monde (à base de bruit de Perlin)
 
 	Agents:
 	- Se déplacent.
@@ -21,7 +22,6 @@ TODO:
 	- TEST UNITAIRES !!!
 	
 	Monde:
-	- Générateur de monde (Bruit de Perlin)
 	- Altitudes différents
 	- Types de terrains différents
 	- Lave

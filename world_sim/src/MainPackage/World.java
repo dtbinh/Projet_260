@@ -69,7 +69,7 @@ public class World {
         tableauCourant = new int[_dx][_dy];
         nouveauTableau = new int[_dx][_dy];
 
-        
+        /*
         //Génération du monde
         for (int x = 0; x != _dx; x++) {
             for (int y = 0; y != _dy; y++) {
@@ -85,6 +85,21 @@ public class World {
             for (int y = 0; y != _dy / 4; y++) {
                 tableauCourant[_dx / 2 + x - _dx / 8][_dy / 2 + y - _dy / 8] = Case.EAU + 9;
             }// Lac au centre de la map
+        }
+        */
+        
+        tableauCourant = Case.generateurPerlin(_dx, _dy);
+        for(int i=0;i<_dx;i++){
+            for(int j=0;j<_dy;j++){
+                System.out.print(tableauCourant[i][j]+" ");
+            }
+            System.out.println();
+        }
+        
+        for(int i=0;i<_dx;i++){
+            for(int j=0;j<_dy;j++){
+                nouveauTableau[i][j]=tableauCourant[i][j];
+            }
         }
         
         // Mise à zéro des buffeurs
@@ -230,9 +245,10 @@ public class World {
                             // Etalage
                             // Sur une case vide d'abord
                             for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if (Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
-                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES
+                                if ((Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
+                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES)
                                         && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
+                                    System.out.println(Case.getAltitude(voisins[(i + rand) % 4]) + " et " + Case.getAltitude(tableauCourant[x][y]) );
                                     nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.EAU;
                                     nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
                                 }
@@ -565,7 +581,7 @@ public class World {
 
         for (int y = 0; y != tableauCourant[0].length; y++) {
             for (int x = 0; x != tableauCourant.length; x++) {
-                switch ((tableauCourant[x][y] / 10) * 10) {
+                switch (Case.getType(tableauCourant[x][y])) {
                     case Case.VIDE:
                         this.setCellState(x, y, 255, 255, 255);
                         break;
@@ -607,7 +623,7 @@ public class World {
                         break;
                     default:
                         this.setCellState(x, y, 0, 0, 0);
-                        System.out.println("Defaults: " + x + "/" + y + "  " + tableauCourant[x][y]);
+                        //System.out.println("Defaults: " + x + "/" + y + "  " + tableauCourant[x][y]);
                 }
             }
         }
