@@ -41,6 +41,7 @@ public class Case {
     public static int[][] generateurImage1(String nom)
     {
         int ret[][] = new int[0][0];
+        short max=0;
         
         //On ouvre le fichier nom, on met ses valeurs dans ret
         try{
@@ -66,21 +67,27 @@ public class Case {
                             break;
                         case 1:
                             String taille[] = ligne.split(" ");
-                            longueur = Integer.getInteger(taille[0]); //erreur ici
-                            largeur = Integer.getInteger(taille[1]);
+                            longueur = Integer.valueOf(taille[0]);
+                            largeur = Integer.valueOf(taille[1]);
                             ret = new int[longueur][largeur];
                             etape = 2;
                             break;
                         case 2:
-                            String val[] = ligne.split(" ");
+                            max=Short.valueOf(ligne);
+                            break;
+                        case 3:
+                            String val[] = ligne.split("\\s"); //ici: ne split pas bien
                             for(int i=0;i<largeur;i++){
-                                ret[lecture][i] = Integer.getInteger(val[i]);
+                                ret[lecture][i] = Integer.valueOf(val[i]);
+                                
                             }
+                            System.out.println("ligne "+lecture+"lue");
                             lecture++;
                             break;
                         default:
                             System.out.println("Error");
                     }
+                    System.out.println("FIN");
                 }
             }
             br.close(); 
@@ -91,7 +98,7 @@ public class Case {
         // Pour chaque pixel de l'image, altitude du pixel du tableau = (int)((pixel/255)*99)
         for(int i=0;i<ret.length;i++){
             for(int j=0;j<ret[0].length;j++){
-                ret[i][j] = (int)((ret[i][j])/255)*99;
+                ret[i][j] = (int)((ret[i][j])/max)*99;
             }
         }
         
