@@ -9,8 +9,8 @@ public class MyEcosystem_predprey extends CAtoolbox {
 
         // initialisation generale
 
-        int dx = 50;
-        int dy = 50;
+        int dx = 24;
+        int dy = 7;
 
         int displayWidth = dx;  // 200
         int displayHeight = dy; // 200
@@ -42,8 +42,10 @@ public class MyEcosystem_predprey extends CAtoolbox {
 
         // initialise l'ecosysteme
 
-        World world = new World(dx, dy, true, true);
+        //World world = new World(dx, dy, true, true);
 
+        World world = new World("fep.pgm");
+        
         for (int i = 0; i != 10; i++) {
             world.add(new Moutons((int) (Math.random() * dx), (int) (Math.random() * dy), world));
         }
