@@ -6,7 +6,14 @@ DONE:
 	- Herbe qui pousse.
 	- Pluie.
 	- Vent.
+	- Altitudes différentes
+	- Types de terrains différents:
+		- Terre (les arbres et l'herbe peuvent pousser)
+		- Roche (Dans les montagnes)
+		- Sable (au bord de la mer)
+
 	- Generateur de monde (à base de bruit de Perlin)
+	- Generateur de monde à partir d'une image en nuances de gris
 
 	Agents:
 	- Se déplacent.
@@ -29,12 +36,9 @@ TODO:
 	- TEST UNITAIRES !!!
 	
 	Monde:
-	- Altitudes différents
-	- Types de terrains différents
 	- Lave
 	- Générateur d'eau (rivières) et de lave (volcans)
 	- Cycle jour/nuit
-	- Différencier arbres et herbe: les loups vivent dans la forêt, les moutons mangent de l'herbe.
 
 	Agents:
 	- Prise de décision (vaut mieux fuir et mourir de faim ou manger l'herbe et mourir mangé par le loup?)
@@ -45,3 +49,4 @@ TODO:
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Cadavres et décomposition.
 	- Apprentissage des bestioles
+	- Les loups vivent dans la forêt.

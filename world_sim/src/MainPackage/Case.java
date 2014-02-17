@@ -77,7 +77,6 @@ public class Case {
                             break;
                         case 3:
                             String val[] = ligne.split(" +");
-                            System.out.println(val.length);
                             for(int i=0;i<largeur;i++){
                                 ret[i][lecture] = Integer.valueOf(val[i]);
                             }
