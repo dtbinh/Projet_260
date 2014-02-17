@@ -51,12 +51,11 @@ public class Case {
             String ligne;
             
             short etape=0;
-            int longueur=0,largeur=0;
+            int hauteur=0,largeur=0;  //largeur = nb de lignes, hauteur= nb de colonnes
             short lecture=0;
             
             while ((ligne=br.readLine())!=null){
                 if(!ligne.startsWith("#")){
-                    System.out.println(ligne);
                     switch(etape){
                         case 0:
                             if(ligne.equals("P2")){
@@ -67,27 +66,26 @@ public class Case {
                             break;
                         case 1:
                             String taille[] = ligne.split(" ");
-                            longueur = Integer.valueOf(taille[0]);
-                            largeur = Integer.valueOf(taille[1]);
-                            ret = new int[longueur][largeur];
+                            largeur = Integer.valueOf(taille[0]);
+                            hauteur = Integer.valueOf(taille[1]);
+                            ret = new int[largeur][hauteur];
                             etape = 2;
                             break;
                         case 2:
                             max=Short.valueOf(ligne);
+                            etape = 3;
                             break;
                         case 3:
-                            String val[] = ligne.split("\\s"); //ici: ne split pas bien
+                            String val[] = ligne.split(" +");
+                            System.out.println(val.length);
                             for(int i=0;i<largeur;i++){
-                                ret[lecture][i] = Integer.valueOf(val[i]);
-                                
+                                ret[i][lecture] = Integer.valueOf(val[i]);
                             }
-                            System.out.println("ligne "+lecture+"lue");
                             lecture++;
                             break;
                         default:
                             System.out.println("Error");
                     }
-                    System.out.println("FIN");
                 }
             }
             br.close(); 
@@ -95,11 +93,20 @@ public class Case {
         catch (Exception e){
                 System.out.println("ERREUR: "+ e.toString());
         }
+        for(int i=0;i<ret.length;i++){
+            for(int j=0;j<ret[0].length;j++){
+                System.out.print(ret[i][j]);
+            }
+            System.out.println();
+        }
+            System.out.println();
         // Pour chaque pixel de l'image, altitude du pixel du tableau = (int)((pixel/255)*99)
         for(int i=0;i<ret.length;i++){
             for(int j=0;j<ret[0].length;j++){
-                ret[i][j] = (int)((ret[i][j])/max)*99;
+                ret[i][j] = (ret[i][j]*99)/max;
+                System.out.print(ret[i][j]);
             }
+            System.out.println();
         }
         
         ret = makeWorld(ret);
