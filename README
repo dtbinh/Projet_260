@@ -6,7 +6,14 @@ DONE:
 	- Herbe qui pousse.
 	- Pluie.
 	- Vent.
+	- Altitudes différentes
+	- Types de terrains différents:
+		- Terre (les arbres et l'herbe peuvent pousser)
+		- Roche (Dans les montagnes)
+		- Sable (au bord de la mer)
+
 	- Generateur de monde (à base de bruit de Perlin)
+	- Generateur de monde à partir d'une image en nuances de gris
 
 	Agents:
 	- Se déplacent.
@@ -25,23 +32,64 @@ DONE:
 	- OK: les moutons mangent la case entière et laissent de la terre de rrière eux
 	- OK: les moutons mangent les arbres et pas l'herbe
 TODO:
+	(trouver des images pour:
+			- le feu
+			- les moutons
+			- les loups)
+	- TEST UNITAIRES
+	
+	- finir générateur d'images
+	- Lave
+	- Générateur d'eau (rivières) et de lave (volcans)
+	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
+	- Cycle jour/nuit
+	- Les bestioles agissent différement en fonction du jour/nuit
+	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
+	- Reproduction "sexuée"
+	- Temps de gestation
+	- Cadavres et décomposition.
+	
+
+	- Apprentissage des bestioles
+	- Les loups vivent dans la forêt.
+	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
+	
+	
+Comportement des agents:
+	- Ont peur du feu
+	- Ne marchent pas dans l'eau profonde (sinon ils se noient)
+	- Ne marchent pas dans la lave, et fuient même :D
+	
+	Apprentissage:
+	- Retiennent des "info" avec les éléments proche du lieu du drame (agents, terrain, objets etc), ont une jauge de sureté (qui confirme l'info si elle se reproduit) et une jauge de "bien/mal" qui indique si c'est cool ou pas
+	- Les "info" doivent se mélanger si elles correspondent (si ils apprennent que "loup sur du sable" c'est aussi mal que "loup sur de la terre", ils doivent comprendre que "loup" c'est MAL)
+
+
+Si on a plus rien d'autre à faire:
+	- Loups et moutons de différentes couleurs
+
+
+
+
+
+
+Idées:
 	Prog:
 	- TEST UNITAIRES !!!
 	
 	Monde:
-	- Altitudes différents
-	- Types de terrains différents
 	- Lave
 	- Générateur d'eau (rivières) et de lave (volcans)
-	- Cycle jour/nuit
-	- Différencier arbres et herbe: les loups vivent dans la forêt, les moutons mangent de l'herbe.
-
+	- cycle jour/nuit
+	
 	Agents:
 	- Prise de décision (vaut mieux fuir et mourir de faim ou manger l'herbe et mourir mangé par le loup?)
 	- Reproduction "sexuée"
 	- Temps de gestation
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
-	- Les bestioles agissent différement en fonction du jour/nuit
-	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Cadavres et décomposition.
 	- Apprentissage des bestioles
+	- Les loups vivent dans la forêt.
+	- Les bestioles agissent différement en fonction du jour/nuit
+	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
+	- Les agents ont peur du feu
