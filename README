@@ -39,6 +39,7 @@ TODO:
 	- TEST UNITAIRES
 	
 	- finir générateur d'images
+	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
 	- Lave
 	- Générateur d'eau (rivières) et de lave (volcans)
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
@@ -55,19 +56,23 @@ TODO:
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
 	
 	
-Comportement des agents:
-	- Ont peur du feu
-	- Ne marchent pas dans l'eau profonde (sinon ils se noient)
-	- Ne marchent pas dans la lave, et fuient même :D
-	
-	Apprentissage:
-	- Retiennent des "info" avec les éléments proche du lieu du drame (agents, terrain, objets etc), ont une jauge de sureté (qui confirme l'info si elle se reproduit) et une jauge de "bien/mal" qui indique si c'est cool ou pas
-	- Les "info" doivent se mélanger si elles correspondent (si ils apprennent que "loup sur du sable" c'est aussi mal que "loup sur de la terre", ils doivent comprendre que "loup" c'est MAL)
-
+	Comportement des agents:
+		- Ont peur du feu
+		- Ne marchent pas dans l'eau profonde (sinon ils se noient)
+		- Ne marchent pas dans la lave, et fuient même :D
+		
+		Apprentissage:
+		- Retiennent des "info" avec les éléments proche du lieu du drame (agents, terrain, objets etc), ont une jauge de confirmation (qui confirme l'info si elle se reproduit) et une jauge de "bien/mal" qui indique si c'est cool ou pas
+		- Les "info" doivent se mélanger si elles correspondent (si ils apprennent que "loup sur du sable" c'est aussi mal que "loup sur de la terre", ils doivent comprendre que "loup" c'est MAL)
+		- (ou alors version alternative: ils ont une jauge de confirmation et un compteur de bien/mal pour CHAQUE élément: Si ils rencontrent un loup dans les bois sur de la terre,
+		ils auront "terre", "bois" et "loup". Sauf que quand ils re rencontreront un loup, si c'est sur la plage, ce sera la jauge de "loup" qui sera incrémenté. Et si il se passe rien par rapport à
+		un élément, la jauge de cet élément descend)
+		
 
 Si on a plus rien d'autre à faire:
 	- Loups et moutons de différentes couleurs
-
+	- Un joueur
+	- Les humains peuvent couper du bois et construire des truc avec.
 
 
 
