@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import MainPackage.World;
 import MainPackage.Case;
+import MainPackage.Agents.*;
 
 public class Sprite extends JPanel {
 
@@ -27,8 +28,10 @@ public class Sprite extends JPanel {
 	private Image sandSprite;
 	private Image rockSprite;
 	private Image earthSprite;
+	private Image loupSprite;
+	private Image moutonSprite;
 	
-	private int spriteLength = 16;
+	private int spriteLength = 12;
 	
 	private World world;
 
@@ -42,6 +45,8 @@ public class Sprite extends JPanel {
 			sandSprite = ImageIO.read(new File("sand.png"));
 			rockSprite = ImageIO.read(new File("rock.png"));
 			earthSprite = ImageIO.read(new File("earth.png"));
+                        loupSprite = ImageIO.read(new File("loupN.png"));
+                        moutonSprite = ImageIO.read(new File("moutonB.png"));
 		}
 		catch(Exception e)
 		{
@@ -117,6 +122,13 @@ public class Sprite extends JPanel {
                             }
                         }
                     }
+                for(Agent a:world.getAgentsArray()){
+                    if(a.getClass()==Moutons.class){
+                        g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                    }else if(a.getClass()==Loups.class){
+                        g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                    }
+                }
 	}
 
 }

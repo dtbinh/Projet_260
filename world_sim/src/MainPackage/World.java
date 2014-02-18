@@ -320,6 +320,12 @@ public class World {
         return ret;
     }
     
+    public Agent[] getAgentsArray(){
+        Agent ret[] = new Agent[agents.size()];
+        agents.toArray(ret);
+        return ret;
+    }
+    
     /**
      * Renvoie un Array des agents adjacents à l'agent passé en paramètre.
      * @param a
