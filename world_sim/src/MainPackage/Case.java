@@ -57,7 +57,6 @@ public class Case {
             
             String ligne=lecteur.next();
             while (lecteur.hasNext()){
-                System.out.println(ligne);
                 if(!ligne.startsWith("#")){
                     switch(etape){
                         case 0:
@@ -107,20 +106,19 @@ public class Case {
         catch (Exception e){
                 System.out.println("ERREUR: "+ e.toString());
         }
+        /* Affichage pour débuguer
         for(int i=0;i<ret.length;i++){
             for(int j=0;j<ret[0].length;j++){
                 System.out.print(ret[i][j]);
             }
             System.out.println();
-        }
-            System.out.println();
+        }*/
+        
         // Pour chaque pixel de l'image, altitude du pixel du tableau = (int)((pixel/255)*99)
         for(int i=0;i<ret.length;i++){
             for(int j=0;j<ret[0].length;j++){
                 ret[i][j] = (ret[i][j]*99)/max;
-                System.out.print(ret[i][j]);
             }
-            System.out.println();
         }
         
         ret = makeWorld(ret);
