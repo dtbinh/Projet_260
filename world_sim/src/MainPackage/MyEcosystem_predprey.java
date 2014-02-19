@@ -46,13 +46,13 @@ public class MyEcosystem_predprey extends CAtoolbox {
 
         World world = new World("world.pgm");
         
-      /*  for (int i = 0; i != 10; i++) {
-            world.add(new Moutons((int) (Math.random() * dx), (int) (Math.random() * dy), world));
+      for (int i = 0; i != 10; i++) {
+            world.add(new Moutons((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()), world));
         }
         for (int i = 0; i != 10; i++) {
-            world.add(new Loups((int) (Math.random() * dx), (int) (Math.random() * dy), world));
+            world.add(new Loups((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()), world));
         }
-        */
+        
         // mise a jour de l'�tat du monde
 
         while (it != nombreDePasMaximum) {
