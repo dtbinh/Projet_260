@@ -5,6 +5,7 @@
 package MainPackage;
 
 import java.io.*;
+import java.util.Scanner;
 
 /**
  *
@@ -45,49 +46,63 @@ public class Case {
         
         //On ouvre le fichier nom, on met ses valeurs dans ret
         try{
-            InputStream ips=new FileInputStream(nom); 
-            InputStreamReader ipsr=new InputStreamReader(ips);
-            BufferedReader br=new BufferedReader(ipsr);
-            String ligne;
+            Scanner lecteur;
+            File image = new File(nom);
+            lecteur = new Scanner(image);
+            
             
             short etape=0;
             int hauteur=0,largeur=0;  //largeur = nb de lignes, hauteur= nb de colonnes
             short lecture=0;
             
-            while ((ligne=br.readLine())!=null){
+            String ligne=lecteur.next();
+            while (lecteur.hasNext()){
+                System.out.println(ligne);
                 if(!ligne.startsWith("#")){
                     switch(etape){
                         case 0:
                             if(ligne.equals("P2")){
                                 etape = 1;
+                                ligne = lecteur.next();
                             }else{
                                 etape = -1;
+                                ligne = lecteur.next();
                             }
                             break;
                         case 1:
-                            String taille[] = ligne.split(" ");
-                            largeur = Integer.valueOf(taille[0]);
-                            hauteur = Integer.valueOf(taille[1]);
+                            largeur = Integer.valueOf(ligne);
+                            ligne = lecteur.next();
+                            hauteur = Integer.valueOf(ligne);
                             ret = new int[largeur][hauteur];
                             etape = 2;
+                            ligne = lecteur.next();
                             break;
                         case 2:
                             max=Short.valueOf(ligne);
                             etape = 3;
+                            ligne = lecteur.next();
                             break;
                         case 3:
-                            String val[] = ligne.split(" +");
                             for(int i=0;i<largeur;i++){
-                                ret[i][lecture] = Integer.valueOf(val[i]);
+                                ret[i][lecture] = Integer.valueOf(ligne);
+                                if(lecteur.hasNext()){
+                                    ligne=lecteur.next();
+                                    while(ligne.startsWith("#")){
+                                        ligne=lecteur.next();
+                                    }
+                                }
                             }
                             lecture++;
                             break;
                         default:
                             System.out.println("Error");
                     }
+                }else{
+                    lecteur.nextLine();
+                    ligne = lecteur.next();
                 }
             }
-            br.close(); 
+            lecteur.close();
         }
         catch (Exception e){
                 System.out.println("ERREUR: "+ e.toString());
