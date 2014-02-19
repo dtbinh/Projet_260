@@ -4,6 +4,9 @@
  */
 package MainPackage;
 
+import java.io.*;
+import java.util.Scanner;
+
 /**
  *
  * @author patrate
@@ -25,6 +28,117 @@ public class Case {
     
     
     // GENERATEUR DE MONDE:
+    
+    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000;
+    
+    // A partir d'images niveau de gris (PGM)
+    
+    /**
+     * Crée un monde dont les altitudes correspondent aux niveaux de gris de l'image
+     * au format pgm passé en paramètre.
+     * @param nom
+     * @return 
+     */
+    public static int[][] generateurImage1(String nom)
+    {
+        int ret[][] = new int[0][0];
+        short max=0;
+        
+        //On ouvre le fichier nom, on met ses valeurs dans ret
+        try{
+            Scanner lecteur;
+            File image = new File(nom);
+            lecteur = new Scanner(image);
+            
+            
+            short etape=0;
+            int hauteur=0,largeur=0;  //largeur = nb de lignes, hauteur= nb de colonnes
+            short lecture=0;
+            
+            String ligne=lecteur.next();
+            while (lecteur.hasNext()){
+                if(!ligne.startsWith("#")){
+                    switch(etape){
+                        case 0:
+                            if(ligne.equals("P2")){
+                                etape = 1;
+                                ligne = lecteur.next();
+                            }else{
+                                etape = -1;
+                                ligne = lecteur.next();
+                            }
+                            break;
+                        case 1:
+                            largeur = Integer.valueOf(ligne);
+                            ligne = lecteur.next();
+                            hauteur = Integer.valueOf(ligne);
+                            ret = new int[largeur][hauteur];
+                            etape = 2;
+                            ligne = lecteur.next();
+                            break;
+                        case 2:
+                            max=Short.valueOf(ligne);
+                            etape = 3;
+                            ligne = lecteur.next();
+                            break;
+                        case 3:
+                            for(int i=0;i<largeur;i++){
+                                ret[i][lecture] = Integer.valueOf(ligne);
+                                if(lecteur.hasNext()){
+                                    ligne=lecteur.next();
+                                    while(ligne.startsWith("#")){
+                                        ligne=lecteur.next();
+                                    }
+                                }
+                            }
+                            lecture++;
+                            break;
+                        default:
+                            System.out.println("Error");
+                    }
+                }else{
+                    lecteur.nextLine();
+                    ligne = lecteur.next();
+                }
+            }
+            lecteur.close();
+        }
+        catch (Exception e){
+                System.out.println("ERREUR: "+ e.toString());
+        }
+        /* Affichage pour débuguer
+        for(int i=0;i<ret.length;i++){
+            for(int j=0;j<ret[0].length;j++){
+                System.out.print(ret[i][j]);
+            }
+            System.out.println();
+        }*/
+        
+        // Pour chaque pixel de l'image, altitude du pixel du tableau = (int)((pixel/255)*99)
+        for(int i=0;i<ret.length;i++){
+            for(int j=0;j<ret[0].length;j++){
+                ret[i][j] = (ret[i][j]*99)/max;
+            }
+        }
+        
+        ret = makeWorld(ret);
+        
+        return ret;
+    }
+    
+    
+    //TODO:
+    // FOnction création d'image 2:
+    // on lit une deuxième image dont chaque valeure
+    // correspond à un élément du décor (pour rajouter de l'architecture, des arbres,
+    // des truc plus complexes que juste des plages et des montagnes
+    
+    
+    
+    
+    
+    
+    //ALEATOIRE + BRUIT DE PERLIN
     
     // SOURCE: http://fr.openclassrooms.com/informatique/cours/bruits-et-nombres-aleatoires-coherents
     private static final double PERSISTANCE=0.7;
@@ -91,7 +205,6 @@ public class Case {
     
     //FIN DU CODE C/C (qu'on a adapté et compris quand meme)
     
-    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000;
     
     /**
      * Génère un monde au hasard avec le bruit de Perlin. D'abord génère la hauteur,
@@ -111,30 +224,30 @@ public class Case {
                     }
                 }
                 
-                for(int i=0; i<largeur;i++)
-                {
-                    for(int j=0; j<hauteur;j++)
-                    {
-                        ret[i][j]*=10000;
-                        if(getAltitude(ret[i][j]) <= NIVEAUEAU){
-                            ret[i][j] = setType(ret[i][j], EAU)+(int)(Math.random()*5)+3;
-                        }
-                        
-                        if(getAltitude(ret[i][j]) <= NIVEAUSABLE){
-                            ret[i][j] = setTerrain(ret[i][j], SABLE);
-                        }else if(getAltitude(ret[i][j]) <= NIVEAUHERBE){
-                            ret[i][j] = setTerrain(ret[i][j], HERBE);
-                        }else{
-                            ret[i][j] = setTerrain(ret[i][j], ROCHE);
-                        }
-                        
-                    }
-                }
-                
-                
-                
-                
+                ret = makeWorld(ret);
                 
                 return ret;
             }
+    
+    private static int[][] makeWorld(int tab[][])
+    {
+        for(int i=0; i<tab.length;i++){
+            for(int j=0; j<tab[0].length;j++){
+                tab[i][j]*=10000;
+                if(getAltitude(tab[i][j]) <= NIVEAUEAU){
+                    tab[i][j] = setType(tab[i][j], EAU)+(int)(Math.random()*5)+3;
+                }
+
+                if(getAltitude(tab[i][j]) <= NIVEAUSABLE){
+                    tab[i][j] = setTerrain(tab[i][j], SABLE);
+                }else if(getAltitude(tab[i][j]) <= NIVEAUHERBE){
+                    tab[i][j] = setTerrain(tab[i][j], HERBE);
+                }else{
+                    tab[i][j] = setTerrain(tab[i][j], ROCHE);
+                }
+
+            }
+        }
+        return tab;
+    }
 }

@@ -53,6 +53,54 @@ public class World {
     private final double pChangeVent = 0.01; //probabilité que le vent change de direction
     private final double vfVent = 0.10; // augmentation du feu quand il y a du vent
     
+    public World(String nom){
+        tableauCourant = Case.generateurImage1(nom);
+        _dx = tableauCourant.length;
+        _dy = tableauCourant[0].length;
+
+        buffering = false;
+
+        Buffer0 = new int[_dx][_dy][3];
+        Buffer1 = new int[_dx][_dy][3];
+        activeIndex = 0;
+
+        agents = new ArrayList<Agent>();
+
+        nouveauTableau = new int[_dx][_dy];
+        
+        for(int i=0;i<_dx;i++){
+            for(int j=0;j<_dy;j++){
+                nouveauTableau[i][j]=tableauCourant[i][j];
+            }
+        }
+        
+        for (int x = 0; x != _dx; x++) {
+            for (int y = 0; y != _dy; y++) {
+                if(Case.getTerrain(tableauCourant[x][y])==Case.TERRE
+                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE ){
+                    if (densite >= Math.random()) {
+                        tableauCourant[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                    }
+                }
+            }// arbres
+        }
+        
+        // Mise à zéro des buffeurs
+        for (int x = 0; x != _dx; x++) {
+            for (int y = 0; y != _dy; y++) {
+                Buffer0[x][y][0] = 255;
+                Buffer0[x][y][1] = 255;
+                Buffer0[x][y][2] = 255;
+                Buffer1[x][y][0] = 255;
+                Buffer1[x][y][1] = 255;
+                Buffer1[x][y][2] = 255;
+            }
+        }
+        updateColors(); //met les couleurs dès le départ
+        sprite = new Sprite(this);
+    }
+            
+    
     public World(int __dx, int __dy, boolean __buffering, boolean __cloneBuffer) {
         _dx = __dx;
         _dy = __dy;
@@ -66,34 +114,24 @@ public class World {
 
         agents = new ArrayList<Agent>();
 
-        tableauCourant = new int[_dx][_dy];
-        nouveauTableau = new int[_dx][_dy];
-        
-        /*
-        //Génération du monde
-        for (int x = 0; x != _dx; x++) {
-            for (int y = 0; y != _dy; y++) {
-                if (densite >= Math.random()) {
-                    tableauCourant[(int) x][(int) y] = Case.ARBRE;
-                }else{
-                    tableauCourant[(int) x][(int) y] = Case.VIDE;
-                }
-            }// arbres et sol
-        }
-
-        for (int x = 0; x != _dx / 4; x++) {
-            for (int y = 0; y != _dy / 4; y++) {
-                tableauCourant[_dx / 2 + x - _dx / 8][_dy / 2 + y - _dy / 8] = Case.EAU + 9;
-            }// Lac au centre de la map
-        }
-        */
-        
         tableauCourant = Case.generateurPerlin(_dx, _dy);
+        nouveauTableau = new int[_dx][_dy];
         
         for(int i=0;i<_dx;i++){
             for(int j=0;j<_dy;j++){
                 nouveauTableau[i][j]=tableauCourant[i][j];
             }
+        }
+        
+        for (int x = 0; x != _dx; x++) {
+            for (int y = 0; y != _dy; y++) {
+                if(Case.getTerrain(tableauCourant[x][y])==Case.TERRE
+                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE ){
+                    if (densite >= Math.random()) {
+                        tableauCourant[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                    }
+                }
+            }// arbres
         }
         
         // Mise à zéro des buffeurs

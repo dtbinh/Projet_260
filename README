@@ -37,8 +37,6 @@ TODO:
 			- les moutons
 			- les loups)
 	- TEST UNITAIRES
-	
-	- finir générateur d'images
 	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
 	- Lave
 	- Générateur d'eau (rivières) et de lave (volcans)
@@ -54,7 +52,6 @@ TODO:
 	- Apprentissage des bestioles
 	- Les loups vivent dans la forêt.
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
-	
 	
 	Comportement des agents:
 		- Ont peur du feu
@@ -75,7 +72,10 @@ Si on a plus rien d'autre à faire:
 	- Les humains peuvent couper du bois et construire des truc avec.
 
 
-
+Comportement des agents:
+	- Ont peur du feu
+	- Ne marchent pas dans l'eau profonde (sinon ils se noient)
+	- Ne marchent pas dans la lave, et fuient même :D
 
 
 Idées:
