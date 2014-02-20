@@ -67,6 +67,7 @@ public class Sprite extends JPanel {
 		frame.add(this);
 		frame.setSize(spriteLength*(world.getWidth()+1),spriteLength*(world.getHeight()+1));
 		frame.setVisible(true);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public void paint(Graphics g)

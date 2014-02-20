@@ -1,22 +1,20 @@
 Bug:
 	- L'eau s'évapore bizarrement
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
-	- La simulation ne s'arrête pas quand on ferme la fenêtre.
 	- Parfois les agents ont les pieds dans l'eau
 	- A la génération du monde, les agents apparaissent parfois dans l'eau
+	- Les moutons mangent BEAUCOUP plus souvent verticalement qu'horizontalement.
 	
 ========================================================================
 
 TODO:
 	- Trouver des images pour:
-			- le feu
 			- les cendres
 
 !!	- TEST UNITAIRES 
 	
 	
-	- Les agents ne marchent pas (et fuient) la lave
-	- Générateur d'eau (rivières) et de lave (volcans)
+	- Générateur d'eau (rivières)
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Cycle jour/nuit
 	- Les bestioles agissent différement en fonction du jour/nuit
@@ -65,6 +63,7 @@ DONE:
 	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
 	- Les arbres sont générés à certains endroits seulement (pieds de la montagne)
 	- Lave
+	- Générateur de lave
 	
 	Agents:
 	- Se déplacent.
@@ -77,10 +76,13 @@ DONE:
 	- Fuient le feu
 	- Les agents ne marchent pas dans l'eau profonde
 	- Les agents dans l'eau trop profonde se noient
-
+	- Les agents ne marchent pas (et fuient) la lave
+	
+	
 	Prog:
 	- Affichage en 2D
 
 Bug résolus:
-	- OK: les moutons mangent la case entière et laissent de la terre de rrière eux
-	- OK: les moutons mangent les arbres et pas l'herbe
+	- Les moutons mangent la case entière et laissent de la terre derrière eux
+	- Les moutons mangent les arbres et pas l'herbe
+	- La simulation ne s'arrête pas quand on ferme la fenêtre.

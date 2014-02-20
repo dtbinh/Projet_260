@@ -25,7 +25,7 @@ public class Moutons extends Agent {
                 _faim += (int) (Math.random() * 5) + 10;
                 _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
             }
-            if (_world.containVoisins(_x, _y,Case.FEU)) {
+            if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
                 setmort();
             }
             
@@ -37,6 +37,19 @@ public class Moutons extends Agent {
     }
 
     private void setDir() {
+        int feuProche[]=_world.getPlusProche(_x,_y,_vision,Case.FEU);
+        if(feuProche[0]!=-1){
+            _objectif=feuProche;
+            _fuis=true;
+            return;
+        }
+        int laveProche[]=_world.getPlusProche(_x,_y,_vision,Case.LAVE);
+        if(laveProche[0]!=-1){
+            _objectif=laveProche;
+            _fuis=true;
+            return;
+        }
+        
         ArrayList<Agent>[] proches = _world.getAgentsProches(_x,_y,_vision);
         for (int i = 0; i < _vision; i++) {
             if (!proches[i].isEmpty()) {

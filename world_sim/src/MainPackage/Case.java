@@ -47,7 +47,7 @@ public class Case {
                 }else{
                     tab[i][j] = setTerrain(tab[i][j], ROCHE);
                     if(getAltitude(tab[i][j]) >= NIVEAULAVE){
-                        tab[i][j] = setType(tab[i][j], GENLAVE)+9;
+                        tab[i][j] = setType(tab[i][j], GENLAVE);
                     }
                 }
 
