@@ -28,10 +28,12 @@ public class Sprite extends JPanel {
 	private Image sandSprite;
 	private Image rockSprite;
 	private Image earthSprite;
+        private Image flaqueSprite;
+        
 	private Image loupSprite;
 	private Image moutonSprite;
 	
-	private int spriteLength = 12;
+	private int spriteLength = 24;
 	
 	private World world;
 
@@ -45,6 +47,8 @@ public class Sprite extends JPanel {
 			sandSprite = ImageIO.read(new File("sand.png"));
 			rockSprite = ImageIO.read(new File("rock.png"));
 			earthSprite = ImageIO.read(new File("earth.png"));
+                        flaqueSprite = ImageIO.read(new File("flaque.png"));
+                        
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
 		}
@@ -97,20 +101,15 @@ public class Sprite extends JPanel {
                                     switch (Case.getVar(world.getCellVal(i, j))) {
                                         case 0:
                                         case 1:
-                                            g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-                                            break;
                                         case 2:
-                                        case 3:
-                                            g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                            g2.drawImage(flaqueSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                             break;
+                                        
+                                        case 3:
                                         case 4:
                                         case 5:
-                                            g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-                                            break;
                                         case 6:
                                         case 7:
-                                            g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-                                            break;
                                         case 8:
                                         case 9:
                                             g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);

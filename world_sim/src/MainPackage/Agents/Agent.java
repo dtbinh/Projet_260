@@ -29,6 +29,10 @@ public abstract class Agent {
     protected int _age;
     protected int _ageMax;
     
+    protected boolean _aquatique;
+    
+    private int tryMove;
+    
     /*
      * Code genetique des agents. chaque chiffre représente une variable.
      * Cette variable varie en fonction du nbr de pts dans le chiffre.
@@ -68,12 +72,15 @@ public abstract class Agent {
         _redValue = rouge;
         _greenValue = vert;
         _blueValue = bleu;
+        
+        tryMove=0;
 
         //partie commune à tout les agents
         _x = __x;
         _y = __y;
         _world = __w;
 
+        _aquatique = false;
         _orient = 0;
         _objectif = new int[2];
         _objectif[0]=_x;
@@ -202,25 +209,75 @@ public abstract class Agent {
                 _orient=(_orient+2)%4;
             }
             // met a jour: la position de l'agent (depend de l'orientation)
-            switch (_orient) {
-                case 0: // nord	
-                    _y = (_y - 1 + _world.getHeight()) % _world.getHeight();
-                    break;
-                case 1:	// est
-                    _x = (_x + 1 + _world.getWidth()) % _world.getWidth();
-                    break;
-                case 2:	// sud
-                    _y = (_y + 1 + _world.getHeight()) % _world.getHeight();
-                    break;
-                case 3:	// ouest
-                    _x = (_x - 1 + _world.getWidth()) % _world.getWidth();
-                    break;
-                    // 4 ou autre = pas bouger
-            }
+            tryMove=0;
+            deplacement();
             _itMS = _moveSpeed;
         } else {
             _itMS--;
         }
+    }
+    
+    private void deplacement()
+    {
+        boolean obstacles[] = obstacles();
+            switch (_orient) {
+                case 0: // nord	
+                    if(obstacles[0]){
+                        _y = (_y - 1 + _world.getHeight()) % _world.getHeight();
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 1:	// est
+                     if(obstacles[1]){
+                        _x = (_x + 1 + _world.getWidth()) % _world.getWidth();
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 2:	// sud
+                     if(obstacles[2]){
+                        _y = (_y + 1 + _world.getHeight()) % _world.getHeight();
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 3:	// ouest
+                     if(obstacles[3]){
+                        _x = (_x - 1 + _world.getWidth()) % _world.getWidth();
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                    // 4 ou autre = pas bouger
+            }
+    }
+    
+    private boolean[] obstacles()
+    {
+        boolean ret[] = new boolean[4];
+        int voisins[] = new int[4];
+        int j = 3;
+        for (int i = 1; i < 8; i += 2) {
+            voisins[j] = _world.getCellVal((_x - 1 + i % 3 + _world.getWidth()) % _world.getHeight(), (_y - 1 + i / 3 + _world.getWidth()) % _world.getHeight());
+            j=(j+1)%4;
+        }
+        for (int i=0; i<4; i++){
+            if((Case.getType(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2)) {
+                ret[i]=false;
+            }else{
+                ret[i]=true;
+            }
+        }
+        return ret;
     }
     
     //passage du temps, morts et naissances

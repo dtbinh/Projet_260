@@ -1,1 +1,2 @@
 Ajouté la génération par image en nuances de gris,
+Les arbres apparaissent les un à coté des autres et pas n'importe où au pif.

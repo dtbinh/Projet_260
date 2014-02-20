@@ -13,8 +13,7 @@ TODO:
 !!	- TEST UNITAIRES 
 	
 	
-	- Les agents ne marchent pas dans l'eau profonde
-	- Les agents dans l'eau trop profonde se noient
+	- Génération de forêt (au lieu d'un amas chaotique d'arbres)
 	- Lave
 	- Les agents ne marchent pas (et fuient) la lave
 	- Générateur d'eau (rivières) et de lave (volcans)
@@ -74,6 +73,8 @@ DONE:
 	- L'ADN transmis mute.
 	- Tares génétiques.
 	- Fuient le feu
+	- Les agents ne marchent pas dans l'eau profonde
+	- Les agents dans l'eau trop profonde se noient
 
 	Prog:
 	- Affichage en 2D
