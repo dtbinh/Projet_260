@@ -2,6 +2,8 @@ Bug:
 	- L'eau s'évapore bizarrement
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
 	- La simulation ne s'arrête pas quand on ferme la fenêtre.
+	- Parfois les agents ont les pieds dans l'eau
+	- A la génération du monde, les agents apparaissent parfois dans l'eau
 	
 ========================================================================
 
@@ -13,7 +15,6 @@ TODO:
 !!	- TEST UNITAIRES 
 	
 	
-	- Génération de forêt (au lieu d'un amas chaotique d'arbres)
 	- Lave
 	- Les agents ne marchent pas (et fuient) la lave
 	- Générateur d'eau (rivières) et de lave (volcans)
@@ -21,12 +22,12 @@ TODO:
 	- Cycle jour/nuit
 	- Les bestioles agissent différement en fonction du jour/nuit
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
+	- Les loups vivent dans la forêt.
 	- Reproduction "sexuée"
 	- Temps de gestation
 	- Cadavres et décomposition.
 	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
 	- Apprentissage des bestioles*
-	- Les loups vivent dans la forêt.
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
 
 
@@ -63,6 +64,7 @@ DONE:
 	- Generateur de monde (à base de bruit de Perlin)
 	- Generateur de monde à partir d'une image en nuances de gris
 	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
+	- Les arbres sont générés à certains endroits seulement (pieds de la montagne)
 	
 	Agents:
 	- Se déplacent.

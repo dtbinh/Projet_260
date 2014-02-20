@@ -29,7 +29,7 @@ public class World {
     
     private double varFeu = 0.; // % de variation du feu selon l'environnement
     
-    private final double densite = 0.50; //Densité de la forêt; seuil de percolation a 0.55
+    private final double densite = 0.10; //Densité de la forêt; seuil de percolation a 0.55
     /*
      * Pluie:
      * Démarre et s'arrête aléatoirement,
@@ -76,8 +76,9 @@ public class World {
         
         for (int x = 0; x != _dx; x++) {
             for (int y = 0; y != _dy; y++) {
-                if(Case.getTerrain(tableauCourant[x][y])==Case.TERRE
-                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE ){
+                if((Case.getTerrain(tableauCourant[x][y])==Case.TERRE
+                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)
+                        && Case.getAltitude(tableauCourant[x][y])>=650000 ){
                     if (densite >= Math.random()) {
                         tableauCourant[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
                     }
