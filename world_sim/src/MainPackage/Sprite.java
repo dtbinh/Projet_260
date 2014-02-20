@@ -29,6 +29,8 @@ public class Sprite extends JPanel {
 	private Image rockSprite;
 	private Image earthSprite;
         private Image flaqueSprite;
+        private Image laveSprite;
+        private Image feuSprite;
         
 	private Image loupSprite;
 	private Image moutonSprite;
@@ -48,6 +50,8 @@ public class Sprite extends JPanel {
 			rockSprite = ImageIO.read(new File("rock.png"));
 			earthSprite = ImageIO.read(new File("earth.png"));
                         flaqueSprite = ImageIO.read(new File("flaque.png"));
+                        laveSprite = ImageIO.read(new File("lave.png"));
+                        feuSprite = ImageIO.read(new File("feu.png"));
                         
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
@@ -118,6 +122,16 @@ public class Sprite extends JPanel {
                                             g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                             }
                                     break;
+                                case Case.LAVE:
+                                    g2.drawImage(laveSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                    break;
+                                case Case.FEU:
+                                    g2.drawImage(feuSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                    break;
+                                /*case Case.GENLAVE:
+                                    g2.drawImage(feuSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                    break;*/
+                                
                             }
                         }
                     }

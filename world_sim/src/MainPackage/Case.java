@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Case {
     // contenu dans les cases: 0X à 99X
-    public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40;
+    public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40, LAVE=50, GENLAVE=100;
     // types de terrain: 0XXX à 9XXX
     public static final int TERRE=0000, ROCHE=1000, SABLE=2000, HERBE=3000;
     // altitudes: 0XXXX à 99XXXX, avec 0 = bas et 99 = haut          EXEMPLE: 852035 = 85 d'altitude, 2= sable, 03 = eau, 5 = profondeur moyenne
@@ -29,7 +29,32 @@ public class Case {
     
     // GENERATEUR DE MONDE:
     
-    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000;
+    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000, NIVEAULAVE=980000;
+    
+    private static int[][] makeWorld(int tab[][])
+    {
+        for(int i=0; i<tab.length;i++){
+            for(int j=0; j<tab[0].length;j++){
+                tab[i][j]*=10000;
+                if(getAltitude(tab[i][j]) <= NIVEAUEAU){
+                    tab[i][j] = setType(tab[i][j], EAU)+(int)(Math.random()*5)+3;
+                }
+
+                if(getAltitude(tab[i][j]) <= NIVEAUSABLE){
+                    tab[i][j] = setTerrain(tab[i][j], SABLE);
+                }else if(getAltitude(tab[i][j]) <= NIVEAUHERBE){
+                    tab[i][j] = setTerrain(tab[i][j], HERBE);
+                }else{
+                    tab[i][j] = setTerrain(tab[i][j], ROCHE);
+                    if(getAltitude(tab[i][j]) >= NIVEAULAVE){
+                        tab[i][j] = setType(tab[i][j], GENLAVE)+9;
+                    }
+                }
+
+            }
+        }
+        return tab;
+    }
     
     // A partir d'images niveau de gris (PGM)
     
@@ -127,16 +152,6 @@ public class Case {
     }
     
     
-    //TODO:
-    // FOnction création d'image 2:
-    // on lit une deuxième image dont chaque valeure
-    // correspond à un élément du décor (pour rajouter de l'architecture, des arbres,
-    // des truc plus complexes que juste des plages et des montagnes
-    
-    
-    
-    
-    
     
     //ALEATOIRE + BRUIT DE PERLIN
     
@@ -229,25 +244,4 @@ public class Case {
                 return ret;
             }
     
-    private static int[][] makeWorld(int tab[][])
-    {
-        for(int i=0; i<tab.length;i++){
-            for(int j=0; j<tab[0].length;j++){
-                tab[i][j]*=10000;
-                if(getAltitude(tab[i][j]) <= NIVEAUEAU){
-                    tab[i][j] = setType(tab[i][j], EAU)+(int)(Math.random()*5)+3;
-                }
-
-                if(getAltitude(tab[i][j]) <= NIVEAUSABLE){
-                    tab[i][j] = setTerrain(tab[i][j], SABLE);
-                }else if(getAltitude(tab[i][j]) <= NIVEAUHERBE){
-                    tab[i][j] = setTerrain(tab[i][j], HERBE);
-                }else{
-                    tab[i][j] = setTerrain(tab[i][j], ROCHE);
-                }
-
-            }
-        }
-        return tab;
-    }
 }

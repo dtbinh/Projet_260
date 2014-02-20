@@ -15,7 +15,6 @@ TODO:
 !!	- TEST UNITAIRES 
 	
 	
-	- Lave
 	- Les agents ne marchent pas (et fuient) la lave
 	- Générateur d'eau (rivières) et de lave (volcans)
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
@@ -65,6 +64,7 @@ DONE:
 	- Generateur de monde à partir d'une image en nuances de gris
 	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
 	- Les arbres sont générés à certains endroits seulement (pieds de la montagne)
+	- Lave
 	
 	Agents:
 	- Se déplacent.

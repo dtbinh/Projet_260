@@ -29,7 +29,7 @@ public class World {
     
     private double varFeu = 0.; // % de variation du feu selon l'environnement
     
-    private final double densite = 0.10; //Densité de la forêt; seuil de percolation a 0.55
+    private final double densite = 0.90; //Densité de la forêt; seuil de percolation a 0.55
     /*
      * Pluie:
      * Démarre et s'arrête aléatoirement,
@@ -52,6 +52,14 @@ public class World {
     private final double pPerpVent = 0.75; // probabilité de prendre feu Perpendiculairement au vent.
     private final double pChangeVent = 0.01; //probabilité que le vent change de direction
     private final double vfVent = 0.10; // augmentation du feu quand il y a du vent
+    
+    /*
+     * Eruption:
+     * Parfois les générateurs de lavent entrent en éruption et créent de la lave.
+     * 
+     */
+    private final double pEruption = 0.005; // probabilité que les genlave entrent en eruption
+    private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
     
     public World(String nom){
         tableauCourant = Case.generateurImage1(nom);
@@ -239,7 +247,7 @@ public class World {
                             feu = true;
                         } else {
                             for (int i = 0; i < 4; i++) {
-                                if (voisins[i] == Case.FEU) {
+                                if (Case.getType(voisins[i]) == Case.FEU) {
                                     if (i == vent.getVal()) {
                                         if((1 + varFeu) >= Math.random()) {
                                             feu = true;
@@ -256,6 +264,8 @@ public class World {
                                             break;
                                         }
                                     }
+                                }else if(Case.getType(voisins[i]) == Case.LAVE){
+                                    feu = true;
                                 }
                             }
                         }
@@ -314,6 +324,65 @@ public class World {
                             if (pGoutte >= Math.random()) {
                                 nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], 1);
                             }
+                        }
+                        break;
+                        
+                        
+                    case Case.LAVE:
+                        //Evaporation
+                        if (Case.getVar(tableauCourant[x][y]) == 0) {
+                            if (pEvaporation >= Math.random()) {
+                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
+                            }
+                        } else {
+                            voisins = getVoisins(tableauCourant, x, y);
+                            nouveauTableau[x][y] = tableauCourant[x][y];
+                            int rand = (int) (Math.random() * 4);
+                            // Etalage
+                            // Sur de la pas lave d'abord
+                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
+                                if ((Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
+                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES
+                                        || (Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES && Case.getVar(voisins[(i + rand) % 4]) <3))
+                                        && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
+                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length]
+                                            = Case.setType(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length],Case.LAVE);
+                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                                }
+                            }
+                            // Puis sur de la lave moins profonde
+                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
+                                if (Case.getType(voisins[((i + rand) % 4)]) == Case.LAVE
+                                            && Case.getVar(voisins[((i + rand) % 4)]) < 9
+                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(nouveauTableau[x][y])
+                                            && Case.getAltitude(voisins[((i + rand) % 4)])<=Case.getAltitude(tableauCourant[x][y])) {
+                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.setVar(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length], 1);
+                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                                }
+                            }
+                        }
+                        break;
+                        
+                        
+                        
+                    case Case.GENLAVE:
+                       if(Case.getVar(tableauCourant[x][y]) == 0){
+                            if(pEruption >= Math.random()){
+                                nouveauTableau[x][y] = Case.setVar(tableauCourant[x][y], 8);
+                            }
+                        }else{
+                            voisins = getVoisins(tableauCourant, x, y);
+                            for (int i = 0; i < 4; i++) {
+                                if(Case.getType(voisins[i])!= Case.GENLAVE) {
+                                    nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]
+                                            = Case.setType(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length], Case.LAVE);
+                                    nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]
+                                            = Case.setVar(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length],
+                                            9 - Case.getVar(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]));
+                                }
+                            }
+                            nouveauTableau[x][y] = Case.setVar(tableauCourant[x][y], (pFinErupt>= Math.random())?-1:0);
+                            System.out.println(Case.getVar(nouveauTableau[x][y]));
                         }
                         break;
 
