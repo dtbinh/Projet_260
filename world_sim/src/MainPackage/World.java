@@ -7,13 +7,8 @@ public class World {
 
     private int _dx;
     private int _dy;
-    private int Buffer0[][][];
-    private int Buffer1[][][];
     private int[][] tableauCourant;
     private int[][] nouveauTableau;
-    private boolean buffering;
-    private boolean cloneBuffer; // if buffering, clone buffer after swith
-    private int activeIndex;
     private ArrayList<Agent> agents;
     private Sprite sprite;
     
@@ -66,12 +61,6 @@ public class World {
         _dx = tableauCourant.length;
         _dy = tableauCourant[0].length;
 
-        buffering = false;
-
-        Buffer0 = new int[_dx][_dy][3];
-        Buffer1 = new int[_dx][_dy][3];
-        activeIndex = 0;
-
         agents = new ArrayList<Agent>();
 
         nouveauTableau = new int[_dx][_dy];
@@ -94,67 +83,6 @@ public class World {
             }// arbres
         }
         
-        // Mise à zéro des buffeurs
-        for (int x = 0; x != _dx; x++) {
-            for (int y = 0; y != _dy; y++) {
-                Buffer0[x][y][0] = 255;
-                Buffer0[x][y][1] = 255;
-                Buffer0[x][y][2] = 255;
-                Buffer1[x][y][0] = 255;
-                Buffer1[x][y][1] = 255;
-                Buffer1[x][y][2] = 255;
-            }
-        }
-        updateColors(); //met les couleurs dès le départ
-        sprite = new Sprite(this);
-    }
-            
-    
-    public World(int __dx, int __dy, boolean __buffering, boolean __cloneBuffer) {
-        _dx = __dx;
-        _dy = __dy;
-
-        buffering = __buffering;
-        cloneBuffer = __cloneBuffer;
-
-        Buffer0 = new int[_dx][_dy][3];
-        Buffer1 = new int[_dx][_dy][3];
-        activeIndex = 0;
-
-        agents = new ArrayList<Agent>();
-
-        tableauCourant = Case.generateurPerlin(_dx, _dy);
-        nouveauTableau = new int[_dx][_dy];
-        
-        for(int i=0;i<_dx;i++){
-            for(int j=0;j<_dy;j++){
-                nouveauTableau[i][j]=tableauCourant[i][j];
-            }
-        }
-        
-        for (int x = 0; x != _dx; x++) {
-            for (int y = 0; y != _dy; y++) {
-                if(Case.getTerrain(tableauCourant[x][y])==Case.TERRE
-                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE ){
-                    if (densite >= Math.random()) {
-                        tableauCourant[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
-                    }
-                }
-            }// arbres
-        }
-        
-        // Mise à zéro des buffeurs
-        for (int x = 0; x != _dx; x++) {
-            for (int y = 0; y != _dy; y++) {
-                Buffer0[x][y][0] = 255;
-                Buffer0[x][y][1] = 255;
-                Buffer0[x][y][2] = 255;
-                Buffer1[x][y][0] = 255;
-                Buffer1[x][y][1] = 255;
-                Buffer1[x][y][2] = 255;
-            }
-        }
-        updateColors(); //met les couleurs dès le départ
         sprite = new Sprite(this);
     }
 
@@ -168,28 +96,7 @@ public class World {
         stepEnvironnement();
         stepWorld();
         stepAgents();
-
-        if (buffering && cloneBuffer) {
-            if (activeIndex == 0) {
-                for (int x = 0; x != _dx; x++) {
-                    for (int y = 0; y != _dy; y++) {
-                        Buffer1[x][y][0] = Buffer0[x][y][0];
-                        Buffer1[x][y][1] = Buffer0[x][y][1];
-                        Buffer1[x][y][2] = Buffer0[x][y][2];
-                    }
-                }
-            } else {
-                for (int x = 0; x != _dx; x++) {
-                    for (int y = 0; y != _dy; y++) {
-                        Buffer0[x][y][0] = Buffer1[x][y][0];
-                        Buffer0[x][y][1] = Buffer1[x][y][1];
-                        Buffer0[x][y][2] = Buffer1[x][y][2];
-                    }
-                }
-            }
-
-            activeIndex = (activeIndex + 1) % 2; // switch buffer index
-        }
+        
         sprite.repaint();
     }
     
@@ -398,22 +305,16 @@ public class World {
                 tableauCourant[x][y] = nouveauTableau[x][y];
             }
         }
-
-
-        updateColors();
+        
     }
 
     public void stepAgents() // world THEN agents
     {
         for (int i = 0; i != agents.size(); i++) {
-            synchronized (Buffer0) {
                 agents.get(i).step();
-            }
         }
         for (int i = agents.size() - 1; i >= 0; i--) {
-            synchronized (Buffer0) {
                 agents.get(i).estmort();
-            }
         }
         for (Agent a : agents) {
             a.move();
@@ -694,114 +595,10 @@ public class World {
         return _dy;
     }
 
-    
-    
-    // Fonctions affichages:
-    
-    /*
-     * Met à jour les couleurs du tableau de l'environnement
-     */
-    private void updateColors() {
-        if (tableauCourant.length != this.getWidth()) {
-            System.err.println("array length does not match with image length.");
-            System.exit(-1);
-        }
-
-        for (int y = 0; y != tableauCourant[0].length; y++) {
-            for (int x = 0; x != tableauCourant.length; x++) {
-                switch (Case.getType(tableauCourant[x][y])) {
-                    case Case.VIDE:
-                        this.setCellState(x, y, 255, 255, 255);
-                        break;
-                    case Case.ARBRE:
-                        this.setCellState(x, y, 0, 255, 0);
-                        break;
-                    case Case.FEU:
-                        this.setCellState(x, y, 255, 0, 0);
-                        break;
-                    case Case.CENDRES:
-                        this.setCellState(x, y, 128, 128, 128);
-                        break;
-                    case Case.EAU:
-                        switch (Case.getVar(tableauCourant[x][y])) {
-                            case 0:
-                            case 1:
-                                this.setCellState(x, y, 0, 255, 255);
-                                break;
-                            case 2:
-                            case 3:
-                                this.setCellState(x, y, 64, 208, 255);
-                                break;
-                            case 4:
-                            case 5:
-                                this.setCellState(x, y, 0, 128, 128);
-                                break;
-                            case 6:
-                            case 7:
-                                this.setCellState(x, y, 0, 0, 255);
-                                break;
-                            case 8:
-                            case 9:
-                                this.setCellState(x, y, 0, 0, 128);
-                                break;
-
-                        }
-                        //this.setCellState(x, y,(int)(61*((9-Case.getVar(tableauCourant[x][y]))/9)),(96*((9-Case.getVar(tableauCourant[x][y]))/9)+32),(int)(127*((9-Case.getVar(tableauCourant[x][y]))/9)+128));
-                        //this.setCellState(x, y,0,0,(int)(128*((Case.getVar(tableauCourant[x][y]))/10)+127));
-                        break;
-                    default:
-                        this.setCellState(x, y, 0, 0, 0);
-                        //System.out.println("Defaults: " + x + "/" + y + "  " + tableauCourant[x][y]);
-                }
-            }
-        }
-    }
-    
-    /*
-     * Affiche le monde
-     */
-    public void display(CAImageBuffer image) {
-        image.update(this.getCurrentBuffer());
-
-        for (int i = 0; i != agents.size(); i++) {
-            image.setPixel(agents.get(i).getX(), agents.get(i).getY(), agents.get(i).getColors()[0], agents.get(i).getColors()[1], agents.get(i).getColors()[2]);
-        }
-    }
-
     public void checkBounds(int __x, int __y) {
         if (__x < 0 || __x > _dx || __y < 0 || __y > _dy) {
             System.err.println("[error] out of bounds (" + __x + "," + __y + ")");
             System.exit(-1);
         }
     }
-
-    public void setCellState(int __x, int __y, int __r, int __g, int __b) {
-        checkBounds(__x, __y);
-
-        if (buffering == false) {
-            Buffer0[__x][__y][0] = __r;
-            Buffer0[__x][__y][1] = __g;
-            Buffer0[__x][__y][2] = __b;
-        } else {
-            if (activeIndex == 0) // write new buffer
-            {
-                Buffer0[__x][__y][0] = __r;
-                Buffer0[__x][__y][1] = __g;
-                Buffer0[__x][__y][2] = __b;
-            } else {
-                Buffer1[__x][__y][0] = __r;
-                Buffer1[__x][__y][1] = __g;
-                Buffer1[__x][__y][2] = __b;
-            }
-        }
-    }
-    
-    private int[][][] getCurrentBuffer() {
-        if (activeIndex == 0 || buffering == false) {
-            return Buffer0;
-        } else {
-            return Buffer1;
-        }
-    }
-
 }

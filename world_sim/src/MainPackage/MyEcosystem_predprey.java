@@ -9,7 +9,7 @@ public class MyEcosystem_predprey extends CAtoolbox {
 
         // initialisation generale
 
-        int delai = 200;//100; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
+        int delai = 100;//100; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
 
