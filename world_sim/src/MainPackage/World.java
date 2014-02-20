@@ -18,7 +18,7 @@ public class World {
      * Variables relatives au terrain
      */
     private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
-    private final double pArbreApparait = 0.001; //0.001; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
+    private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
     private final double pEvaporation = 0.01; //proba d'évaporation de l'eau
     
@@ -32,7 +32,7 @@ public class World {
      * Quand il pleut, les cases vides peuvent se remplir d'eau.
      */
     private boolean pluie = false;
-    private final double pDebutPluie = 0.01; //chances qu'il commence à pleuvoir
+    private final double pDebutPluie = 0.005; //chances qu'il commence à pleuvoir
     private final double pFinPluie = 0.10; //chances qu'il s'arrete de pleuvoir
     private final double pGoutte = 0.01; //chance qu'une goutte fasse augmenter la taille d'une case d'eau
     private final double vfPluie = -0.25; //réduction du feu quand il pleut
@@ -53,7 +53,7 @@ public class World {
      * Parfois les générateurs de lavent entrent en éruption et créent de la lave.
      * 
      */
-    private final double pEruption = 0.005; // probabilité que les genlave entrent en eruption
+    private final double pEruption = 0.001; // probabilité que les genlave entrent en eruption
     private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
     
     public World(String nom){
@@ -289,7 +289,6 @@ public class World {
                                 }
                             }
                             nouveauTableau[x][y] = Case.setVar(tableauCourant[x][y], (pFinErupt>= Math.random())?-1:0);
-                            System.out.println(Case.getVar(nouveauTableau[x][y]));
                         }
                         break;
 
@@ -424,25 +423,20 @@ public class World {
     }
     
     /**
-     * Renvoie un tableau d'Array d'agents de taille portee
-     * chaque case du tableau correspond à une portee (ex tab[0] contient les agents adjacent à la case, tab[1] ceux à 1 de dist etc)
+     * Renvoie l'agent de type AG le plus proche de x,y dans un rayon portée. renvoie NULL si yen a pas
      * @param x, y, portee
      */
-    public ArrayList<Agent>[] getAgentsProches(int x, int y, int portee)
+    public Agent getAgentsProches(int x, int y, Class type, int portee)
     {
-        ArrayList<Agent>[] ret = new ArrayList[portee];
-        for (int i = 0; i < portee; i++) {
-            ret[i] = new ArrayList<Agent>();
-        }
-        for(int iP=1; iP<=portee;iP++){
-            for(int j=0; j<=iP; j++){
-                for (Agent ag : agents) {
-                    if(ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy
-                            || ag.getX()==(x-(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy
-                            || ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y-(iP-(iP-j))+_dy)%_dy
-                            || ag.getX()==(x+(iP-j)+_dx)%_dx && ag.getY()==(y+(iP-(iP-j))+_dy)%_dy){
-                    ret[iP-1].add(ag);
-                    }
+        Agent ret=null;
+        int distance=portee;
+        for(Agent a:agents){
+            if(a.getClass() == type){
+                int dist[]= distance(x, y, a.getX(), a.getY());
+                int dist2=dist[0]+dist[1];
+                if(dist2<=distance){
+                    distance=dist2;
+                    ret=a;
                 }
             }
         }

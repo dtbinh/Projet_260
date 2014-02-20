@@ -1,10 +1,9 @@
 Bug:
-	- L'eau s'évapore bizarrement
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
 	- Parfois les agents ont les pieds dans l'eau
 	- A la génération du monde, les agents apparaissent parfois dans l'eau
-	- Les moutons mangent BEAUCOUP plus souvent verticalement qu'horizontalement.
-	
+	- Les moutons mangent plus souvent verticalement qu'horizontalement.
+	- La vision de cases prend trop de ressources.
 ========================================================================
 
 TODO:
@@ -14,7 +13,6 @@ TODO:
 !!	- TEST UNITAIRES 
 	
 	
-	- Générateur d'eau (rivières)
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Cycle jour/nuit
 	- Les bestioles agissent différement en fonction du jour/nuit
@@ -22,6 +20,7 @@ TODO:
 	- Les loups vivent dans la forêt.
 	- Reproduction "sexuée"
 	- Temps de gestation
+	- Générateur d'eau (rivières)
 	- Cadavres et décomposition.
 	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
 	- Apprentissage des bestioles*

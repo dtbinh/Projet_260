@@ -13,8 +13,8 @@ public class Moutons extends Agent {
     
     //cosntructeur reprod
     public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 255, 128, 0, 50, 150, 4, 5, __ADN);
-        _reprod = 30;
+        super(__x, __y, __w, 255, 128, 0, 50, 150, 4, 3, __ADN);
+        _reprod = 25;
     }
 
     @Override public void step() {
@@ -50,18 +50,13 @@ public class Moutons extends Agent {
             return;
         }
         
-        ArrayList<Agent>[] proches = _world.getAgentsProches(_x,_y,_vision);
-        for (int i = 0; i < _vision; i++) {
-            if (!proches[i].isEmpty()) {
-                for (Agent ag : proches[i]) {
-                    if (ag.getClass() == Loups.class) {
-                        _objectif[0]=ag._x;
-                        _objectif[1]=ag._y;
-                        _fuis=true;
-                        return;
-                    }
-                }
-            }
+        Agent proche = _world.getAgentsProches(_x, _y, Loups.class, _vision*2);
+        if(proche!=null)
+        {
+            _objectif[0]=proche._x;
+            _objectif[1]=proche._y;
+            _fuis=true;
+            return;
         }
         
         int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);

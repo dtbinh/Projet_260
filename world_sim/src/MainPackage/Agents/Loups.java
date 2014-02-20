@@ -13,7 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 0, 0, 0, 75, 300, 2, 5, __ADN);
+        super(__x, __y, __w, 0, 0, 0, 100, 300, 2, 3, __ADN);
         _reprod = 75;
     }
 
@@ -58,20 +58,13 @@ public class Loups extends Agent {
         }
         
         if(_faim<_faimMax){
-            ArrayList<Agent>[] proches = _world.getAgentsProches(_x,_y,_vision);
-            for (int i = 0; i < _vision; i++) {
-                if (!proches[i].isEmpty()) {
-                    for (Agent ag : proches[i]) {
-                        if (ag.getClass() == Moutons.class) {
-                            Moutons age = (Moutons) ag;
-                            if (age.getAlive()) {
-                                _objectif[0]=age._x;
-                                _objectif[1]=age._y;
-                                _fuis=false;
-                                return;
-                            }
-                        }
-                    }
+            Agent proche = _world.getAgentsProches(_x, _y, Moutons.class, _vision*2);
+            if(proche != null){
+                if(proche.getAlive()) {
+                    _objectif[0]=proche._x;
+                    _objectif[1]=proche._y;
+                    _fuis=false;
+                    return;
                 }
             }
         }
