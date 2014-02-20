@@ -1,0 +1,1 @@
+Ajouté la génération par image en nuances de gris,

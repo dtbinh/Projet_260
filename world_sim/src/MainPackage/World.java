@@ -23,7 +23,7 @@ public class World {
      * Variables relatives au terrain
      */
     private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
-    private final double pArbreApparait = 0.001; //0.001; //proba qu'un arbre apparaisse dans un emplacement vide
+    private final double pArbreApparait = 0.001; //0.001; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
     private final double pEvaporation = 0.01; //proba d'évaporation de l'eau
     
@@ -211,9 +211,20 @@ public class World {
                 int voisins[];
                 switch (Case.getType(tableauCourant[x][y])) {
                     case Case.VIDE:
-                        if (pArbreApparait >= Math.random() && (Case.getTerrain(tableauCourant[x][y])==Case.TERRE || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)) {
-                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
-                        } else if (pluie) {
+                        if( (Case.getTerrain(tableauCourant[x][y])==Case.TERRE || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)){
+                            voisins = getVoisins(tableauCourant, x, y);
+                            double pArbre=0;
+                            for(int i=0; i<4; i++){
+                                if(Case.getType(voisins[i])==Case.ARBRE){
+                                    pArbre += pArbreApparait;
+                                }
+                            }
+                            if (pArbre >= Math.random()) {
+                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                                break;
+                            }
+                        }
+                        if (pluie) {
                             if (pGoutte >= Math.random()) {
                                 nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.EAU);
                             }

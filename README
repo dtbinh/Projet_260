@@ -1,6 +1,7 @@
 Bug:
 	- L'eau s'évapore bizarrement
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
+	- La simulation ne s'arrête pas quand on ferme la fenêtre.
 	
 ========================================================================
 
@@ -11,7 +12,7 @@ TODO:
 
 !!	- TEST UNITAIRES 
 	
-	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
+	
 	- Les agents ne marchent pas dans l'eau profonde
 	- Les agents dans l'eau trop profonde se noient
 	- Lave
@@ -24,6 +25,7 @@ TODO:
 	- Reproduction "sexuée"
 	- Temps de gestation
 	- Cadavres et décomposition.
+	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
 	- Apprentissage des bestioles*
 	- Les loups vivent dans la forêt.
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
@@ -61,7 +63,8 @@ DONE:
 
 	- Generateur de monde (à base de bruit de Perlin)
 	- Generateur de monde à partir d'une image en nuances de gris
-
+	- Les arbres se "reproduisent" et n'apparaissent pas spontanément n'importe où.
+	
 	Agents:
 	- Se déplacent.
 	- Peuvent trouver de la nourriture.
