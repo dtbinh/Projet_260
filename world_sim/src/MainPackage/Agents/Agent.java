@@ -217,7 +217,16 @@ public abstract class Agent {
         }
     }
     
+    /**
+     * Déplacement des agents.
+     * appelle la fonction de déplacement voulue (torique ou non thorique)
+     */
     private void deplacement()
+    {
+        deplacementNT();
+    }
+    
+    private void deplacementT()
     {
         boolean obstacles[] = obstacles();
             switch (_orient) {
@@ -261,6 +270,56 @@ public abstract class Agent {
             }
     }
     
+    private void deplacementNT()
+    {
+        boolean obstacles[] = obstacles();
+            switch (_orient) {
+                case 0: // nord
+                    if(obstacles[0] && _y > 0){
+                        _y--;
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 1:	// est
+                     if(obstacles[1] && _x < _world.getWidth()-1){
+                        _x++;
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 2:	// sud
+                     if(obstacles[2] && _y < _world.getHeight()){
+                        _y++;
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                case 3:	// ouest
+                     if(obstacles[3] && _x > 0){
+                        _x--;
+                    }else if(tryMove<=3){
+                        _orient=(_orient+1)%4;
+                        tryMove++;
+                        deplacement();
+                    }
+                    break;
+                    // 4 ou autre = pas bouger
+            }
+    }
+    
+    /**
+     * Verifie les 4 cases autour de l'agent, renvoie un tableau de boolean qui
+     * indique si il peut se déplacer dans la case correspondante (true) ou pas.
+     * Les cases "bloquantes" sont: EAU+2, FEU, LAVE
+     * @return le tableau de boolean indiquant les directions bloquées.
+     */
     private boolean[] obstacles()
     {
         boolean ret[] = new boolean[4];
@@ -271,7 +330,7 @@ public abstract class Agent {
             j=(j+1)%4;
         }
         for (int i=0; i<4; i++){
-            if((Case.getType(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2)) {
+            if((Case.getType(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2) || (Case.getType(voisins[i]) == Case.LAVE) || (Case.getType(voisins[i]) == Case.FEU)) {
                 ret[i]=false;
             }else{
                 ret[i]=true;
