@@ -448,9 +448,15 @@ public class World {
      * Retourne un tableau tel que ret[0]=distance entre x1 et x2, ret[1]=distance entre y1 et y2.
      * Les déplacement ne se font pas en diagonales, donc la distance totale est juste égale à la distance
      * entre x1 et x2 + la distance entre y1 et y2.
+     * Appelle une des deux méthodes "distance" en fonction de si le monde est thorique ou pas.
      * @param x1, y1, x2, y2
      */
     public int[] distance(int x1, int y1, int x2, int y2)
+    {
+        return distanceNT(x1, y1, x2, y2);
+    }
+    //Version torique de distance
+    public int[] distanceT(int x1, int y1, int x2, int y2)
     {
         int ret[]=new int[2];
         ret[0]=(((x1-x2+_dx)%_dx) < ((x2-x1+_dx)%_dx))?((x1-x2+_dx)%_dx):((x2-x1+_dx)%_dx);
@@ -463,7 +469,6 @@ public class World {
         int ret[]=new int[2];
         ret[0]=((x1-x2) > (x2-x1))?(x1-x2):(x2-x1);
         ret[1]=((y1-y2) > (y2-y1))?(y1-y2):(y2-y1);
-        //System.out.println(ret[0]+" "+ret[1]);
         return ret;
     }
     
@@ -477,11 +482,14 @@ public class World {
     {
         int dist[]=distance(x1,y1,x2,y2);
         //Monde non torique:
-        /*if(dist[0]>dist[1]){
+        if(dist[0]!=0 && (.5 >= Math.random() || dist[1]==0)){
             return (x1 > x2)?3:1;
-        }else{
+        }else if(dist[1]!=0){
             return (y1 > y2)?0:2;
-        }*/
+        }else{
+            return 4;
+        }
+        /*
         //Monde torique:
         if(dist[0]>dist[1]){
             if(dist[0]==distanceNT(x1,y1,x2,y2)[0]){
@@ -496,7 +504,7 @@ public class World {
                 return (y1 > y2)?2:0;
             }
         }
-        return 4;
+        return 4;*/
     }
     
     /**

@@ -1,8 +1,7 @@
 Bug:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
 	- Parfois les agents ont les pieds dans l'eau
-	- Les moutons mangent plus souvent verticalement qu'horizontalement.
-	- La vision de cases prend trop de ressources.
+	- La vision de cases prend trop de ressources (mais on peut rien y faire (voir quadtree))
 ========================================================================
 
 TODO:
@@ -85,3 +84,4 @@ Bug résolus:
 	- Les moutons mangent les arbres et pas l'herbe
 	- La simulation ne s'arrête pas quand on ferme la fenêtre.
 	- A la génération du monde, les agents apparaissent parfois dans l'eau
+	- Les moutons mangent plus souvent verticalement qu'horizontalement.
