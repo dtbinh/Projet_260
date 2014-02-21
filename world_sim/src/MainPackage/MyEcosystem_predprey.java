@@ -19,10 +19,22 @@ public class MyEcosystem_predprey extends CAtoolbox {
         
         // Ajouts d'agents
       for (int i = 0; i != 20; i++) {
-            world.add(new Moutons((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()), world));
+          int valX = (int) (Math.random() * world.getWidth());
+          int valY = (int) (Math.random() * world.getHeight());
+          while(world.getCellType(valX, valY)== Case.SABLE){
+            valX = (int) (Math.random() * world.getWidth());
+            valY = (int) (Math.random() * world.getHeight());
+            }
+            world.add(new Moutons(valX, valY, world));
         }
         for (int i = 0; i != 10; i++) {
-            world.add(new Loups((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()), world));
+          int valX = (int) (Math.random() * world.getWidth());
+          int valY = (int) (Math.random() * world.getHeight());
+          while(world.getCellType(valX, valY)== Case.SABLE){
+            valX = (int) (Math.random() * world.getWidth());
+            valY = (int) (Math.random() * world.getHeight());
+            }
+            world.add(new Loups(valX, valY, world));
         }
         
         // mise a jour de l'�tat du monde
