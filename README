@@ -4,6 +4,7 @@ Bug:
 Problèmes:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
 	- La vision de cases prend trop de ressources (mais on peut rien y faire (voir quadtree))
+	- A priori la génération aléatoire ne marche pas très bien...
 ========================================================================
 
 TODO:
@@ -11,7 +12,9 @@ TODO:
 			- les cendres
 
 !!	- TEST UNITAIRES 
-	
+	- Ajouter constructeur de monde (à la paint, pour créer soit même son monde avec ses variables)
+	- Trouver quelque chose pour voir le relief
+	- Mettre le monde dans une boite rezisable
 	
 	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Cycle jour/nuit

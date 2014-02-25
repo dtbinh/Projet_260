@@ -3,18 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
         <file>
-            <url>src/World.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>41</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/MainPackage/World.java</url>
             <bookmark id="2">
                 <name/>
                 <line>86</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/World.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>41</line>
                 <key/>
             </bookmark>
         </file>

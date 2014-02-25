@@ -3,7 +3,7 @@ package MainPackage;
 import MainPackage.Agents.Loups;
 import MainPackage.Agents.Moutons;
 
-public class MyEcosystem_predprey extends CAtoolbox {
+public class MyEcosystem_predprey{
 
     public static void main(String[] args) {
 
