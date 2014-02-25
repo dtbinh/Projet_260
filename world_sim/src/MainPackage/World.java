@@ -55,12 +55,20 @@ public class World {
      */
     private final double pEruption = 0.001; // probabilité que les genlave entrent en eruption
     private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
-    
+    /*
+     * Cycles jours/nuits
+     * De 0 à transition c'est le jour, de transition à duree c'est la nuit.
+     */
+    private int temps; // compte les itérations du temps de la journée
+    private boolean jour; // indique si on est le jour ou la nuit
+    private final int duree = 30; //durée en itérations d'une journée complète
+    private final int transition = 15; // moment où on passe du jour à la nuit
     public World(String nom){
         tableauCourant = Case.generateurImage1(nom);
         _dx = tableauCourant.length;
         _dy = tableauCourant[0].length;
-
+        temps = 0;
+        jour = true;
         agents = new ArrayList<Agent>();
 
         nouveauTableau = new int[_dx][_dy];
@@ -118,6 +126,16 @@ public class World {
         }
         
         varFeu=( (pluie)?vfPluie:0 ) + ( (vent==Directions.NONE)?vfVent:0 );
+    
+        if(temps++ > duree){
+            temps=0;
+        }
+        if(temps > transition){
+            jour=false;
+        }else{
+            jour=true;
+        }
+        
     }
 
     public void stepWorld() // world THEN agents
@@ -603,4 +621,6 @@ public class World {
             System.exit(-1);
         }
     }
+    
+    public boolean getJour(){return jour;}
 }

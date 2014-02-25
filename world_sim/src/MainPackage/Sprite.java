@@ -147,6 +147,9 @@ public class Sprite extends JPanel {
                         g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                     }
                 }
+                if(!world.getJour()){
+                    g2.drawImage(noirSprite,0,0,spriteLength*world.getHeight(),spriteLength*world.getWidth(), frame);
+                }
 	}
 
 }
