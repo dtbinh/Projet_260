@@ -35,6 +35,8 @@ public class Sprite extends JPanel {
 	private Image loupSprite;
 	private Image moutonSprite;
 	
+        
+        private Image noirSprite;
 	private int spriteLength = 24;
 	
 	private World world;
@@ -55,6 +57,7 @@ public class Sprite extends JPanel {
                         
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
+                        noirSprite = ImageIO.read(new File("sombre.png"));
 		}
 		catch(Exception e)
 		{
@@ -65,7 +68,7 @@ public class Sprite extends JPanel {
                 world =w;
 		frame = new JFrame("World simulator");
 		frame.add(this);
-		frame.setSize(spriteLength*(world.getWidth()+1),spriteLength*(world.getHeight()+1));
+		frame.setSize(spriteLength*(world.getWidth()),spriteLength*(world.getHeight()));
 		frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -134,6 +137,7 @@ public class Sprite extends JPanel {
                                     break;*/
                                 
                             }
+                            
                         }
                     }
                 for(Agent a:world.getAgentsArray()){
