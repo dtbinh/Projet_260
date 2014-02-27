@@ -1,0 +1,7 @@
+27/02/14:
+- Ajouté le sommeil des bestioles
+- L'herbe repousse correctement maintenant
+- La lave disparait plus rapidement et quoi qu'il arrive
+- On a pensé à mettre une faible possibilité de génération spontanné d'arbres
+- On a pensé à modifier le mode d'apparition des arbres (plus forcément adjacent, possible à 1 case de distance)
+- On a trouvé quelques bugs
