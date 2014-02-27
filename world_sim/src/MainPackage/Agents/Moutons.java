@@ -15,18 +15,20 @@ public class Moutons extends Agent {
     public Moutons(int __x, int __y, World __w, int __ADN) {
         super(__x, __y, __w, 255, 128, 0, 50, 150, 4, 3, __ADN);
         _reprod = 25;
+        diurne=true;
     }
 
     @Override public void step() {
         temps();
 
-        if (_alive) {
+        if (_alive && !dort) {
             if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
                 _faim += (int) (Math.random() * 5) + 10;
                 _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
             }
             if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
                 setmort();
+                constitution=-1;
             }
             
             

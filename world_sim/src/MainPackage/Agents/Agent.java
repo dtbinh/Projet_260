@@ -28,10 +28,13 @@ public abstract class Agent {
     protected int _vision;
     protected int _age;
     protected int _ageMax;
+    protected boolean dort;
     
     protected boolean _aquatique;
+    protected boolean diurne;
     
     private int tryMove;
+    private int sommeil;
     
     /*
      * Code genetique des agents. chaque chiffre représente une variable.
@@ -53,6 +56,7 @@ public abstract class Agent {
     
     protected int[] _objectif;
     protected boolean _fuis;
+    protected int constitution; // représente l'état actuel du mob mort (intact, mangé, pourri...)
     
     private int _itMS;
     private int _itReprod;
@@ -74,6 +78,9 @@ public abstract class Agent {
         _blueValue = bleu;
         
         tryMove=0;
+        sommeil=100;
+        dort=false;
+        constitution=10;
 
         //partie commune à tout les agents
         _x = __x;
@@ -91,6 +98,7 @@ public abstract class Agent {
         _fuis = false;
         _age=0;
         _ADN=__ADN;
+        diurne=true;
         
         
         
@@ -203,17 +211,19 @@ public abstract class Agent {
     
     //Déplacement
     public void move() {
-        if (_itMS <= 0) {
-            _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
-            if(_fuis){ //inverse l'orientation si on fuit l'objectif
-                _orient=(_orient+2)%4;
+        if(_alive){
+            if (_itMS <= 0) {
+                _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
+                if(_fuis){ //inverse l'orientation si on fuit l'objectif
+                    _orient=(_orient+2)%4;
+                }
+                // met a jour: la position de l'agent (depend de l'orientation)
+                tryMove=0;
+                deplacement();
+                _itMS = _moveSpeed;
+            } else {
+                _itMS--;
             }
-            // met a jour: la position de l'agent (depend de l'orientation)
-            tryMove=0;
-            deplacement();
-            _itMS = _moveSpeed;
-        } else {
-            _itMS--;
         }
     }
     
@@ -351,6 +361,17 @@ public abstract class Agent {
         } else {
             _age++;
         }
+        if(dort){
+            sommeil++;
+        }else{
+            sommeil--;
+        }
+        if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
+            dort=true;
+        }
+        if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
+            dort=false;
+        }
     }
 
     public void setmort() {
@@ -359,7 +380,11 @@ public abstract class Agent {
 
     public void estmort() {
         if (!_alive) {
-            _world.remove(this);
+            if(constitution<=0){
+                _world.remove(this);
+            }else{
+                constitution--;
+            }
         }
     }
 

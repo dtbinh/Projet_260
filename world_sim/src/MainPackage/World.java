@@ -17,6 +17,7 @@ public class World {
      * Cases:
      * Variables relatives au terrain
      */
+    private final double pHerbe = 0.01; // proba que l'herbe pousse sur de la terre
     private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
     private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
@@ -61,8 +62,8 @@ public class World {
      */
     private int temps; // compte les itérations du temps de la journée
     private boolean jour; // indique si on est le jour ou la nuit
-    private final int duree = 30; //durée en itérations d'une journée complète
-    private final int transition = 15; // moment où on passe du jour à la nuit
+    private final int duree = 300; //durée en itérations d'une journée complète
+    private final int transition = 200; // moment où on passe du jour à la nuit
     public World(String nom){
         tableauCourant = Case.generateurImage1(nom);
         _dx = tableauCourant.length;
@@ -255,7 +256,7 @@ public class World {
                         
                     case Case.LAVE:
                         //Evaporation
-                        if (Case.getVar(tableauCourant[x][y]) == 0) {
+                        if (Case.getVar(tableauCourant[x][y]) == 0) {                        
                             if (pEvaporation >= Math.random()) {
                                 nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
                             }
@@ -285,6 +286,9 @@ public class World {
                                     nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
                                 }
                             }
+                            if (pEvaporation >= Math.random() && Case.getVar(nouveauTableau[x][y]) > 0) {
+                                nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                            }
                         }
                         break;
                         
@@ -313,7 +317,13 @@ public class World {
                     default:
                         nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
                 }
-
+                switch(Case.getTerrain(tableauCourant[x][y])){
+                    case Case.TERRE:
+                        if (pHerbe >= Math.random()) {
+                            nouveauTableau[x][y] = Case.setTerrain(tableauCourant[x][y], Case.HERBE);
+                        }
+                        break;
+                }
             }
         }
 
