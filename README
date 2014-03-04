@@ -1,5 +1,6 @@
 Bug:
 	- Parfois les agents ont les pieds dans l'eau
+	- Parfois les agents "nagent" dans la lave
 	
 Problèmes:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
@@ -8,16 +9,17 @@ Problèmes:
 ========================================================================
 
 TODO:
+IDEES:
 	- Trouver des images pour:
 			- les cendres
-
-!!	- TEST UNITAIRES 
+	!!	- TEST UNITAIRES 
 	- Ajouter constructeur de monde (à la paint, pour créer soit même son monde avec ses variables)
 	- Trouver quelque chose pour voir le relief
 	- Mettre le monde dans une boite rezisable
 	
-	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
+A FAIRE:
 	- Cycle jour/nuit
+	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
 	- Les bestioles agissent différement en fonction du jour/nuit
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt.
@@ -66,6 +68,7 @@ DONE:
 	- Les arbres sont générés à certains endroits seulement (pieds de la montagne)
 	- Lave
 	- Générateur de lave
+	- L'herbe repousse.
 	
 	Agents:
 	- Se déplacent.
@@ -79,6 +82,7 @@ DONE:
 	- Les agents ne marchent pas dans l'eau profonde
 	- Les agents dans l'eau trop profonde se noient
 	- Les agents ne marchent pas (et fuient) la lave
+	- Les moutons dorment la nuit et les loups dorment le jour.
 	
 	
 	Prog:

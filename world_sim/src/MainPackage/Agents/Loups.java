@@ -15,26 +15,31 @@ public class Loups extends Agent {
     public Loups(int __x, int __y, World __w, int __ADN) {
         super(__x, __y, __w, 0, 0, 0, 100, 300, 2, 3, __ADN);
         _reprod = 75;
+        diurne=false;
     }
 
     @Override public void step() {
         temps();
 
-        if (_alive) {
+        if (_alive && !dort) {
             if(_faim<_faimMax){
                 ArrayList<Agent> mmcase = _world.getAgentCase(this);
                 if (!mmcase.isEmpty()) {
                     for (Agent ag : mmcase) {
                         if (ag.getClass() == Moutons.class) {
-                            Moutons proie = (Moutons) ag;
-                            _faim += 50;
-                            proie.setmort();
+                            if(ag.getAlive()){
+                                ag.setmort();
+                            }else{
+                                ag.constitution--;
+                                _faim += 10;
+                            }
                         }
                     }
                 }
             }
             if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
                 setmort();
+                constitution=-1;
             }
             
             
@@ -60,12 +65,10 @@ public class Loups extends Agent {
         if(_faim<_faimMax){
             Agent proche = _world.getAgentsProches(_x, _y, Moutons.class, _vision*2);
             if(proche != null){
-                if(proche.getAlive()) {
-                    _objectif[0]=proche._x;
-                    _objectif[1]=proche._y;
-                    _fuis=false;
-                    return;
-                }
+                _objectif[0]=proche._x;
+                _objectif[1]=proche._y;
+                _fuis=false;
+                return;
             }
         }
         
