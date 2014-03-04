@@ -18,7 +18,7 @@ public class MyEcosystem_predprey{
         World world = new World("world.pgm");
         
         // Ajouts d'agents
-      for (int i = 0; i != 30; i++) {
+      for (int i = 0; i != 50; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellType(valX, valY)== Case.SABLE){

@@ -13,7 +13,7 @@ public class Moutons extends Agent {
     
     //cosntructeur reprod
     public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 50, 300, 2, 2, __ADN);
+        super(__x, __y, __w, 100, 300, 2, 3, 1, __ADN);
         diurne=true;
     }
 
@@ -22,7 +22,7 @@ public class Moutons extends Agent {
 
         if (_alive && !dort) {
             if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                _faim += (int) (Math.random() * 5) + 10;
+                _faim += 10;
                 _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
             }
             if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
@@ -66,7 +66,7 @@ public class Moutons extends Agent {
             proche = _world.getAgentsProches(this, Moutons.class, _vision*2);
             if(proche!=null)
             {
-                if(proche._faim>proche._faimMax*0.5){
+                if(proche._faim>proche._faimMax*0.3){
                     _objectif[0]=proche._x;
                     _objectif[1]=proche._y;
                     _fuis=false;

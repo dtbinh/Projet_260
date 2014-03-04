@@ -24,7 +24,10 @@ public abstract class Agent {
     protected int _vision;
     protected int _age;
     protected int _ageMax;
+    protected int _tpsGestation;
     protected boolean dort;
+    protected int gestation; //durée de gestation: -1 = pas enceint, 0 = fait un bébé.
+    protected Agent partenaire;
     
     protected boolean _aquatique;
     protected boolean diurne;
@@ -60,17 +63,18 @@ public abstract class Agent {
     public int getY(){return _y;}
     
     public Agent(int __x, int __y, World __w) {
-        this(__x, __y, __w, 9999, 9999, 5, 3, makeADN());
+        this(__x, __y, __w, 9999, 9999, 5, 0, 9999, makeADN());
     }
     
     
     public Agent(int __x, int __y, World __w,
-            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __ADN) {
+            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __tpsGestation, int __ADN) {
         
         tryMove=0;
         sommeil=100;
         dort=false;
         constitution=10;
+        gestation = -1;
 
         //partie commune à tout les agents
         _x = __x;
@@ -92,11 +96,12 @@ public abstract class Agent {
         
         
         _faimMax = __faimMax+(getBrinADN(1)* (__faimMax/10 ));
-        _faim=__faimMax/2; //les agents commencents avec 50% de faim max
+        _faim=(int)(__faimMax*0.50); //les agents commencents avec 30% de faim max
         _ageMax=(int)(__ageMax + Math.random()*(__ageMax/10))-(__ageMax/5)+(getBrinADN(2)*__ageMax/10) ; //ageMax = ageMax moyen +- 5%
         _moveSpeed = __moveSpeed - (getBrinADN(3)/3);
         if(_moveSpeed<0){ _moveSpeed=0; }
         _vision = __vision + (getBrinADN(4)/2);
+        _tpsGestation=__tpsGestation;
         
         taresADN();
         
@@ -355,6 +360,12 @@ public abstract class Agent {
         if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
             dort=false;
         }
+        if(gestation==0){
+            creationBebe(partenaire);
+            gestation--;
+        }else if(gestation>0){
+            gestation--;
+        }
     }
 
     public void setmort() {
@@ -380,13 +391,14 @@ public abstract class Agent {
     }
     
     public void reproduction() { 
-        if(_faim>(_faimMax*0.2) && getMature()){
+        if(_faim>(_faimMax*0.3) && getMature() && gestation==-1){
             Agent proche = _world.getAgentsProches(this, this.getClass(), 1);
             if (proche!=null) {
-                if (proche._faim>(proche._faimMax*0.2) && proche.getMature()) {
-                    _faim-=_faimMax*0.2;
-                    proche._faim-=proche._faimMax*0.2;
-                    creationBebe(proche);
+                if (proche._faim>(proche._faimMax*0.3) && proche.getMature() && proche.gestation==-1) {
+                    _faim-=_faimMax*0.1;
+                    proche._faim-=proche._faimMax*0.1;
+                    gestation=_tpsGestation;
+                    partenaire=proche;
                 }
             }
         }

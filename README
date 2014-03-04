@@ -1,6 +1,7 @@
 Bug:
 	- Parfois les agents ont les pieds dans l'eau
 	- Parfois les agents "nagent" dans la lave
+	- Le feu et la lave ne tuent pas correctement les agents
 	
 Problèmes:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V

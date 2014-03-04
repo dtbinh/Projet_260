@@ -13,7 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 100, 500, 1, 2, __ADN);
+        super(__x, __y, __w, 150, 500, 1, 3, 10, __ADN);
         diurne=false;
     }
 
@@ -30,7 +30,7 @@ public class Loups extends Agent {
                                 ag.setmort();
                             }else{
                                 ag.constitution--;
-                                _faim += 25;
+                                _faim += 30;
                             }
                         }
                     }
@@ -67,7 +67,7 @@ public class Loups extends Agent {
             Agent proche = _world.getAgentsProches(this, Loups.class, _vision*2);
             if(proche!=null)
             {
-                if(proche._faim>proche._faimMax*0.5){
+                if(proche._faim>proche._faimMax*0.4){
                     _objectif[0]=proche._x;
                     _objectif[1]=proche._y;
                     _fuis=false;
