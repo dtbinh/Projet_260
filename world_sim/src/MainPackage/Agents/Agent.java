@@ -2,13 +2,10 @@ package MainPackage.Agents;
 
 import MainPackage.World;
 import MainPackage.Case;
+import java.util.ArrayList;
 
 public abstract class Agent {
 
-    static final int redId = 0;
-    static final int greenId = 1;
-    static final int blueId = 2;
-    
     protected World _world;
     protected int _x;
     protected int _y;
@@ -22,7 +19,6 @@ public abstract class Agent {
     
     protected boolean _alive; //Si l'agent est vivant. Sinon il décède
     protected int _moveSpeed; //0=rapide, grand = pas rapide (nb d'itérations entre chaque déplacements)
-    protected int _reprod; //nbr d'itératiosn entre chaque reprod
     protected int _faim;
     protected int _faimMax;
     protected int _vision;
@@ -59,23 +55,18 @@ public abstract class Agent {
     protected int constitution; // représente l'état actuel du mob mort (intact, mangé, pourri...)
     
     private int _itMS;
-    private int _itReprod;
     private int _orient;
     
     public int getX(){return _x;}
     public int getY(){return _y;}
-    public int[] getColors(){int ret[]={_redValue, _greenValue, _blueValue}; return ret;}
     
     public Agent(int __x, int __y, World __w) {
-        this(__x, __y, __w, 255, 0, 0, 9999, 9999, 5, 3, makeADN());
+        this(__x, __y, __w, 9999, 9999, 5, 3, makeADN());
     }
     
     
-    public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
+    public Agent(int __x, int __y, World __w,
             int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __ADN) {
-        _redValue = rouge;
-        _greenValue = vert;
-        _blueValue = bleu;
         
         tryMove=0;
         sommeil=100;
@@ -94,7 +85,6 @@ public abstract class Agent {
         _objectif[1]=_y;
         _alive = true;
         _itMS = 0;
-        _itReprod = 0;
         _fuis = false;
         _age=0;
         _ADN=__ADN;
@@ -111,7 +101,6 @@ public abstract class Agent {
         
         taresADN();
         
-        _reprod = -1;
     }
 
     abstract public void step();
@@ -174,15 +163,11 @@ public abstract class Agent {
      * @param ADN
      * @return l'ADN modifié
      */
-    protected int muteADN(int ADN)
+    protected int muteADN(int ADN1, int ADN2)
     {
-        int potentiel=0;
-        for(int i=0;i<TAILLEADN;i++){
-            int val=(int)(Math.random()*getBrinADN(i)/2);
-            potentiel+=val;
-            ADN-=(int)(val*Math.pow(10, i));
-        }
-        return addADN(ADN, potentiel);
+        int newADN=(ADN1 & ADN2);
+        int potentiel=(int)(Math.random()*5);
+        return addADN(newADN, potentiel);
     }
     
     /**
@@ -392,17 +377,23 @@ public abstract class Agent {
         return _alive;
     }
     
+    public boolean getMature() {
+        return (_age>_ageMax*0.2);
+    }
+    
     public void reproduction() { 
-        if (_itReprod >= _reprod) {
-            _itReprod = 0;
-            creationBebe();
-        } else {
-            _itReprod += (int) (Math.random() * 3);
-        }
-        if (_itReprod < 0) {
-            _itReprod = 0;
+        if(_faim>(_faimMax*0.2) && getMature()){
+            Agent proche = _world.getAgentsProches(this, this.getClass(), 1);
+            if (proche!=null) {
+                if (proche._faim>(proche._faimMax*0.2) && proche.getMature()) {
+                    _faim-=_faimMax*0.2;
+                    proche._faim-=proche._faimMax*0.2;
+                    creationBebe(proche);
+                    System.out.println("BEBE CREATION");
+                }
+            }
         }
     }
     
-    public abstract void creationBebe();
+    public abstract void creationBebe(Agent reproducteur);
 }

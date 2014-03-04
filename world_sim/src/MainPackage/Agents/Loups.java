@@ -13,8 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 0, 0, 0, 100, 300, 2, 3, __ADN);
-        _reprod = 75;
+        super(__x, __y, __w, 100, 500, 2, 3, __ADN);
         diurne=false;
     }
 
@@ -62,8 +61,23 @@ public class Loups extends Agent {
             return;
         }
         
+        //tentative de reproduction
+        if(_faim>_faimMax*0.4 && getMature())
+        {
+            Agent proche = _world.getAgentsProches(this, Loups.class, _vision*2);
+            if(proche!=null)
+            {
+                if(proche._faim>proche._faimMax*0.5){
+                    _objectif[0]=proche._x;
+                    _objectif[1]=proche._y;
+                    _fuis=false;
+                    return;
+                }
+            }
+        }
+        
         if(_faim<_faimMax){
-            Agent proche = _world.getAgentsProches(_x, _y, Moutons.class, _vision*2);
+            Agent proche = _world.getAgentsProches(this, Moutons.class, _vision*2);
             if(proche != null){
                 _objectif[0]=proche._x;
                 _objectif[1]=proche._y;
@@ -82,8 +96,13 @@ public class Loups extends Agent {
         }
     }
 
-    @Override public void creationBebe()
+    @Override public void creationBebe(Agent reproducteur)
     {
-        _world.add(new Loups(_x, _y, _world, muteADN(_ADN)));
+        _world.add(new Loups(_x, _y, _world, muteADN(_ADN, reproducteur._ADN)));
+    }
+    
+    @Override public boolean getMature()
+    {
+        return (_age>_ageMax*0.05);
     }
 }
