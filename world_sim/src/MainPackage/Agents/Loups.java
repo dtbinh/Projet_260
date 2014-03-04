@@ -13,7 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 100, 500, 2, 3, __ADN);
+        super(__x, __y, __w, 100, 500, 1, 2, __ADN);
         diurne=false;
     }
 
@@ -30,7 +30,7 @@ public class Loups extends Agent {
                                 ag.setmort();
                             }else{
                                 ag.constitution--;
-                                _faim += 10;
+                                _faim += 25;
                             }
                         }
                     }
@@ -103,6 +103,6 @@ public class Loups extends Agent {
     
     @Override public boolean getMature()
     {
-        return (_age>_ageMax*0.05);
+        return (_age>_ageMax*0.1);
     }
 }

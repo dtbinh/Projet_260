@@ -39,7 +39,6 @@ public abstract class Agent {
      * 10^1 = _ageMax (+10% par point)
      * 10^2 = _moveSpeed (+1/3 pts)
      * 10^3 = _vision (+1/2 pts)
-     * //TODO: 10^4 = _fréquenceReproduction
      * 
      * 2 denières valeures = tares génétiques et trash (binaire):
      * 1000 0000 = tetraplegique (vitesse diminuée)
@@ -165,7 +164,7 @@ public abstract class Agent {
      */
     protected int muteADN(int ADN1, int ADN2)
     {
-        int newADN=(ADN1 & ADN2);
+        int newADN=(ADN1 | ADN2)-(int)(Math.random()*Math.pow(10, TAILLEADN));
         int potentiel=(int)(Math.random()*5);
         return addADN(newADN, potentiel);
     }
@@ -342,10 +341,9 @@ public abstract class Agent {
             _faim--;
         }
         if(_age>=_ageMax){
-            setmort();
-        } else {
-            _age++;
+            _faim-=_age-_ageMax;
         }
+        _age++;
         if(dort){
             sommeil++;
         }else{
@@ -389,7 +387,6 @@ public abstract class Agent {
                     _faim-=_faimMax*0.2;
                     proche._faim-=proche._faimMax*0.2;
                     creationBebe(proche);
-                    System.out.println("BEBE CREATION");
                 }
             }
         }

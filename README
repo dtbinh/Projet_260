@@ -17,16 +17,11 @@ IDEES:
 	- Trouver quelque chose pour voir le relief
 	- Mettre le monde dans une boite rezisable
 	
-A FAIRE:
-	- Cycle jour/nuit
-	- Les bestioles mettent du temps à faire des actions (tuer, manger etc) (pour que les loups qui courent vite GNAPent pas tout un troupeau d'un coup)
+A FAIRe:
 	- Les bestioles agissent différement en fonction du jour/nuit
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt.
-	- Reproduction "sexuée"
-	- Temps de gestation
 	- Générateur d'eau (rivières)
-	- Cadavres et décomposition.
 	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
 	- Apprentissage des bestioles*
 	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
@@ -81,10 +76,12 @@ DONE:
 	- Fuient le feu
 	- Les agents ne marchent pas dans l'eau profonde
 	- Les agents dans l'eau trop profonde se noient
-	- Les agents ne marchent pas (et fuient) la lave
+	- Les agents ne marchent pas sur (et fuient) la lave
 	- Les moutons dorment la nuit et les loups dorment le jour.
-	
-	
+	- Les agents se reproduisent deux par deux, leur ADN se mixe.
+	- Quand les agents meurent, leur cadavre reste un moment.
+	- Les loups mangent les cadavres de moutons et pas les moutons vivants.
+
 	Prog:
 	- Affichage en 2D
 

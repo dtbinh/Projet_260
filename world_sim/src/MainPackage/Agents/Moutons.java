@@ -13,7 +13,7 @@ public class Moutons extends Agent {
     
     //cosntructeur reprod
     public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 50, 300, 4, 3, __ADN);
+        super(__x, __y, __w, 50, 300, 2, 2, __ADN);
         diurne=true;
     }
 
