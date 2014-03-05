@@ -2,13 +2,10 @@ package MainPackage.Agents;
 
 import MainPackage.World;
 import MainPackage.Case;
+import java.util.ArrayList;
 
 public abstract class Agent {
 
-    static final int redId = 0;
-    static final int greenId = 1;
-    static final int blueId = 2;
-    
     protected World _world;
     protected int _x;
     protected int _y;
@@ -22,13 +19,15 @@ public abstract class Agent {
     
     protected boolean _alive; //Si l'agent est vivant. Sinon il décède
     protected int _moveSpeed; //0=rapide, grand = pas rapide (nb d'itérations entre chaque déplacements)
-    protected int _reprod; //nbr d'itératiosn entre chaque reprod
     protected int _faim;
     protected int _faimMax;
     protected int _vision;
     protected int _age;
     protected int _ageMax;
+    protected int _tpsGestation;
     protected boolean dort;
+    protected int gestation; //durée de gestation: -1 = pas enceint, 0 = fait un bébé.
+    protected Agent partenaire;
     
     protected boolean _aquatique;
     protected boolean diurne;
@@ -43,7 +42,6 @@ public abstract class Agent {
      * 10^1 = _ageMax (+10% par point)
      * 10^2 = _moveSpeed (+1/3 pts)
      * 10^3 = _vision (+1/2 pts)
-     * //TODO: 10^4 = _fréquenceReproduction
      * 
      * 2 denières valeures = tares génétiques et trash (binaire):
      * 1000 0000 = tetraplegique (vitesse diminuée)
@@ -59,28 +57,24 @@ public abstract class Agent {
     protected int constitution; // représente l'état actuel du mob mort (intact, mangé, pourri...)
     
     private int _itMS;
-    private int _itReprod;
     private int _orient;
     
     public int getX(){return _x;}
     public int getY(){return _y;}
-    public int[] getColors(){int ret[]={_redValue, _greenValue, _blueValue}; return ret;}
     
     public Agent(int __x, int __y, World __w) {
-        this(__x, __y, __w, 255, 0, 0, 9999, 9999, 5, 3, makeADN());
+        this(__x, __y, __w, 9999, 9999, 5, 0, 9999, makeADN());
     }
     
     
-    public Agent(int __x, int __y, World __w, int rouge, int vert, int bleu,
-            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __ADN) {
-        _redValue = rouge;
-        _greenValue = vert;
-        _blueValue = bleu;
+    public Agent(int __x, int __y, World __w,
+            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __tpsGestation, int __ADN) {
         
         tryMove=0;
         sommeil=100;
         dort=false;
         constitution=10;
+        gestation = -1;
 
         //partie commune à tout les agents
         _x = __x;
@@ -94,7 +88,6 @@ public abstract class Agent {
         _objectif[1]=_y;
         _alive = true;
         _itMS = 0;
-        _itReprod = 0;
         _fuis = false;
         _age=0;
         _ADN=__ADN;
@@ -103,15 +96,15 @@ public abstract class Agent {
         
         
         _faimMax = __faimMax+(getBrinADN(1)* (__faimMax/10 ));
-        _faim=__faimMax/2; //les agents commencents avec 50% de faim max
+        _faim=(int)(__faimMax*0.50); //les agents commencents avec 30% de faim max
         _ageMax=(int)(__ageMax + Math.random()*(__ageMax/10))-(__ageMax/5)+(getBrinADN(2)*__ageMax/10) ; //ageMax = ageMax moyen +- 5%
         _moveSpeed = __moveSpeed - (getBrinADN(3)/3);
         if(_moveSpeed<0){ _moveSpeed=0; }
         _vision = __vision + (getBrinADN(4)/2);
+        _tpsGestation=__tpsGestation;
         
         taresADN();
         
-        _reprod = -1;
     }
 
     abstract public void step();
@@ -174,15 +167,11 @@ public abstract class Agent {
      * @param ADN
      * @return l'ADN modifié
      */
-    protected int muteADN(int ADN)
+    protected int muteADN(int ADN1, int ADN2)
     {
-        int potentiel=0;
-        for(int i=0;i<TAILLEADN;i++){
-            int val=(int)(Math.random()*getBrinADN(i)/2);
-            potentiel+=val;
-            ADN-=(int)(val*Math.pow(10, i));
-        }
-        return addADN(ADN, potentiel);
+        int newADN=(ADN1 | ADN2)-(int)(Math.random()*Math.pow(10, TAILLEADN));
+        int potentiel=(int)(Math.random()*5);
+        return addADN(newADN, potentiel);
     }
     
     /**
@@ -357,10 +346,9 @@ public abstract class Agent {
             _faim--;
         }
         if(_age>=_ageMax){
-            setmort();
-        } else {
-            _age++;
+            _faim-=_age-_ageMax;
         }
+        _age++;
         if(dort){
             sommeil++;
         }else{
@@ -371,6 +359,12 @@ public abstract class Agent {
         }
         if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
             dort=false;
+        }
+        if(gestation==0){
+            creationBebe(partenaire);
+            gestation--;
+        }else if(gestation>0){
+            gestation--;
         }
     }
 
@@ -392,17 +386,23 @@ public abstract class Agent {
         return _alive;
     }
     
+    public boolean getMature() {
+        return (_age>_ageMax*0.2);
+    }
+    
     public void reproduction() { 
-        if (_itReprod >= _reprod) {
-            _itReprod = 0;
-            creationBebe();
-        } else {
-            _itReprod += (int) (Math.random() * 3);
-        }
-        if (_itReprod < 0) {
-            _itReprod = 0;
+        if(_faim>(_faimMax*0.3) && getMature() && gestation==-1){
+            Agent proche = _world.getAgentsProches(this, this.getClass(), 1);
+            if (proche!=null) {
+                if (proche._faim>(proche._faimMax*0.3) && proche.getMature() && proche.gestation==-1) {
+                    _faim-=_faimMax*0.1;
+                    proche._faim-=proche._faimMax*0.1;
+                    gestation=_tpsGestation;
+                    partenaire=proche;
+                }
+            }
         }
     }
     
-    public abstract void creationBebe();
+    public abstract void creationBebe(Agent reproducteur);
 }

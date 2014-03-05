@@ -13,8 +13,7 @@ public class Moutons extends Agent {
     
     //cosntructeur reprod
     public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 255, 128, 0, 50, 150, 4, 3, __ADN);
-        _reprod = 25;
+        super(__x, __y, __w, 100, 300, 2, 3, 1, __ADN);
         diurne=true;
     }
 
@@ -23,7 +22,7 @@ public class Moutons extends Agent {
 
         if (_alive && !dort) {
             if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                _faim += (int) (Math.random() * 5) + 10;
+                _faim += 10;
                 _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
             }
             if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
@@ -52,7 +51,7 @@ public class Moutons extends Agent {
             return;
         }
         
-        Agent proche = _world.getAgentsProches(_x, _y, Loups.class, _vision*2);
+        Agent proche = _world.getAgentsProches(this, Loups.class, _vision*2);
         if(proche!=null)
         {
             _objectif[0]=proche._x;
@@ -61,11 +60,28 @@ public class Moutons extends Agent {
             return;
         }
         
-        int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);
-        if(herbeProche[0]!=-1){
-            _objectif=herbeProche;
-            _fuis=false;
-            return;
+        //tentative de reproduction
+        if(_faim>_faimMax*0.3 && getMature())
+        {
+            proche = _world.getAgentsProches(this, Moutons.class, _vision*2);
+            if(proche!=null)
+            {
+                if(proche._faim>proche._faimMax*0.3){
+                    _objectif[0]=proche._x;
+                    _objectif[1]=proche._y;
+                    _fuis=false;
+                    return;
+                }
+            }
+        }
+        
+        if(_faim<_faimMax){
+            int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);
+            if(herbeProche[0]!=-1){
+                _objectif=herbeProche;
+                _fuis=false;
+                return;
+            }
         }
         
         if (Math.random() > 0.5) // au hasard
@@ -78,8 +94,8 @@ public class Moutons extends Agent {
         }
     }
 
-    @Override public void creationBebe()
+    @Override public void creationBebe(Agent reproducteur)
     {
-        _world.add(new Moutons(_x, _y, _world,muteADN(_ADN)));
+        _world.add(new Moutons(_x, _y, _world,muteADN(_ADN, reproducteur._ADN)));
     }
 }

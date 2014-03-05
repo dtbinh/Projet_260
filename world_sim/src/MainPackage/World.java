@@ -472,6 +472,29 @@ public class World {
     }
     
     /**
+     * Renvoie l'agent de type AG le plus proche de l'agent ag dans un rayon portée. renvoie NULL si yen a pas
+     * @param x, y, portee
+     */
+    public Agent getAgentsProches(Agent ag, Class type, int portee)
+    {
+        Agent ret=null;
+        int distance=portee;
+        for(Agent a:agents){
+            if(a!=ag){
+                if(a.getClass() == type){
+                    int dist[]= distance(ag.getX(), ag.getY(), a.getX(), a.getY());
+                    int dist2=dist[0]+dist[1];
+                    if(dist2<=distance){
+                        distance=dist2;
+                        ret=a;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+    
+    /**
      * renvoie la distance (nombre de cases à parcourir) entre le point x1/y1 et x2/y2
      * Retourne un tableau tel que ret[0]=distance entre x1 et x2, ret[1]=distance entre y1 et y2.
      * Les déplacement ne se font pas en diagonales, donc la distance totale est juste égale à la distance
