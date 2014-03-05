@@ -23,9 +23,9 @@ public class Moutons extends Agent {
         if (_alive && !dort) {
             if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
                 _faim += 10;
-                _world.setCellVal(_x, _y, Case.setTerrain(_world.getCellVal(_x, _y),Case.TERRE));
+                _world.setCellTerrainVal(_x, _y, Case.TERRE);
             }
-            if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
+            if (_world.containVoisinsItem(_x, _y,Case.FEU) || _world.containVoisinsItem(_x, _y,Case.LAVE)) {
                 setmort();
                 constitution=-1;
             }
@@ -38,13 +38,13 @@ public class Moutons extends Agent {
     }
 
     private void setDir() {
-        int feuProche[]=_world.getPlusProche(_x,_y,_vision,Case.FEU);
+        int feuProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.FEU);
         if(feuProche[0]!=-1){
             _objectif=feuProche;
             _fuis=true;
             return;
         }
-        int laveProche[]=_world.getPlusProche(_x,_y,_vision,Case.LAVE);
+        int laveProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.LAVE);
         if(laveProche[0]!=-1){
             _objectif=laveProche;
             _fuis=true;
@@ -76,7 +76,7 @@ public class Moutons extends Agent {
         }
         
         //if(_faim<_faimMax){
-            int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);
+            int herbeProche[]=_world.getPlusProcheTerrain(_x,_y,_vision,Case.HERBE);
             if(herbeProche[0]!=-1){
                 _objectif=herbeProche;
                 _fuis=false;

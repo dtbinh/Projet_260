@@ -21,7 +21,7 @@ public class MyEcosystem_predprey{
       for (int i = 0; i != 50; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
-          while(world.getCellType(valX, valY)== Case.SABLE){
+          while(world.getCellTerrain(valX, valY)== Case.SABLE){
             valX = (int) (Math.random() * world.getWidth());
             valY = (int) (Math.random() * world.getHeight());
             }
@@ -30,7 +30,7 @@ public class MyEcosystem_predprey{
         for (int i = 0; i != 20; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
-          while(world.getCellType(valX, valY)== Case.SABLE){
+          while(world.getCellTerrain(valX, valY)== Case.SABLE){
             valX = (int) (Math.random() * world.getWidth());
             valY = (int) (Math.random() * world.getHeight());
             }
