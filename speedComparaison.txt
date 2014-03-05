@@ -1,0 +1,309 @@
+V0
+Moyenne = 15749890 (1 itérations)
+Moyenne = 2904708 (51 itérations)
+Moyenne = 2381195 (101 itérations)
+Moyenne = 2123119 (151 itérations)
+Moyenne = 1849242 (201 itérations)
+
+Moyenne = 12793240 (1 itérations)
+Moyenne = 3481146 (51 itérations)
+Moyenne = 2667772 (101 itérations)
+Moyenne = 2545796 (151 itérations)
+Moyenne = 2461436 (201 itérations)
+
+Moyenne = 13079942 (1 itérations)
+Moyenne = 2850431 (51 itérations)
+Moyenne = 2326680 (101 itérations)
+Moyenne = 2106493 (151 itérations)
+Moyenne = 1854510 (201 itérations)
+
+Moyenne = 36788783 (1 itérations)
+Moyenne = 3380045 (51 itérations)
+Moyenne = 2711129 (101 itérations)
+Moyenne = 2579575 (151 itérations)
+Moyenne = 2206760 (201 itérations)
+
+Moyenne = 12604029 (1 itérations)
+Moyenne = 3139277 (51 itérations)
+Moyenne = 2618346 (101 itérations)
+Moyenne = 2466462 (151 itérations)
+Moyenne = 2313729 (201 itérations)
+
+Moyenne = 14413637 (1 itérations)
+Moyenne = 3386561 (51 itérations)
+Moyenne = 2622418 (101 itérations)
+Moyenne = 2496568 (151 itérations)
+Moyenne = 2320571 (201 itérations)
+
+Moyenne = 12648238 (1 itérations)
+Moyenne = 2851260 (51 itérations)
+Moyenne = 2377844 (101 itérations)
+Moyenne = 2293523 (151 itérations)
+Moyenne = 2068535 (201 itérations)
+
+Moyenne = 12700750 (1 itérations)
+Moyenne = 2908666 (51 itérations)
+Moyenne = 2242129 (101 itérations)
+Moyenne = 2012104 (151 itérations)
+Moyenne = 1731875 (201 itérations)
+
+Moyenne = 11907341 (1 itérations)
+Moyenne = 3224975 (51 itérations)
+Moyenne = 2445508 (101 itérations)
+Moyenne = 2134544 (151 itérations)
+Moyenne = 2028642 (201 itérations)
+
+Moyenne = 17016854 (1 itérations)
+Moyenne = 3259338 (51 itérations)
+Moyenne = 2685153 (101 itérations)
+Moyenne = 2530155 (151 itérations)
+Moyenne = 2432785 (201 itérations)
+
+Moyenne = 15429969 (1 itérations)
+Moyenne = 2991024 (51 itérations)
+Moyenne = 2484610 (101 itérations)
+Moyenne = 2439300 (151 itérations)
+Moyenne = 2164324 (201 itérations)
+
+========================================================================
+
+V1
+Moyenne = 40629889 (1 itérations)
+Moyenne = 4305742 (50 itérations)
+Moyenne = 3407508 (100 itérations)
+Moyenne = 3376000 (150 itérations)
+Moyenne = 3277984 (200 itérations)
+
+Moyenne = 15561989 (1 itérations)
+Moyenne = 3102620 (50 itérations)
+Moyenne = 2649276 (100 itérations)
+Moyenne = 2831577 (150 itérations)
+Moyenne = 2824408 (200 itérations)
+
+Moyenne = 15592358 (1 itérations)
+Moyenne = 2518245 (100 itérations)
+Moyenne = 2175109 (200 itérations)
+
+Moyenne = 15162843 (1 itérations)
+Moyenne = 3805455 (51 itérations)
+Moyenne = 2916840 (101 itérations)
+Moyenne = 2517991 (151 itérations)
+Moyenne = 2349671 (201 itérations)
+
+Moyenne = 15183090 (1 itérations)
+Moyenne = 3547280 (51 itérations)
+Moyenne = 2844573 (101 itérations)
+Moyenne = 2720754 (151 itérations)
+Moyenne = 2568590 (201 itérations)
+
+Moyenne = 20306601 (1 itérations)
+Moyenne = 3334985 (51 itérations)
+Moyenne = 2524752 (101 itérations)
+Moyenne = 2326016 (151 itérations)
+Moyenne = 2240207 (201 itérations)
+
+Moyenne = 15284891 (1 itérations)
+Moyenne = 2977929 (51 itérations)
+Moyenne = 2537828 (101 itérations)
+Moyenne = 2423397 (151 itérations)
+Moyenne = 2137041 (201 itérations)
+
+Moyenne = 14778115 (1 itérations)
+Moyenne = 3074492 (51 itérations)
+Moyenne = 2223496 (101 itérations)
+Moyenne = 1906675 (151 itérations)
+Moyenne = 1716082 (201 itérations)
+
+Moyenne = 15726732 (1 itérations)
+Moyenne = 3147836 (51 itérations)
+Moyenne = 2827371 (101 itérations)
+Moyenne = 2809485 (151 itérations)
+Moyenne = 2603353 (201 itérations)
+
+Moyenne = 14388130 (1 itérations)
+Moyenne = 3197931 (51 itérations)
+Moyenne = 2623408 (101 itérations)
+Moyenne = 2556014 (151 itérations)
+Moyenne = 2394202 (201 itérations)
+
+Moyenne = 17384707 (1 itérations)
+Moyenne = 4117402 (51 itérations)
+Moyenne = 2819980 (101 itérations)
+Moyenne = 2389614 (151 itérations)
+Moyenne = 2087551 (201 itérations)
+
+Moyenne = 16016710 (1 itérations)
+Moyenne = 3302517 (51 itérations)
+Moyenne = 2382815 (101 itérations)
+Moyenne = 2024154 (151 itérations)
+Moyenne = 1839023 (201 itérations)
+
+Moyenne = 15059311 (1 itérations)
+Moyenne = 2752351 (51 itérations)
+Moyenne = 2085050 (101 itérations)
+Moyenne = 1669811 (151 itérations)
+Moyenne = 1428737 (201 itérations)
+
+Moyenne = 15249909 (1 itérations)
+Moyenne = 4248925 (51 itérations)
+Moyenne = 2917619 (101 itérations)
+Moyenne = 2363239 (151 itérations)
+Moyenne = 2092249 (201 itérations)
+
+Moyenne = 15518101 (1 itérations)
+Moyenne = 3477180 (51 itérations)
+Moyenne = 2773166 (101 itérations)
+Moyenne = 2694978 (151 itérations)
+Moyenne = 2346951 (201 itérations)
+
+========================BIGTEST=========================================
+V0
+Moyenne = 3242082 (200 itérations)
+Moyenne = 1996764 (400 itérations)
+Moyenne = 1503341 (600 itérations)
+Moyenne = 1251646 (800 itérations)
+Moyenne = 1116822 (1000 itérations)
+
+Moyenne = 2950084 (200 itérations)
+Moyenne = 1752779 (400 itérations)
+Moyenne = 1394074 (600 itérations)
+Moyenne = 1180719 (800 itérations)
+Moyenne = 1059229 (1000 itérations)
+
+Moyenne = 2910452 (200 itérations)
+Moyenne = 1895402 (400 itérations)
+Moyenne = 1473474 (600 itérations)
+Moyenne = 1231289 (800 itérations)
+Moyenne = 1092780 (1000 itérations)
+
+Moyenne = 2639892 (200 itérations)
+Moyenne = 1614113 (400 itérations)
+Moyenne = 1266050 (600 itérations)
+Moyenne = 1073851 (800 itérations)
+Moyenne = 971273 (1000 itérations)
+
+Moyenne = 3154052 (200 itérations)
+Moyenne = 1927828 (400 itérations)
+Moyenne = 1469447 (600 itérations)
+Moyenne = 1222848 (800 itérations)
+Moyenne = 1094591 (1000 itérations)
+
+Moyenne = 3275347 (200 itérations)
+Moyenne = 2143909 (400 itérations)
+Moyenne = 1700594 (600 itérations)
+Moyenne = 1407572 (800 itérations)
+Moyenne = 1228353 (1000 itérations)
+
+Moyenne = 2951395 (200 itérations)
+Moyenne = 1823519 (400 itérations)
+Moyenne = 1420955 (600 itérations)
+Moyenne = 1199206 (800 itérations)
+Moyenne = 1062761 (1000 itérations)
+
+Moyenne = 2924720 (200 itérations)
+Moyenne = 1757652 (400 itérations)
+Moyenne = 1365045 (600 itérations)
+Moyenne = 1141643 (800 itérations)
+Moyenne = 1010851 (1000 itérations)
+
+Moyenne = 2945795 (200 itérations)
+Moyenne = 1906519 (400 itérations)
+Moyenne = 1470699 (600 itérations)
+Moyenne = 1255332 (800 itérations)
+Moyenne = 1100264 (1000 itérations)
+
+Moyenne = 3185756 (200 itérations)
+Moyenne = 1963261 (400 itérations)
+Moyenne = 1502399 (600 itérations)
+Moyenne = 1247852 (800 itérations)
+Moyenne = 1099731 (1000 itérations)
+
+Moyenne = 3108001 (200 itérations)
+Moyenne = 1915602 (400 itérations)
+Moyenne = 1467869 (600 itérations)
+Moyenne = 1229532 (800 itérations)
+Moyenne = 1074521 (1000 itérations)
+
+MT200 = 3026143
+
+MT600 = 1457631
+
+MT1000= 1082834
+
+========================================================================
+V1
+Moyenne = 3103342 (200 itérations)
+Moyenne = 2198878 (400 itérations)
+Moyenne = 1844186 (600 itérations)
+Moyenne = 1505952 (800 itérations)
+Moyenne = 1314362 (1000 itérations)
+
+Moyenne = 2492147 (200 itérations)
+Moyenne = 1624590 (400 itérations)
+Moyenne = 1277002 (600 itérations)
+Moyenne = 1078693 (800 itérations)
+Moyenne = 970459 (1000 itérations)
+
+Moyenne = 3339815 (200 itérations)
+Moyenne = 2253246 (400 itérations)
+Moyenne = 1732196 (600 itérations)
+Moyenne = 1420384 (800 itérations)
+Moyenne = 1224065 (1000 itérations)
+
+Moyenne = 2968496 (200 itérations)
+Moyenne = 2042341 (400 itérations)
+Moyenne = 1592987 (600 itérations)
+Moyenne = 1325084 (800 itérations)
+Moyenne = 1156373 (1000 itérations)
+
+Moyenne = 3074506 (200 itérations)
+Moyenne = 1936224 (400 itérations)
+Moyenne = 1465398 (600 itérations)
+Moyenne = 1210924 (800 itérations)
+Moyenne = 1051229 (1000 itérations)
+
+Moyenne = 3188190 (200 itérations)
+Moyenne = 2018263 (400 itérations)
+Moyenne = 1564152 (600 itérations)
+Moyenne = 1289745 (800 itérations)
+Moyenne = 1128611 (1000 itérations)
+
+Moyenne = 2287489 (200 itérations)
+Moyenne = 1455347 (400 itérations)
+Moyenne = 1167199 (600 itérations)
+Moyenne = 1021642 (800 itérations)
+Moyenne = 899809 (1000 itérations)
+
+Moyenne = 2432649 (200 itérations)
+Moyenne = 1503066 (400 itérations)
+Moyenne = 1231624 (600 itérations)
+Moyenne = 1087791 (800 itérations)
+Moyenne = 968874 (1000 itérations)
+
+Moyenne = 3105400 (200 itérations)
+Moyenne = 2002087 (400 itérations)
+Moyenne = 1508484 (600 itérations)
+Moyenne = 1256636 (800 itérations)
+Moyenne = 1109084 (1000 itérations)
+
+Moyenne = 3130892 (200 itérations)
+Moyenne = 2163427 (400 itérations)
+Moyenne = 1740048 (600 itérations)
+Moyenne = 1443758 (800 itérations)
+Moyenne = 1258120 (1000 itérations)
+
+MT200 = 2630592
+
+MT600 = 1512327
+
+MT1000= 1108098
+
+comparaison
+	V0			 <		V1
+MT200 = 3026143	 >	MT200 = 2630592
+
+MT600 = 1457631	 <	MT600 = 1512327
+
+MT1000= 1082834	 <	MT1000= 1108098
+
+sensiblement pareil.
