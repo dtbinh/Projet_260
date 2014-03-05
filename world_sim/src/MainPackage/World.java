@@ -115,11 +115,18 @@ public class World {
      * Update the world state and return an array for the current world state (may be used for display)
      * @return
      */
+    long valTps=0;
+    int incr=0;
     public void step() {
+        long tps = System.nanoTime();
         stepEnvironnement();
         stepWorld();
         stepAgents();
+        valTps+=System.nanoTime()-tps;
         
+        incr++;
+        if(incr%50 == 1)
+        System.out.println("Moyenne = " + (long)(valTps/incr) + " (" + incr + " itérations)");
         sprite.repaint();
     }
     
