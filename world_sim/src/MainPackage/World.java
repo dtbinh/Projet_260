@@ -125,7 +125,7 @@ public class World {
         valTps+=System.nanoTime()-tps;
         
         incr++;
-        if(incr%50 == 1)
+        if(incr%200 == 0 && incr <=1000)
         System.out.println("Moyenne = " + (long)(valTps/incr) + " (" + incr + " itérations)");
         sprite.repaint();
     }
