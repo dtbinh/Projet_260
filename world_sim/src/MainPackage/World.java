@@ -316,16 +316,14 @@ public class World {
                     case Case.GENLAVE:
                        if(Case.getVar(tableauItem[x][y]) == 0){
                             if(pEruption >= Math.random()){
-                                bufferItem[x][y] += 8;
+                                bufferItem[x][y] = Case.GENLAVE+8;
                             }
                         }else{
                             voisins = getVoisins(tableauItem, x, y);
                             for (int i = 0; i < 4; i++) {
                                 if(Case.getVal(voisins[i])!= Case.GENLAVE) {
                                     bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
-                                            = Case.LAVE;
-                                    bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
-                                            = 9 - Case.getVar(bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]);
+                                            = Case.LAVE+9;
                                 }
                             }
                             bufferItem[x][y] += (pFinErupt>= Math.random())?-1:0;
