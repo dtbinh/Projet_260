@@ -36,7 +36,7 @@ public class Loups extends Agent {
                     }
                 }
             }
-            if (_world.containVoisins(_x, _y,Case.FEU) || _world.containVoisins(_x, _y,Case.LAVE)) {
+            if (_world.containVoisinsItem(_x, _y,Case.FEU) || _world.containVoisinsItem(_x, _y,Case.LAVE)) {
                 setmort();
                 constitution=-1;
             }
@@ -48,13 +48,13 @@ public class Loups extends Agent {
     }
 
     private void setDir() {
-        int feuProche[]=_world.getPlusProche(_x,_y,_vision,Case.FEU);
+        int feuProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.FEU);
         if(feuProche[0]!=-1){
             _objectif=feuProche;
             _fuis=true;
             return;
         }
-        int laveProche[]=_world.getPlusProche(_x,_y,_vision,Case.LAVE);
+        int laveProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.LAVE);
         if(laveProche[0]!=-1){
             _objectif=laveProche;
             _fuis=true;

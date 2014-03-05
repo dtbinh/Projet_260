@@ -14,46 +14,48 @@ import java.util.Scanner;
 public class Case {
     // contenu dans les cases: 0X à 99X
     public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40, LAVE=50, GENLAVE=100;
-    // types de terrain: 0XXX à 9XXX
-    public static final int TERRE=0000, ROCHE=1000, SABLE=2000, HERBE=3000;
-    // altitudes: 0XXXX à 99XXXX, avec 0 = bas et 99 = haut          EXEMPLE: 852035 = 85 d'altitude, 2= sable, 03 = eau, 5 = profondeur moyenne
+    // types de terrain: 0X à 99X
+    public static final int TERRE=0, ROCHE=10, SABLE=20, HERBE=30;
+    // altitudes: 0 à 99, avec 0 = bas et 99 = haut
     
     public static int getVar(int i){return i%10;}
-    public static int setVar(int val, int ajout){return (val/10)*10+(((val%10)+ajout)%10);}
-    public static int getType(int i){return ((i/10)%100)*10;}
-    public static int setType(int val, int type){return (val-(getType(val))+type);}
-    public static int getTerrain(int i){return ((i/1000)%10)*1000;}
-    public static int setTerrain(int val, int terrain){return (val-(getTerrain(val))+terrain);}
-    public static int getAltitude(int i){return (i/10000)*10000;}
-    
+    public static int getVal(int i){return (i/10)*10;}
     
     // GENERATEUR DE MONDE:
     
-    public static final int NIVEAUEAU=50000, NIVEAUSABLE=80000, NIVEAUHERBE=700000, NIVEAULAVE=980000;
-    
-    private static int[][] makeWorld(int tab[][])
+    public static final int NIVEAUEAU=5, NIVEAUSABLE=8, NIVEAUHERBE=70, NIVEAULAVE=98;
+    /**
+     * Fabrique le monde
+     * Tableau 1= altitude
+     * Tableau 2= terrain
+     * Tableau 3= objets
+     */
+    private static int[][][] makeWorld(int tab[][])
     {
+        //tableau 2 = item,
+        //tableau 1 = terrain
+        //tableau 0 = altitude
+        int returnTab[][][] = new int[3][tab.length][tab[0].length];
         for(int i=0; i<tab.length;i++){
             for(int j=0; j<tab[0].length;j++){
-                tab[i][j]*=10000;
-                if(getAltitude(tab[i][j]) <= NIVEAUEAU){
-                    tab[i][j] = setType(tab[i][j], EAU)+(int)(Math.random()*5)+3;
+                returnTab[0][i][j]=tab[i][j];
+                if(tab[i][j] <= NIVEAUEAU){
+                    returnTab[2][i][j] = Case.EAU+(int)(Math.random()*5)+3;
                 }
-
-                if(getAltitude(tab[i][j]) <= NIVEAUSABLE){
-                    tab[i][j] = setTerrain(tab[i][j], SABLE);
-                }else if(getAltitude(tab[i][j]) <= NIVEAUHERBE){
-                    tab[i][j] = setTerrain(tab[i][j], HERBE);
+                if(tab[i][j] <= NIVEAUSABLE){
+                    returnTab[1][i][j] = Case.SABLE;
+                }else if(tab[i][j] <= NIVEAUHERBE){
+                    returnTab[1][i][j] = Case.HERBE;
                 }else{
-                    tab[i][j] = setTerrain(tab[i][j], ROCHE);
-                    if(getAltitude(tab[i][j]) >= NIVEAULAVE){
-                        tab[i][j] = setType(tab[i][j], GENLAVE);
+                    returnTab[1][i][j] = Case.ROCHE;
+                    if(tab[i][j] >= NIVEAULAVE){
+                        returnTab[2][i][j] = Case.GENLAVE;
                     }
                 }
-
             }
         }
-        return tab;
+            
+        return returnTab;
     }
     
     // A partir d'images niveau de gris (PGM)
@@ -64,7 +66,7 @@ public class Case {
      * @param nom
      * @return 
      */
-    public static int[][] generateurImage1(String nom)
+    public static int[][][] generateurImage1(String nom)
     {
         int ret[][] = new int[0][0];
         short max=0;
@@ -131,13 +133,6 @@ public class Case {
         catch (Exception e){
                 System.out.println("ERREUR: "+ e.toString());
         }
-        /* Affichage pour débuguer
-        for(int i=0;i<ret.length;i++){
-            for(int j=0;j<ret[0].length;j++){
-                System.out.print(ret[i][j]);
-            }
-            System.out.println();
-        }*/
         
         // Pour chaque pixel de l'image, altitude du pixel du tableau = (int)((pixel/255)*99)
         for(int i=0;i<ret.length;i++){
@@ -146,9 +141,9 @@ public class Case {
             }
         }
         
-        ret = makeWorld(ret);
+        int returnTab[][][] = makeWorld(ret);
         
-        return ret;
+        return returnTab;
     }
     
     
@@ -228,6 +223,7 @@ public class Case {
      * @param hauteur
      * @return LE MONDE
      */
+    /*
     public static int[][] generateurPerlin(int largeur, int hauteur)
             {
                 int[][] ret = initBruit2D(largeur, hauteur);
@@ -243,5 +239,5 @@ public class Case {
                 
                 return ret;
             }
-    
+    */
 }

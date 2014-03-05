@@ -325,11 +325,11 @@ public abstract class Agent {
         int voisins[] = new int[4];
         int j = 3;
         for (int i = 1; i < 8; i += 2) {
-            voisins[j] = _world.getCellVal((_x - 1 + i % 3 + _world.getWidth()) % _world.getHeight(), (_y - 1 + i / 3 + _world.getWidth()) % _world.getHeight());
+            voisins[j] = _world.getCellItem((_x - 1 + i % 3 + _world.getWidth()) % _world.getHeight(), (_y - 1 + i / 3 + _world.getWidth()) % _world.getHeight());
             j=(j+1)%4;
         }
         for (int i=0; i<4; i++){
-            if((Case.getType(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2) || (Case.getType(voisins[i]) == Case.LAVE) || (Case.getType(voisins[i]) == Case.FEU)) {
+            if((Case.getVal(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2) || (Case.getVal(voisins[i]) == Case.LAVE) || (Case.getVal(voisins[i]) == Case.FEU)) {
                 ret[i]=false;
             }else{
                 ret[i]=true;

@@ -7,8 +7,10 @@ public class World {
 
     private int _dx;
     private int _dy;
-    private int[][] tableauCourant;
-    private int[][] nouveauTableau;
+    private int[][] tableauItem;
+    private int[][] bufferItem;
+    private int[][] tableauAltitude;
+    private int[][] tableauTerrain;
     private ArrayList<Agent> agents;
     private Sprite sprite;
     
@@ -64,28 +66,41 @@ public class World {
     private boolean jour; // indique si on est le jour ou la nuit
     private final int dureeJour = 300; //durée en itérations d'une journée complète
     public World(String nom){
-        tableauCourant = Case.generateurImage1(nom);
-        _dx = tableauCourant.length;
-        _dy = tableauCourant[0].length;
+        int tab[][][] = Case.generateurImage1(nom);
+        
+        _dx = tab[0].length;
+        _dy = tab[0][0].length;
+        tableauItem = new int[_dx][_dy];
+        tableauTerrain = new int[_dx][_dy];
+        tableauAltitude = new int[_dx][_dy];
+        
+        for(int i=0;i<_dx;i++){
+            for(int j=0;j<_dy;j++){
+                tableauItem[i][j]=tab[2][i][j];
+                tableauTerrain[i][j]=tab[1][i][j];
+                tableauAltitude[i][j]=tab[0][i][j];
+            }
+        }
+        
         temps = 0;
         jour = true;
         agents = new ArrayList<Agent>();
 
-        nouveauTableau = new int[_dx][_dy];
+        bufferItem = new int[_dx][_dy];
         
         for(int i=0;i<_dx;i++){
             for(int j=0;j<_dy;j++){
-                nouveauTableau[i][j]=tableauCourant[i][j];
+                bufferItem[i][j]=tableauItem[i][j];
             }
         }
         
         for (int x = 0; x != _dx; x++) {
             for (int y = 0; y != _dy; y++) {
-                if((Case.getTerrain(tableauCourant[x][y])==Case.TERRE
-                        || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)
-                        && Case.getAltitude(tableauCourant[x][y])>=650000 ){
+                if((tableauTerrain[x][y]==Case.TERRE
+                        || tableauTerrain[x][y]==Case.HERBE)
+                        && tableauAltitude[x][y]>=65){
                     if (densite >= Math.random()) {
-                        tableauCourant[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                        tableauItem[x][y] = Case.ARBRE;
                     }
                 }
             }// arbres
@@ -140,39 +155,40 @@ public class World {
 
     public void stepWorld() // world THEN agents
     {
-        for (int x = 0; x != tableauCourant.length; x++) {
-            for (int y = 0; y != tableauCourant[0].length; y++) {
+        for (int x = 0; x != tableauItem.length; x++) {
+            for (int y = 0; y != tableauItem[0].length; y++) {
                 int voisins[];
-                switch (Case.getType(tableauCourant[x][y])) {
+                switch (Case.getVal(tableauItem[x][y])) {
                     case Case.VIDE:
-                        if( (Case.getTerrain(tableauCourant[x][y])==Case.TERRE || Case.getTerrain(tableauCourant[x][y])==Case.HERBE)){
-                            voisins = getVoisins(tableauCourant, x, y);
+                        if(tableauTerrain[x][y]==Case.TERRE
+                                || tableauTerrain[x][y]==Case.HERBE){
+                            voisins = getVoisins(tableauItem, x, y);
                             double pArbre=0;
                             for(int i=0; i<4; i++){
-                                if(Case.getType(voisins[i])==Case.ARBRE){
+                                if(voisins[i]==Case.ARBRE){
                                     pArbre += pArbreApparait;
                                 }
                             }
                             if (pArbre >= Math.random()) {
-                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                                bufferItem[x][y] = Case.ARBRE;
                                 break;
                             }
                         }
                         if (pluie) {
                             if (pGoutte >= Math.random()) {
-                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.EAU);
+                                bufferItem[x][y] = Case.EAU;
                             }
                         }
                         break;
 
                     case Case.ARBRE:
-                        voisins = getVoisins(tableauCourant, x, y);
+                        voisins = getVoisins(tableauItem, x, y);
                         boolean feu = false;
                         if ((pArbreFeu * (1 + varFeu)) >= Math.random()) {
                             feu = true;
                         } else {
                             for (int i = 0; i < 4; i++) {
-                                if (Case.getType(voisins[i]) == Case.FEU) {
+                                if (voisins[i] == Case.FEU) {
                                     if (i == vent.getVal()) {
                                         if((1 + varFeu) >= Math.random()) {
                                             feu = true;
@@ -189,65 +205,67 @@ public class World {
                                             break;
                                         }
                                     }
-                                }else if(Case.getType(voisins[i]) == Case.LAVE){
+                                }else if(voisins[i] == Case.LAVE){
                                     feu = true;
                                 }
                             }
                         }
 
                         if (feu) {
-                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.FEU);
+                            bufferItem[x][y] = Case.FEU;
                         } else {
-                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.ARBRE);
+                            bufferItem[x][y] = Case.ARBRE;
                         }
                         break;
 
                     case Case.FEU:
-                        nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.CENDRES);
+                        bufferItem[x][y] = Case.CENDRES;
                         break;
 
                     case Case.CENDRES:
                         if (pCendreDisparait >= Math.random()) {
-                            nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
+                            bufferItem[x][y] = Case.VIDE;
                         }
                         break;
 
                     case Case.EAU:
                         //Evaporation
-                        if (Case.getVar(tableauCourant[x][y]) == 0) {
+                        if (Case.getVar(tableauItem[x][y]) == 0) {
                             if (pEvaporation >= Math.random()) {
-                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
+                                bufferItem[x][y] = Case.VIDE;
                             }
                         } else {
-                            voisins = getVoisins(tableauCourant, x, y);
-                            nouveauTableau[x][y] = tableauCourant[x][y];
+                            voisins = getVoisins(tableauItem, x, y);
+                            int voisinsAltitude[] = getVoisins(tableauAltitude, x, y);
+                            bufferItem[x][y] = tableauItem[x][y];
                             int rand = (int) (Math.random() * 4);
                             // Etalage
                             // Sur une case vide d'abord
-                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if ((Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
-                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES)
-                                        && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
-                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length]
-                                            = Case.setType(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length],Case.EAU);
-                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                            for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
+                                if ((Case.getVal(voisins[(i + rand) % 4]) == Case.VIDE
+                                        || Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES)
+                                        && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                    bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
+                                            = Case.EAU;
+                                    bufferItem[x][y] --;
                                 }
                             }
                             // Puis sur de l'eau moins profonde
-                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if (Case.getType(voisins[((i + rand) % 4)]) == Case.EAU
+                            for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
+                                if (Case.getVal(voisins[((i + rand) % 4)]) == Case.EAU
                                             && Case.getVar(voisins[((i + rand) % 4)]) < 9
-                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(nouveauTableau[x][y])
-                                            && Case.getAltitude(voisins[((i + rand) % 4)])<=Case.getAltitude(tableauCourant[x][y])) {
-                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.setVar(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length], 1);
-                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y])
+                                            && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                    bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
+                                            += 1;
+                                    bufferItem[x][y] -= 1;
                                 }
                             }
                             
                         }
-                        if (pluie && Case.getVar(nouveauTableau[x][y]) < 8) {
+                        if (pluie && Case.getVar(bufferItem[x][y]) < 8) {
                             if (pGoutte >= Math.random()) {
-                                nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], 1);
+                                bufferItem[x][y] += 1;
                             }
                         }
                         break;
@@ -255,38 +273,40 @@ public class World {
                         
                     case Case.LAVE:
                         //Evaporation
-                        if (Case.getVar(tableauCourant[x][y]) == 0) {                        
+                        if (Case.getVar(tableauItem[x][y]) == 0) {                        
                             if (pEvaporation >= Math.random()) {
-                                nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
+                                bufferItem[x][y] = Case.VIDE;
                             }
                         } else {
-                            voisins = getVoisins(tableauCourant, x, y);
-                            nouveauTableau[x][y] = tableauCourant[x][y];
+                            voisins = getVoisins(tableauItem, x, y);
+                            int voisinsAltitude[] = getVoisins(tableauAltitude, x, y);
+                            bufferItem[x][y] = tableauItem[x][y];
                             int rand = (int) (Math.random() * 4);
                             // Etalage
                             // Sur de la pas lave d'abord
-                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if ((Case.getType(voisins[(i + rand) % 4]) == Case.VIDE
-                                        || Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES
-                                        || (Case.getType(voisins[(i + rand) % 4]) == Case.CENDRES && Case.getVar(voisins[(i + rand) % 4]) <3))
-                                        && Case.getAltitude(voisins[(i + rand) % 4])<=Case.getAltitude(tableauCourant[x][y])) {
-                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length]
-                                            = Case.setType(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length],Case.LAVE);
-                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                            for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
+                                if ((Case.getVal(voisins[(i + rand) % 4]) == Case.VIDE
+                                        || Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES
+                                        || (Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES && Case.getVar(voisins[(i + rand) % 4]) <3))
+                                        && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                    bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
+                                            = Case.LAVE;
+                                    bufferItem[x][y]--;
                                 }
                             }
                             // Puis sur de la lave moins profonde
-                            for (int i = 0; i < 4 && Case.getVar(nouveauTableau[x][y]) > 0; i++) {
-                                if (Case.getType(voisins[((i + rand) % 4)]) == Case.LAVE
+                            for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
+                                if (Case.getVal(voisins[((i + rand) % 4)]) == Case.LAVE
                                             && Case.getVar(voisins[((i + rand) % 4)]) < 9
-                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(nouveauTableau[x][y])
-                                            && Case.getAltitude(voisins[((i + rand) % 4)])<=Case.getAltitude(tableauCourant[x][y])) {
-                                    nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length] = Case.setVar(nouveauTableau[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + nouveauTableau.length) % nouveauTableau.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + nouveauTableau[0].length) % nouveauTableau[0].length], 1);
-                                    nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y])
+                                            && voisinsAltitude[((i + rand) % 4)]<=tableauAltitude[x][y]) {
+                                    bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
+                                            += 1;
+                                    bufferItem[x][y] -= 1;
                                 }
                             }
-                            if (pEvaporation >= Math.random() && Case.getVar(nouveauTableau[x][y]) > 0) {
-                                nouveauTableau[x][y] = Case.setVar(nouveauTableau[x][y], -1);
+                            if (pEvaporation >= Math.random() && Case.getVar(bufferItem[x][y]) > 0) {
+                                bufferItem[x][y] -= 1;
                             }
                         }
                         break;
@@ -294,41 +314,40 @@ public class World {
                         
                         
                     case Case.GENLAVE:
-                       if(Case.getVar(tableauCourant[x][y]) == 0){
+                       if(Case.getVar(tableauItem[x][y]) == 0){
                             if(pEruption >= Math.random()){
-                                nouveauTableau[x][y] = Case.setVar(tableauCourant[x][y], 8);
+                                bufferItem[x][y] += 8;
                             }
                         }else{
-                            voisins = getVoisins(tableauCourant, x, y);
+                            voisins = getVoisins(tableauItem, x, y);
                             for (int i = 0; i < 4; i++) {
-                                if(Case.getType(voisins[i])!= Case.GENLAVE) {
-                                    nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]
-                                            = Case.setType(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length], Case.LAVE);
-                                    nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]
-                                            = Case.setVar(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length],
-                                            9 - Case.getVar(nouveauTableau[(x - 1 + ((i * 2 + 1) % 3) + nouveauTableau.length) % nouveauTableau.length][(y - 1 + ((i * 2 + 1) / 3) + nouveauTableau[0].length) % nouveauTableau[0].length]));
+                                if(Case.getVal(voisins[i])!= Case.GENLAVE) {
+                                    bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
+                                            = Case.LAVE;
+                                    bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
+                                            = 9 - Case.getVar(bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]);
                                 }
                             }
-                            nouveauTableau[x][y] = Case.setVar(tableauCourant[x][y], (pFinErupt>= Math.random())?-1:0);
+                            bufferItem[x][y] += (pFinErupt>= Math.random())?-1:0;
                         }
                         break;
 
                     default:
-                        nouveauTableau[x][y] = Case.setType(tableauCourant[x][y], Case.VIDE);
+                        bufferItem[x][y] = Case.VIDE;
                 }
-                switch(Case.getTerrain(tableauCourant[x][y])){
+                switch(Case.getVal(tableauTerrain[x][y])){
                     case Case.TERRE:
                         if (pHerbe >= Math.random()) {
-                            nouveauTableau[x][y] = Case.setTerrain(tableauCourant[x][y], Case.HERBE);
+                            tableauTerrain[x][y] = Case.HERBE;
                         }
                         break;
                 }
             }
         }
 
-        for (int x = 0; x != tableauCourant.length; x++){
-            for (int y = 0; y != tableauCourant[0].length; y++) {
-                tableauCourant[x][y] = nouveauTableau[x][y];
+        for (int x = 0; x != tableauItem.length; x++){
+            for (int y = 0; y != tableauItem[0].length; y++) {
+                tableauItem[x][y] = bufferItem[x][y];
             }
         }
         
@@ -398,13 +417,13 @@ public class World {
     }
 
     /**
-     * Renvoie la position de la case type la plus proche de x/y (dans un tableau {x,y} ) dans un rayon portée
+     * Renvoie la position de la case item la plus proche de x/y (dans un tableau {x,y} ) dans un rayon portée
      * @param x, y, portee, type
      */
-    public int[] getPlusProche(int x, int y, int portee, int type)
+    public int[] getPlusProcheItem(int x, int y, int portee, int type)
     {
         int ret[] = {-1,-1};
-        if(getCellType(x,y)==type){
+        if(Case.getVal(getCellItem(x,y))==type){
             ret[0]=x; ret[1]=y;
             return ret;
         }
@@ -413,28 +432,76 @@ public class World {
                 for(int k=0;k<4;k++){
                     switch(k){
                         case 0:
-                            if((getCellType((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type)) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 1:
-                            if((getCellType((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type)) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 2:
-                            if((getCellType((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type)) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 3:
-                            if((getCellType((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type)) == type){
+                                ret[0]=(x+(iP-j)+_dx)%_dx;
+                                ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
+                                return ret;
+                            }
+                            break;
+                        default:
+                            System.out.println("I AM ERROR, getPlusProche");
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+    
+    public int[] getPlusProcheTerrain(int x, int y, int portee, int type)
+    {
+     int ret[] = {-1,-1};
+        if(Case.getVal(getCellItem(x,y))==type){
+            ret[0]=x; ret[1]=y;
+            return ret;
+        }
+        for(int iP=1; iP<=portee;iP++){
+            for(int j=0; j<=iP; j++){
+                for(int k=0;k<4;k++){
+                    switch(k){
+                        case 0:
+                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
+                                ret[0]=(x-(iP-j)+_dx)%_dx;
+                                ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
+                                return ret;
+                            }
+                            break;
+                        case 1:
+                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                                ret[0]=(x+(iP-j)+_dx)%_dx;
+                                ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
+                                return ret;
+                            }
+                            break;
+                        case 2:
+                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                                ret[0]=(x-(iP-j)+_dx)%_dx;
+                                ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
+                                return ret;
+                            }
+                            break;
+                        case 3:
+                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
@@ -572,13 +639,28 @@ public class World {
     }
 
     /**
-     * Renvoie true si une case adjacente à cellX/cellY contient un type égale à type dans tableauCourant.
+     * Renvoie true si une case adjacente à cellX/cellY contient un type égale à type dans tableauItem.
      * @param cellX, cellY, type
      */
-    public boolean containVoisins(int cellX, int cellY, int type) {
+    public boolean containVoisinsItem(int cellX, int cellY, int type) {
         int j = 0;
         for (int i = 1; i < 8; i += 2) {
-            if ((tableauCourant[(cellX - 1 + i % 3 + tableauCourant.length) % tableauCourant.length][(cellY - 1 + i / 3 + tableauCourant[0].length) % tableauCourant[0].length] & type) == type) {
+            if (Case.getVal(tableauItem[(cellX - 1 + i % 3 + tableauItem.length) % tableauItem.length][(cellY - 1 + i / 3 + tableauItem[0].length) % tableauItem[0].length] & type) == type) {
+                return true;
+            }
+            j++;
+        }
+        return false;
+    }
+    
+    /**
+     * Renvoie true si une case adjacente à cellX/cellY contient un type égale à type dans tableauItem.
+     * @param cellX, cellY, type
+     */
+    public boolean containVoisinsTerrain(int cellX, int cellY, int type) {
+        int j = 0;
+        for (int i = 1; i < 8; i += 2) {
+            if (Case.getVal(tableauTerrain[(cellX - 1 + i % 3 + tableauTerrain.length) % tableauTerrain.length][(cellY - 1 + i / 3 + tableauTerrain[0].length) % tableauTerrain[0].length]) == type) {
                 return true;
             }
             j++;
@@ -587,36 +669,36 @@ public class World {
     }
 
     /**
-     * Renvoie la valeur complète de tableauCourant à la position x/y
+     * Renvoie l'index de la valeur (seulement les dizaines) de tableauItem à la position x/y
      * @param x, y
      */
-    public int getCellVal(int x, int y) {
-        return tableauCourant[x][y];
-    }
-
-    /**
-     * Renvoie l'index de la valeur (seulement les dizaines) de tableauCourant à la position x/y
-     * @param x, y
-     */
-    public int getCellType(int x, int y) { //renvoie la val /10 *10
-        return Case.getType(tableauCourant[x][y]);
+    public int getCellItem(int x, int y) {
+        return tableauItem[x][y];
     }
     
     /**
-     * Renvoie le terrain de tableauCourant à la position x/y
+     * Renvoie le terrain de tableauTerrain à la position x/y
      * @param x, y
      */
-    public int getCellTerrain(int x, int y) { //renvoie la val /10 *10
-        return Case.getTerrain(tableauCourant[x][y]);
+    public int getCellTerrain(int x, int y) {
+        return tableauTerrain[x][y];
     }
 
     /**
      * Met la valeure z à la position x, y de l'environnement.
      * @param x, y
      */
-    public void setCellVal(int x, int y, int z) { // La modification ne fonctionne à partir d'un agent que si les deux tab.
-        tableauCourant[x][y] = z;
-        nouveauTableau[x][y] = z;
+    public void setCellTypeVal(int x, int y, int z) { // La modification ne fonctionne à partir d'un agent que si les deux tab.
+        tableauItem[x][y] = z;
+        bufferItem[x][y] = z;
+    }
+    
+    /**
+     * Met la valeure z à la position x, y de l'environnement.
+     * @param x, y
+     */
+    public void setCellTerrainVal(int x, int y, int z) {
+        tableauTerrain[x][y] = z;
     }
 
     /**

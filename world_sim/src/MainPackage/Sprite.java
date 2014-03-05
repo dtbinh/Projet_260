@@ -80,7 +80,7 @@ public class Sprite extends JPanel {
 		for ( int i = 0 ; i < world.getWidth() ; i++ ){
 			for ( int j = 0 ; j < world.getHeight() ; j++ ){
                             
-                            switch(Case.getTerrain(world.getCellVal(i, j))){
+                            switch(Case.getVal(world.getCellTerrain(i, j))){
                                 case Case.SABLE:
                                     g2.drawImage(sandSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;
@@ -95,7 +95,7 @@ public class Sprite extends JPanel {
                                     break;
                                 }
                             
-                            switch(world.getCellType(i, j)){
+                            switch(Case.getVal(world.getCellItem(i, j))){
                                 case Case.ARBRE:
                                     g2.drawImage(treeSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;
@@ -106,7 +106,7 @@ public class Sprite extends JPanel {
                                     g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;*/
                                 case Case.EAU:
-                                    switch (Case.getVar(world.getCellVal(i, j))) {
+                                    switch (Case.getVar(world.getCellItem(i, j))) {
                                         case 0:
                                         case 1:
                                         case 2:
