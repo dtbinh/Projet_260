@@ -5,8 +5,8 @@ Bug:
 	
 Problèmes:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
-	- La vision de cases prend trop de ressources (mais on peut rien y faire (voir quadtree))
-	- A priori la génération aléatoire ne marche pas très bien...
+	- La vision de cases prend trop de ressources, il faut faire un quadtree.
+	- A priori la génération aléatoire ne marche pas très bien. (mais de toute façon il faudrait la refaire entièrement)
 ========================================================================
 
 TODO:
@@ -17,8 +17,11 @@ IDEES:
 	- Ajouter constructeur de monde (à la paint, pour créer soit même son monde avec ses variables)
 	- Trouver quelque chose pour voir le relief
 	- Mettre le monde dans une boite rezisable
-	
-A FAIRe:
+	- Boutons pour que le joueur interagisse avec le monde (déclence la pluie ou des éruptions, etc etc)
+
+A FAIRE:
+	- CHANGER LA PUTAIN D'IMAGE DE L'HERBE DE MES DEUX.
+	- Faire des quadtree pour le terrain pour accélérer la recherche.
 	- Les bestioles agissent différement en fonction du jour/nuit
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt.
