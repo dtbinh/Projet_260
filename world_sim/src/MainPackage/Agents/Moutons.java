@@ -13,7 +13,7 @@ public class Moutons extends Agent {
     
     //cosntructeur reprod
     public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 100, 300, 2, 3, 1, __ADN);
+        super(__x, __y, __w, 100, 300, 2, 3, 10, __ADN);
         diurne=true;
     }
 
@@ -75,14 +75,14 @@ public class Moutons extends Agent {
             }
         }
         
-        if(_faim<_faimMax){
+        //if(_faim<_faimMax){
             int herbeProche[]=_world.getPlusProche(_x,_y,_vision,Case.HERBE);
             if(herbeProche[0]!=-1){
                 _objectif=herbeProche;
                 _fuis=false;
                 return;
             }
-        }
+        //}
         
         if (Math.random() > 0.5) // au hasard
         {
@@ -97,5 +97,9 @@ public class Moutons extends Agent {
     @Override public void creationBebe(Agent reproducteur)
     {
         _world.add(new Moutons(_x, _y, _world,muteADN(_ADN, reproducteur._ADN)));
+    }
+    
+    @Override public boolean getMature() {
+        return (_age>_ageMax*0.1);
     }
 }

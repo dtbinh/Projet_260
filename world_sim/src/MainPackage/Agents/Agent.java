@@ -71,7 +71,6 @@ public abstract class Agent {
             int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __tpsGestation, int __ADN) {
         
         tryMove=0;
-        sommeil=100;
         dort=false;
         constitution=10;
         gestation = -1;
@@ -91,6 +90,7 @@ public abstract class Agent {
         _fuis = false;
         _age=0;
         _ADN=__ADN;
+        sommeil=_world.getDureeJour();
         diurne=true;
         
         
@@ -169,7 +169,7 @@ public abstract class Agent {
      */
     protected int muteADN(int ADN1, int ADN2)
     {
-        int newADN=(ADN1 | ADN2)-(int)(Math.random()*Math.pow(10, TAILLEADN));
+        int newADN=(ADN1 | ADN2);
         int potentiel=(int)(Math.random()*5);
         return addADN(newADN, potentiel);
     }
@@ -351,8 +351,8 @@ public abstract class Agent {
         _age++;
         if(dort){
             sommeil++;
-        }else{
-            sommeil--;
+        }else if(_world.getJour() != diurne){
+            sommeil-=2;
         }
         if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
             dort=true;

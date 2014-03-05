@@ -62,8 +62,7 @@ public class World {
      */
     private int temps; // compte les itérations du temps de la journée
     private boolean jour; // indique si on est le jour ou la nuit
-    private final int duree = 300; //durée en itérations d'une journée complète
-    private final int transition = 200; // moment où on passe du jour à la nuit
+    private final int dureeJour = 300; //durée en itérations d'une journée complète
     public World(String nom){
         tableauCourant = Case.generateurImage1(nom);
         _dx = tableauCourant.length;
@@ -128,10 +127,10 @@ public class World {
         
         varFeu=( (pluie)?vfPluie:0 ) + ( (vent==Directions.NONE)?vfVent:0 );
     
-        if(temps++ > duree){
+        if(temps++ > dureeJour){
             temps=0;
         }
-        if(temps > transition){
+        if(temps > dureeJour/2){
             jour=false;
         }else{
             jour=true;
@@ -656,4 +655,6 @@ public class World {
     }
     
     public boolean getJour(){return jour;}
+    
+    public int getDureeJour(){return dureeJour/2;}
 }
