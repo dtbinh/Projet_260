@@ -157,6 +157,9 @@ public class World {
         for (int x = 0; x != tableauItem.length; x++) {
             for (int y = 0; y != tableauItem[0].length; y++) {
                 int voisins[];
+                int voisinsM[];
+                int voisinsAltitude[];
+                int rand;
                 switch (Case.getVal(tableauItem[x][y])) {
                     case Case.VIDE:
                         if(tableauTerrain[x][y]==Case.TERRE
@@ -176,6 +179,34 @@ public class World {
                         if (pluie) {
                             if (pGoutte >= Math.random()) {
                                 bufferItem[x][y] = Case.EAU;
+                                tableauItem[x][y] = Case.EAUMOD;
+                                break;
+                            }
+                        }
+                        voisins = getVoisins(tableauItem, x, y);
+                        voisinsM = getVoisins(bufferItem, x, y);
+                        voisinsAltitude = getVoisins(tableauAltitude, x, y);
+                        rand = (int) (Math.random() * 4);
+                        for (int i = 0; i < 4; i++) {
+                            boolean eaumod=(Case.getVal(voisins[((i + rand) % 4)]) == Case.EAUMOD);
+                            if ((eaumod)?
+                                    (Case.getVal(voisinsM[((i + rand) % 4)]) == Case.EAU
+                                    && Case.getVar(voisinsM[((i + rand) % 4)]) > 0)
+                                    :
+                                    (Case.getVal(voisins[((i + rand) % 4)]) == Case.EAU
+                                        && Case.getVar(voisins[((i + rand) % 4)]) > 0)
+                                        && voisinsAltitude[(i + rand) % 4]>=tableauAltitude[x][y]) {
+                                int valx=(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length;
+                                int valy=(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length;
+                                int mod = ((eaumod)?Case.getVar(tableauItem[valx][valy])
+                                        :Case.getVar(bufferItem[valx][valy]))/2;
+                                if(eaumod){
+                                    bufferItem[valx][valy] -= mod;
+                                }else{
+                                    tableauItem[valx][valy] -= mod;
+                                }
+                                bufferItem[x][y] = Case.EAU+mod;
+                                tableauItem[x][y] = Case.EAUMOD;
                             }
                         }
                         break;
@@ -227,6 +258,10 @@ public class World {
                         }
                         break;
 
+                        
+                    case Case.EAUMOD:
+                        //do nothing
+                        break;
                     case Case.EAU:
                         //Evaporation
                         if (Case.getVar(tableauItem[x][y]) == 0) {
@@ -234,7 +269,37 @@ public class World {
                                 bufferItem[x][y] = Case.VIDE;
                             }
                         } else {
+                            bufferItem[x][y] = tableauItem[x][y];
                             voisins = getVoisins(tableauItem, x, y);
+                            voisinsM = getVoisins(bufferItem, x, y);
+                            voisinsAltitude = getVoisins(tableauAltitude, x, y);
+                            rand = (int) (Math.random() * 4);
+                            for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
+                                boolean eaumod=(Case.getVal(voisins[((i + rand) % 4)]) == Case.EAUMOD);
+                                if ((eaumod)?
+                                        (Case.getVal(voisinsM[((i + rand) % 4)]) == Case.EAU
+                                        && Case.getVar(voisinsM[((i + rand) % 4)]) > 0
+                                        && Case.getVar(voisinsM[((i + rand) % 4)]) > Case.getVar(bufferItem[x][y]))
+                                        :
+                                        (Case.getVal(voisins[((i + rand) % 4)]) == Case.EAU
+                                            && Case.getVar(voisins[((i + rand) % 4)]) > 0
+                                            && Case.getVar(voisins[((i + rand) % 4)]) > Case.getVar(bufferItem[x][y]))
+                                            && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                    int valx=(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length;
+                                    int valy=(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length;
+                                    int mod = (((eaumod)?Case.getVar(tableauItem[valx][valy])
+                                            :Case.getVar(bufferItem[valx][valy]))
+                                            - Case.getVar(bufferItem[x][y]))/2;
+                                    if(eaumod){
+                                        bufferItem[valx][valy] -= mod;
+                                    }else{
+                                        tableauItem[valx][valy] -= mod;
+                                    }
+                                    bufferItem[x][y] += mod;
+                                }
+                            }
+                            /*
+                            voisins = getVoisins(bufferItem, x, y);
                             int voisinsAltitude[] = getVoisins(tableauAltitude, x, y);
                             bufferItem[x][y] = tableauItem[x][y];
                             int rand = (int) (Math.random() * 4);
@@ -259,19 +324,27 @@ public class World {
                                     int valx=(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length;
                                     int valy=(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length;
                                     int mod = 1; //(Case.getVar(bufferItem[x][y]) - Case.getVar(tableauItem[valx][valy]))/2;
+
+                                    System.out.println("A: "+Case.getVar(bufferItem[x][y])+" "
+                                            +Case.getVar(bufferItem[valx][valy]));
                                     bufferItem[valx][valy]
                                             += mod;
                                     bufferItem[x][y] -= mod;
-                                    
+
+                                    System.out.println("B: "+Case.getVar(bufferItem[x][y])+" "
+                                            +Case.getVar(bufferItem[valx][valy]) + "\n");
                                 }
                             }
                             
-                        }
-                        if (pluie && Case.getVar(bufferItem[x][y]) < 8) {
-                            if (pGoutte >= Math.random()) {
-                                bufferItem[x][y] += 1;
+                        }*/
+                                
+                            if (pluie && Case.getVar(bufferItem[x][y]) < 8) {
+                                if (pGoutte >= Math.random()) {
+                                    bufferItem[x][y] += 1;
+                                }
                             }
                         }
+                        tableauItem[x][y]=Case.EAUMOD; //indique que cette case eau a été modifiée.
                         break;
                         
                         
@@ -283,9 +356,9 @@ public class World {
                             }
                         } else {
                             voisins = getVoisins(tableauItem, x, y);
-                            int voisinsAltitude[] = getVoisins(tableauAltitude, x, y);
+                            voisinsAltitude = getVoisins(tableauAltitude, x, y);
                             bufferItem[x][y] = tableauItem[x][y];
-                            int rand = (int) (Math.random() * 4);
+                            rand = (int) (Math.random() * 4);
                             // Etalage
                             // Sur de la pas lave d'abord
                             for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {

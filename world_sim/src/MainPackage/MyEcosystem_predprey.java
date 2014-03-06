@@ -15,7 +15,7 @@ public class MyEcosystem_predprey{
 
         // initialise l'ecosysteme
 
-        World world = new World("world.pgm");
+        World world = new World("test.pgm");
         
         // Ajouts d'agents
       /*for (int i = 0; i != 50; i++) {
