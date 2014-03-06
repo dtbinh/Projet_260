@@ -176,6 +176,7 @@ public class World {
                         if (pluie) {
                             if (pGoutte >= Math.random()) {
                                 bufferItem[x][y] = Case.EAU;
+                                tableauItem[x][y] = Case.MODEAU;
                             }
                         }
                         break;
@@ -236,6 +237,7 @@ public class World {
                         } else {
                             voisins = getVoisins(tableauItem, x, y);
                             int voisinsAltitude[] = getVoisins(tableauAltitude, x, y);
+                            int voisinsM[] = getVoisins(bufferItem, x, y);
                             bufferItem[x][y] = tableauItem[x][y];
                             int rand = (int) (Math.random() * 4);
                             // Etalage
@@ -252,17 +254,27 @@ public class World {
                             }
                             // Puis sur de l'eau moins profonde
                             for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
-                                if (Case.getVal(voisins[((i + rand) % 4)]) == Case.EAU
-                                            && Case.getVar(voisins[((i + rand) % 4)]) < 9
-                                            && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y])
-                                            && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                boolean modeau=(voisins[(i + rand) % 4] == Case.MODEAU);
+                                if (modeau && (
+                                        Case.getVal(voisinsM[((i + rand) % 4)]) == Case.EAU
+                                        && Case.getVar(voisinsM[((i + rand) % 4)]) < 9
+                                        && Case.getVar(voisinsM[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y]))
+                                        || !modeau && (
+                                        Case.getVal(voisins[((i + rand) % 4)]) == Case.EAU
+                                        && Case.getVar(voisins[((i + rand) % 4)]) < 9
+                                        && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y]))
+                                        && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]){
                                     int valx=(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length;
                                     int valy=(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length;
-                                    int mod = 1; //(Case.getVar(bufferItem[x][y]) - Case.getVar(tableauItem[valx][valy]))/2;
-                                    bufferItem[valx][valy]
+                                    int mod = 1;
+                                    if(modeau){
+                                        bufferItem[valx][valy]
                                             += mod;
+                                    }else{
+                                        tableauItem[valx][valy]
+                                            += mod;
+                                    }
                                     bufferItem[x][y] -= mod;
-                                    
                                 }
                             }
                             
@@ -272,6 +284,7 @@ public class World {
                                 bufferItem[x][y] += 1;
                             }
                         }
+                        tableauItem[x][y]=Case.MODEAU;
                         break;
                         
                         

@@ -192,7 +192,7 @@ public abstract class Agent {
                     }
                     break;
                 case 2:	// sud
-                     if(obstacles[2] && _y < _world.getHeight()){
+                     if(obstacles[2] && _y < _world.getHeight()-1){
                         _y++;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;

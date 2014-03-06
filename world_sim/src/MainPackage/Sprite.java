@@ -135,6 +135,9 @@ public class Sprite extends JPanel {
                                 case Case.GENEAU:
                                     g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;
+                                case Case.MODEAU:
+                                    g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                    break;
                                 /*case Case.GENLAVE:
                                     g2.drawImage(feuSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;*/
