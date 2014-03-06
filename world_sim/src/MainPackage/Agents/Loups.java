@@ -13,7 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 800, 500, 1, 3, 20, _adn);
+        super(__x, __y, __w, 800, 500, 1, 3, 100, _adn);
         diurne=false;
     }
 
@@ -50,13 +50,13 @@ public class Loups extends Agent {
     }
 
     private void setDir() {
-        int feuProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.FEU);
+        int feuProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.FEU);
         if(feuProche[0]!=-1){
             _objectif=feuProche;
             _fuis=true;
             return;
         }
-        int laveProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.LAVE);
+        int laveProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.LAVE);
         if(laveProche[0]!=-1){
             _objectif=laveProche;
             _fuis=true;
@@ -66,7 +66,7 @@ public class Loups extends Agent {
         //tentative de reproduction
         if(_faim>_faimMax*0.4 && getMature())
         {
-            Agent proche = _world.getAgentsProches(this, Loups.class, _vision*2);
+            Agent proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
             if(proche!=null)
             {
                 if(proche._faim>proche._faimMax*0.4){
@@ -79,7 +79,7 @@ public class Loups extends Agent {
         }
         
         if(_faim<_faimMax){
-            Agent proche = _world.getAgentsProches(this, Moutons.class, _vision*2);
+            Agent proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
             if(proche != null){
                 _objectif[0]=proche._x;
                 _objectif[1]=proche._y;

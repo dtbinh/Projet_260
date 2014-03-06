@@ -1,7 +1,8 @@
 Bug:
 	
 Problèmes:
-	- Pas assez équilibré. Extinction des espèces au pire 400/600 itération (moutons/loups), au mieux 2.000/20.000 (moutons/loups)
+	- Pas assez équilibré:
+		- Les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
 	- La vision de cases prend trop de ressources, il faut faire un quadtree.
 	- A priori la génération aléatoire ne marche pas très bien. (mais de toute façon il faudrait la refaire entièrement)
 ========================================================================
@@ -18,9 +19,9 @@ IDEES:
 A FAIRE:	
 	- Faire des quadtree pour le terrain pour accélérer la recherche.
 	- Ajouter des traits génétiques:
-		- Vision nocturne
+		-
 	- Les bestioles agissent différement en fonction du jour/nuit:
-		- Moins bonne vision la nuit
+		-
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt?
 	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
@@ -72,19 +73,21 @@ DONE:
 	- Se déplacent.
 	- Peuvent trouver de la nourriture.
 	- "Voient" à plusieurs cases de distance.
-	- Ont un code génétique qui modifie leur caractéristiques.
-	- Transmettent leur ADN.
-	- L'ADN transmis mute.
-	- Tares génétiques.
+	- Ont un code génétique:
+		- Il est mixé et muté quand il est transmis à leur descendance
+		- Plusieurs effets:
+			- Vision nocturne
+			- Meilleur survie (faim, ageMax, vitesse, vision)
+			- Problèmes génétiques (aveugle, tétraplégique, maladie mortelle)
 	- Fuient le feu
 	- Les agents ne marchent pas dans l'eau profonde
 	- Les agents dans l'eau trop profonde se noient
 	- Les agents ne marchent pas sur (et fuient) la lave
 	- Les moutons dorment la nuit et les loups dorment le jour.
-	- Les agents se reproduisent deux par deux, leur ADN se mixe.
 	- Quand les agents meurent, leur cadavre reste un moment.
 	- Les loups mangent les cadavres de moutons et pas les moutons vivants.
-
+	- Les agents ne voient pas la nuit (sauf si ils ont vision nocturne)
+	
 	Prog:
 	- Affichage en 2D
 

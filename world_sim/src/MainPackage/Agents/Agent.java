@@ -37,6 +37,7 @@ public abstract class Agent {
     
     protected int[] _objectif;
     protected boolean _fuis;
+    protected boolean _cours;
     protected int constitution; // représente l'état actuel du mob mort (intact, mangé, pourri...)
     
     private int _itMS;
@@ -55,6 +56,7 @@ public abstract class Agent {
         
         tryMove=0;
         dort=false;
+        _cours=false;
         constitution=10;
         gestation = -1;
 
@@ -112,6 +114,9 @@ public abstract class Agent {
                 _itMS = _moveSpeed;
             } else {
                 _itMS--;
+                if(_cours){
+                    _itMS--;
+                }
             }
         }
     }
@@ -308,4 +313,13 @@ public abstract class Agent {
     }
     
     public abstract void creationBebe(Agent reproducteur);
+    
+    protected int getVision()
+    {
+        if(!_world.getJour() && !_adn.hasTrait(ADN.VISION_NOCTURNE)){
+            return 0;
+        }else{
+            return _vision;
+        }
+    }
 }

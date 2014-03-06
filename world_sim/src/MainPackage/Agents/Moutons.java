@@ -40,20 +40,20 @@ public class Moutons extends Agent {
     }
 
     private void setDir() {
-        int feuProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.FEU);
+        int feuProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.FEU);
         if(feuProche[0]!=-1){
             _objectif=feuProche;
             _fuis=true;
             return;
         }
-        int laveProche[]=_world.getPlusProcheItem(_x,_y,_vision,Case.LAVE);
+        int laveProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.LAVE);
         if(laveProche[0]!=-1){
             _objectif=laveProche;
             _fuis=true;
             return;
         }
         
-        Agent proche = _world.getAgentsProches(this, Loups.class, _vision*2);
+        Agent proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
         if(proche!=null)
         {
             _objectif[0]=proche._x;
@@ -65,7 +65,7 @@ public class Moutons extends Agent {
         //tentative de reproduction
         if(_faim>_faimMax*0.3 && getMature())
         {
-            proche = _world.getAgentsProches(this, Moutons.class, _vision*2);
+            proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
             if(proche!=null)
             {
                 if(proche._faim>proche._faimMax*0.3){
@@ -78,7 +78,7 @@ public class Moutons extends Agent {
         }
         
         //if(_faim<_faimMax){
-            int herbeProche[]=_world.getPlusProcheTerrain(_x,_y,_vision,Case.HERBE);
+            int herbeProche[]=_world.getPlusProcheTerrain(_x,_y,getVision(),Case.HERBE);
             if(herbeProche[0]!=-1){
                 _objectif=herbeProche;
                 _fuis=false;
