@@ -8,22 +8,24 @@ public class Moutons extends Agent {
     
     //constructeur initial
     public Moutons(int __x, int __y, World __w) {
-        this(__x, __y, __w, makeADN());
+        this(__x, __y, __w, new ADN());
     }
     
     //cosntructeur reprod
-    public Moutons(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 100, 300, 2, 3, 10, __ADN);
+    public Moutons(int __x, int __y, World __w, ADN _adn) {
+        super(__x, __y, __w, 200, 300, 2, 3, 10, _adn);
         diurne=true;
     }
 
     @Override public void step() {
         temps();
 
-        if (_alive && !dort) {
-            if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                _faim += 10;
-                _world.setCellTerrainVal(_x, _y, Case.TERRE);
+        if (_alive) {
+            if(!dort){
+                if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
+                    _faim += 10;
+                    _world.setCellTerrainVal(_x, _y, Case.TERRE);
+                }
             }
             if (_world.containVoisinsItem(_x, _y,Case.FEU) || _world.containVoisinsItem(_x, _y,Case.LAVE)) {
                 setmort();
@@ -96,7 +98,7 @@ public class Moutons extends Agent {
 
     @Override public void creationBebe(Agent reproducteur)
     {
-        _world.add(new Moutons(_x, _y, _world,muteADN(_ADN, reproducteur._ADN)));
+        _world.add(new Moutons(_x, _y, _world,new ADN(this._adn, reproducteur._adn)));
     }
     
     @Override public boolean getMature() {

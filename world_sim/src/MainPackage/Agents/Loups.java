@@ -8,29 +8,31 @@ public class Loups extends Agent {
 
     //constructeur initial
     public Loups(int __x, int __y, World __w) {
-        this(__x, __y, __w, makeADN());
+        this(__x, __y, __w, new ADN());
     }
     
     //constructeur reprod
-    public Loups(int __x, int __y, World __w, int __ADN) {
-        super(__x, __y, __w, 300, 500, 1, 3, 30, __ADN);
+    public Loups(int __x, int __y, World __w, ADN _adn) {
+        super(__x, __y, __w, 400, 500, 1, 3, 30, _adn);
         diurne=false;
     }
 
     @Override public void step() {
         temps();
 
-        if (_alive && !dort) {
-            if(_faim<_faimMax){
-                ArrayList<Agent> mmcase = _world.getAgentCase(this);
-                if (!mmcase.isEmpty()) {
-                    for (Agent ag : mmcase) {
-                        if (ag.getClass() == Moutons.class) {
-                            if(ag.getAlive()){
-                                ag.setmort();
-                            }else{
-                                ag.constitution--;
-                                _faim += 75;
+        if (_alive) {
+            if(!dort){
+                if(_faim<_faimMax){
+                    ArrayList<Agent> mmcase = _world.getAgentCase(this);
+                    if (!mmcase.isEmpty()) {
+                        for (Agent ag : mmcase) {
+                            if (ag.getClass() == Moutons.class) {
+                                if(ag.getAlive()){
+                                    ag.setmort();
+                                }else{
+                                    ag.constitution--;
+                                    _faim += 75;
+                                }
                             }
                         }
                     }
@@ -98,7 +100,7 @@ public class Loups extends Agent {
 
     @Override public void creationBebe(Agent reproducteur)
     {
-        _world.add(new Loups(_x, _y, _world, muteADN(_ADN, reproducteur._ADN)));
+        _world.add(new Loups(_x, _y, _world, new ADN(this._adn, reproducteur._adn)));
     }
     
     @Override public boolean getMature()

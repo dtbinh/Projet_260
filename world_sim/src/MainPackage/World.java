@@ -115,11 +115,36 @@ public class World {
      * Update the world state and return an array for the current world state (may be used for display)
      * @return
      */
+    int iterateurlololol=0;
+    boolean hasloup=true;
+    boolean hasmout=true;
     public void step() {
         stepEnvironnement();
         stepWorld();
         stepAgents();
         sprite.repaint();
+        
+        boolean loup=false;
+        boolean moutons=false;
+        
+        for(Agent a:agents){
+            if(a.getClass()==MainPackage.Agents.Loups.class){
+                loup=true;
+            }
+            if(a.getClass()==MainPackage.Agents.Moutons.class){
+                moutons=true;
+            }
+        }
+        if(hasloup != loup){
+            System.out.println("Extinction des loups à "+ iterateurlololol);
+            hasloup=loup;
+        }
+        if(hasmout != moutons){
+            System.out.println("Extinction des moutons à "+ iterateurlololol);
+            hasmout=moutons;
+        }
+        
+        iterateurlololol++;
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)
@@ -429,28 +454,28 @@ public class World {
                 for(int k=0;k<4;k++){
                     switch(k){
                         case 0:
-                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type)) == type){
+                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy))) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 1:
-                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type)) == type){
+                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy))) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 2:
-                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type)) == type){
+                            if((Case.getVal(getCellItem((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy))) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 3:
-                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type)) == type){
+                            if((Case.getVal(getCellItem((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy))) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
@@ -477,28 +502,28 @@ public class World {
                 for(int k=0;k<4;k++){
                     switch(k){
                         case 0:
-                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy)) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 1:
-                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy)) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 2:
-                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((getCellTerrain((x-(iP-j)+_dx)%_dx, (y+(iP-(iP-j))+_dy)%_dy)) == type){
                                 ret[0]=(x-(iP-j)+_dx)%_dx;
                                 ret[1]=(y+(iP-(iP-j))+_dy)%_dy;
                                 return ret;
                             }
                             break;
                         case 3:
-                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy) & type) == type){
+                            if((getCellTerrain((x+(iP-j)+_dx)%_dx, (y-(iP-(iP-j))+_dy)%_dy)) == type){
                                 ret[0]=(x+(iP-j)+_dx)%_dx;
                                 ret[1]=(y-(iP-(iP-j))+_dy)%_dy;
                                 return ret;
@@ -640,12 +665,10 @@ public class World {
      * @param cellX, cellY, type
      */
     public boolean containVoisinsItem(int cellX, int cellY, int type) {
-        int j = 0;
         for (int i = 1; i < 8; i += 2) {
-            if (Case.getVal(tableauItem[(cellX - 1 + i % 3 + tableauItem.length) % tableauItem.length][(cellY - 1 + i / 3 + tableauItem[0].length) % tableauItem[0].length] & type) == type) {
+            if (Case.getVal(tableauItem[(cellX - 1 + i % 3 + tableauItem.length) % tableauItem.length][(cellY - 1 + i / 3 + tableauItem[0].length) % tableauItem[0].length]) == type) {
                 return true;
             }
-            j++;
         }
         return false;
     }
@@ -655,12 +678,10 @@ public class World {
      * @param cellX, cellY, type
      */
     public boolean containVoisinsTerrain(int cellX, int cellY, int type) {
-        int j = 0;
         for (int i = 1; i < 8; i += 2) {
             if (Case.getVal(tableauTerrain[(cellX - 1 + i % 3 + tableauTerrain.length) % tableauTerrain.length][(cellY - 1 + i / 3 + tableauTerrain[0].length) % tableauTerrain[0].length]) == type) {
                 return true;
             }
-            j++;
         }
         return false;
     }

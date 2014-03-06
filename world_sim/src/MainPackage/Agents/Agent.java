@@ -13,8 +13,6 @@ public abstract class Agent {
     protected int _redValue;
     protected int _greenValue;
     protected int _blueValue;
-    protected static final int TAILLEADN=6;
-    protected static final int POTENTIELADN=10;
     
     
     protected boolean _alive; //Si l'agent est vivant. Sinon il décède
@@ -35,22 +33,7 @@ public abstract class Agent {
     private int tryMove;
     private int sommeil;
     
-    /*
-     * Code genetique des agents. chaque chiffre représente une variable.
-     * Cette variable varie en fonction du nbr de pts dans le chiffre.
-     * 10^0 = _faimMax (+10% par point)
-     * 10^1 = _ageMax (+10% par point)
-     * 10^2 = _moveSpeed (+1/3 pts)
-     * 10^3 = _vision (+1/2 pts)
-     * 
-     * 2 denières valeures = tares génétiques et trash (binaire):
-     * 1000 0000 = tetraplegique (vitesse diminuée)
-     * 0100 0000 = maladie genetique mortelle (agemax diminué)
-     * 0000 1000 = aveugle (vision = 0)
-     * 0000 0100 = estomac en carton (faimMax diminuiée)
-     */
-    
-    protected int _ADN;
+    protected ADN _adn;
     
     protected int[] _objectif;
     protected boolean _fuis;
@@ -63,12 +46,12 @@ public abstract class Agent {
     public int getY(){return _y;}
     
     public Agent(int __x, int __y, World __w) {
-        this(__x, __y, __w, 9999, 9999, 5, 0, 9999, makeADN());
+        this(__x, __y, __w, 9999, 9999, 5, 0, 9999, new ADN());
     }
     
     
     public Agent(int __x, int __y, World __w,
-            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __tpsGestation, int __ADN) {
+            int __faimMax, int __ageMax, int __moveSpeed, int __vision, int __tpsGestation, ADN __adn) {
         
         tryMove=0;
         dort=false;
@@ -89,114 +72,31 @@ public abstract class Agent {
         _itMS = 0;
         _fuis = false;
         _age=0;
-        _ADN=__ADN;
+        _adn= __adn;
+        _tpsGestation=__tpsGestation;
         sommeil=_world.getDureeJour();
         diurne=true;
         
         
-        
-        _faimMax = __faimMax+(getBrinADN(1)* (__faimMax/10 ));
+        //Création génétique
+        _faimMax = __faimMax+((_adn.hasTrait(ADN.FAIM1))?__faimMax:0)+((_adn.hasTrait(ADN.FAIM2))?__faimMax:0);
         _faim=(int)(__faimMax*0.50); //les agents commencents avec 30% de faim max
-        _ageMax=(int)(__ageMax + Math.random()*(__ageMax/10))-(__ageMax/5)+(getBrinADN(2)*__ageMax/10) ; //ageMax = ageMax moyen +- 5%
-        _moveSpeed = __moveSpeed - (getBrinADN(3)/3);
+        
+        _ageMax=__ageMax+((_adn.hasTrait(ADN.AGE1))?__ageMax:0)+((_adn.hasTrait(ADN.AGE2))?__ageMax:0);
+        
+        _moveSpeed = __moveSpeed+((_adn.hasTrait(ADN.VITESSE1))?-1:0)+((_adn.hasTrait(ADN.VITESSE2))?-1:0);
         if(_moveSpeed<0){ _moveSpeed=0; }
-        _vision = __vision + (getBrinADN(4)/2);
-        _tpsGestation=__tpsGestation;
         
-        taresADN();
+        _vision = __vision+((_adn.hasTrait(ADN.VISION1))?1:0)+((_adn.hasTrait(ADN.VISION2))?1:0);
+        _vision = (_adn.hasTrait(ADN.AVEUGLE))?0:_vision;
         
+        _ageMax = (_adn.hasTrait(ADN.MALADIEMORTELLE))?_ageMax/3:_ageMax;
+        
+        _moveSpeed = (_adn.hasTrait(ADN.TETARPLEGIQUE))?_moveSpeed+10:_moveSpeed;
     }
 
     abstract public void step();
     
-    
-    
-    //génétique:
-    
-    private void taresADN()
-    {
-        //9 = 1001 (fois deux)
-        //8 = 1000 (improbable)
-        //4 = 0100 (moyenprobable)
-        //2 = 0010 (probable)
-        //1 = 0001 (très probable)
-        //première moitiée
-        
-        if((getBrinADN(TAILLEADN-1) & 4)==4){ //estomac en carton
-            _faimMax/=3;
-        }
-        if((getBrinADN(TAILLEADN-1) & 8)==8){ //aveugle
-            _vision=0;
-        }
-        
-        //deuxième moitiée
-        
-        if((getBrinADN(TAILLEADN-2) & 4)==4){ //maladie mortelle
-            _ageMax/=3;
-        }
-        if((getBrinADN(TAILLEADN-2) & 8)==8){//paraplégique
-            _moveSpeed+=10;
-        }
-    }
-    
-/**
- * Crée de l'ADN (ADN = un nombre entre 0 et 10^TAILLEADN)
- * potentielGénétique = nombre de points à répartir. Doit être inferieur à
- * TAILLEADN * 9 (par ex, avec TAILLEADN = 2, potentielGenetique < 18
- * @param potentielGenetique: le nombre de points à répartir
- * @return un brin d'ADN
- */
-    public static int makeADN()
-    {
-        return addADN(0, POTENTIELADN);
-    }
-    
-    /**
-     * renvoie le brin d'adn spécifié (ex: 0 = le chiffre des unités de l'ADN)
-     * @param brin
-     * @return le chiffre 'brin' de l'ADN
-     */
-    protected final int getBrinADN(int brin)
-    {
-        return (int)(_ADN/Math.pow(10, brin))%10;
-    }
-    
-    /**
-     * prend un ADN, redistribue certains points et renvoie l'ADN modifié
-     * (redistribue jusqu'à la moitié des pts de chaque brin)
-     * @param ADN
-     * @return l'ADN modifié
-     */
-    protected int muteADN(int ADN1, int ADN2)
-    {
-        int newADN=(ADN1 | ADN2);
-        int potentiel=(int)(Math.random()*5);
-        return addADN(newADN, potentiel);
-    }
-    
-    /**
-     * ajoute le potentiel à l'ADN en paramètre
-     * @param ADN
-     * @param potentiel
-     * @return l'ADN modifié
-     */
-    protected static int addADN(int ADN, int potentiel)
-    {
-        while(potentiel>0)
-        {
-            for(int i=0;i<TAILLEADN;i++)
-            {
-                int pdix=(int)(Math.pow(10, i));
-                if((ADN/pdix)%10 < 9){
-                    if((1./TAILLEADN)>Math.random()){
-                        ADN+=pdix;
-                        potentiel--;
-                    }
-                }
-            }
-        }
-        return ADN;
-    }
     
     //Déplacement
     public void move() {
@@ -340,31 +240,33 @@ public abstract class Agent {
     
     //passage du temps, morts et naissances
     protected void temps(){
-        if (_faim <= 0) {
-            setmort();
-        } else {
-            _faim--;
-        }
-        if(_age>=_ageMax){
-            _faim-=_age-_ageMax;
-        }
-        _age++;
-        if(dort){
-            sommeil++;
-        }else if(_world.getJour() != diurne){
-            sommeil-=2;
-        }
-        if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
-            dort=true;
-        }
-        if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
-            dort=false;
-        }
-        if(gestation==0){
-            creationBebe(partenaire);
-            gestation--;
-        }else if(gestation>0){
-            gestation--;
+        if(getAlive()){
+            if (_faim <= 0) {
+                setmort();
+            } else {
+                _faim--;
+            }
+            if(_age>=_ageMax){
+                _faim-=_age-_ageMax;
+            }
+            _age++;
+            if(dort){
+                sommeil++;
+            }else if(_world.getJour() != diurne){
+                sommeil-=2;
+            }
+            if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
+                dort=true;
+            }
+            if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
+                dort=false;
+            }
+            if(gestation==0){
+                creationBebe(partenaire);
+                gestation--;
+            }else if(gestation>0){
+                gestation--;
+            }
         }
     }
 
