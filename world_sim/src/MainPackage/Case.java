@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class Case {
     // contenu dans les cases: 0X à 99X
-    public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40, LAVE=50, GENLAVE=100, GENEAU=110, EAUMOD=990;
+    public static final int VIDE=0, ARBRE=10, FEU=20 , EAU=30 , CENDRES=40, LAVE=50, GENLAVE=100, GENEAU=110;
     // types de terrain: 0X à 99X
     public static final int TERRE=0, ROCHE=10, SABLE=20, HERBE=30;
     // altitudes: 0 à 99, avec 0 = bas et 99 = haut
