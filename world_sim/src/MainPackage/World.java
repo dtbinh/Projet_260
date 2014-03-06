@@ -56,7 +56,7 @@ public class World {
      * Parfois les générateurs de lavent entrent en éruption et créent de la lave.
      * 
      */
-    private final double pEruption = 0.001; // probabilité que les genlave entrent en eruption
+    private final double pEruption = 1.001; // probabilité que les genlave entrent en eruption
     private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
     /*
      * Cycles jours/nuits
@@ -115,36 +115,11 @@ public class World {
      * Update the world state and return an array for the current world state (may be used for display)
      * @return
      */
-    int iterateurlololol=0;
-    boolean hasloup=true;
-    boolean hasmout=true;
     public void step() {
         stepEnvironnement();
         stepWorld();
         stepAgents();
         sprite.repaint();
-        
-        boolean loup=false;
-        boolean moutons=false;
-        
-        for(Agent a:agents){
-            if(a.getClass()==MainPackage.Agents.Loups.class){
-                loup=true;
-            }
-            if(a.getClass()==MainPackage.Agents.Moutons.class){
-                moutons=true;
-            }
-        }
-        if(hasloup != loup){
-            System.out.println("Extinction des loups à "+ iterateurlololol);
-            hasloup=loup;
-        }
-        if(hasmout != moutons){
-            System.out.println("Extinction des moutons à "+ iterateurlololol);
-            hasmout=moutons;
-        }
-        
-        iterateurlololol++;
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)

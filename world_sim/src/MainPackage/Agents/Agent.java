@@ -130,7 +130,7 @@ public abstract class Agent {
         boolean obstacles[] = obstacles();
             switch (_orient) {
                 case 0: // nord	
-                    if(obstacles[0]){
+                    if(obstacles[3]){
                         _y = (_y - 1 + _world.getHeight()) % _world.getHeight();
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
@@ -157,7 +157,7 @@ public abstract class Agent {
                     }
                     break;
                 case 3:	// ouest
-                     if(obstacles[3]){
+                     if(obstacles[0]){
                         _x = (_x - 1 + _world.getWidth()) % _world.getWidth();
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
@@ -174,7 +174,7 @@ public abstract class Agent {
         boolean obstacles[] = obstacles();
             switch (_orient) {
                 case 0: // nord
-                    if(obstacles[0] && _y > 0){
+                    if(obstacles[3] && _y > 0){
                         _y--;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
@@ -201,7 +201,7 @@ public abstract class Agent {
                     }
                     break;
                 case 3:	// ouest
-                     if(obstacles[3] && _x > 0){
+                     if(obstacles[0] && _x > 0){
                         _x--;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
@@ -217,6 +217,7 @@ public abstract class Agent {
      * Verifie les 4 cases autour de l'agent, renvoie un tableau de boolean qui
      * indique si il peut se déplacer dans la case correspondante (true) ou pas.
      * Les cases "bloquantes" sont: EAU+2, FEU, LAVE
+     * 0=ouest, 1=est, 2=sud, 3=nord
      * @return le tableau de boolean indiquant les directions bloquées.
      */
     private boolean[] obstacles()

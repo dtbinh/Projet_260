@@ -145,6 +145,8 @@ public class Sprite extends JPanel {
                         g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                     }else if(a.getClass()==Loups.class){
                         g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                    }else{
+                        g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                     }
                 }
                 if(!world.getJour()){

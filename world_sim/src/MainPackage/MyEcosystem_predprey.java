@@ -9,7 +9,7 @@ public class MyEcosystem_predprey{
 
         // initialisation generale
 
-        int delai = 1;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
+        int delai = 200;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
 
@@ -27,7 +27,7 @@ public class MyEcosystem_predprey{
             }
             world.add(new Moutons(valX, valY, world));
         }
-        for (int i = 0; i != 20; i++) {
+        for (int i = 0; i != 15; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){
@@ -36,7 +36,6 @@ public class MyEcosystem_predprey{
             }
             world.add(new Loups(valX, valY, world));
         }
-        
         // mise a jour de l'�tat du monde
 
         while (it != nombreDePasMaximum) {
