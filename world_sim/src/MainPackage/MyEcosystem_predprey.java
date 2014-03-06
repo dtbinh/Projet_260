@@ -18,7 +18,7 @@ public class MyEcosystem_predprey{
         World world = new World("world.pgm");
         
         // Ajouts d'agents
-      for (int i = 0; i != 50; i++) {
+      /*for (int i = 0; i != 50; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){
@@ -35,7 +35,7 @@ public class MyEcosystem_predprey{
             valY = (int) (Math.random() * world.getHeight());
             }
             world.add(new Loups(valX, valY, world));
-        }
+        }*/
         // mise a jour de l'�tat du monde
 
         while (it != nombreDePasMaximum) {

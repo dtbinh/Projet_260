@@ -1,4 +1,5 @@
 Bug:
+	- L'eau se répand pas bien du tout.
 	
 Problèmes:
 	- Pas équilibré du tout: les loups insta-décèdent et les moutons disparaissent à vitesse grand V
@@ -64,6 +65,7 @@ DONE:
 	- Lave
 	- Générateur de lave
 	- L'herbe repousse.
+	- Générateur d'eau (rivière)
 	
 	Agents:
 	- Se déplacent.

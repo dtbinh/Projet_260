@@ -35,7 +35,7 @@ public class World {
      * Quand il pleut, les cases vides peuvent se remplir d'eau.
      */
     private boolean pluie = false;
-    private final double pDebutPluie = 0.005; //chances qu'il commence à pleuvoir
+    private final double pDebutPluie = 0.000;//5; //chances qu'il commence à pleuvoir
     private final double pFinPluie = 0.10; //chances qu'il s'arrete de pleuvoir
     private final double pGoutte = 0.01; //chance qu'une goutte fasse augmenter la taille d'une case d'eau
     private final double vfPluie = -0.25; //réduction du feu quand il pleut
@@ -56,7 +56,7 @@ public class World {
      * Parfois les générateurs de lavent entrent en éruption et créent de la lave.
      * 
      */
-    private final double pEruption = 1.001; // probabilité que les genlave entrent en eruption
+    private final double pEruption = 0.001; // probabilité que les genlave entrent en eruption
     private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
     /*
      * Cycles jours/nuits
@@ -244,9 +244,10 @@ public class World {
                                 if ((Case.getVal(voisins[(i + rand) % 4]) == Case.VIDE
                                         || Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES)
                                         && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
+                                    int mod= Case.getVar(bufferItem[x][y])/2;
                                     bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
-                                            = Case.EAU;
-                                    bufferItem[x][y] --;
+                                            = Case.EAU+mod;
+                                    bufferItem[x][y] -= mod;
                                 }
                             }
                             // Puis sur de l'eau moins profonde
@@ -255,9 +256,13 @@ public class World {
                                             && Case.getVar(voisins[((i + rand) % 4)]) < 9
                                             && Case.getVar(voisins[((i + rand) % 4)]) < Case.getVar(bufferItem[x][y])
                                             && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
-                                    bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
-                                            += 1;
-                                    bufferItem[x][y] -= 1;
+                                    int valx=(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length;
+                                    int valy=(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length;
+                                    int mod = 1; //(Case.getVar(bufferItem[x][y]) - Case.getVar(tableauItem[valx][valy]))/2;
+                                    bufferItem[valx][valy]
+                                            += mod;
+                                    bufferItem[x][y] -= mod;
+                                    
                                 }
                             }
                             
@@ -286,7 +291,7 @@ public class World {
                             for (int i = 0; i < 4 && Case.getVar(bufferItem[x][y]) > 0; i++) {
                                 if ((Case.getVal(voisins[(i + rand) % 4]) == Case.VIDE
                                         || Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES
-                                        || (Case.getVal(voisins[(i + rand) % 4]) == Case.CENDRES && Case.getVar(voisins[(i + rand) % 4]) <3))
+                                        || (Case.getVal(voisins[(i + rand) % 4]) == Case.EAU && Case.getVar(voisins[(i + rand) % 4]) <3))
                                         && voisinsAltitude[(i + rand) % 4]<=tableauAltitude[x][y]) {
                                     bufferItem[(x - 1 + (((i + rand) % 4) * 2 + 1) % 3 + bufferItem.length) % bufferItem.length][(y - 1 + (((i + rand) % 4) * 2 + 1) / 3 + bufferItem[0].length) % bufferItem[0].length]
                                             = Case.LAVE;
@@ -318,14 +323,20 @@ public class World {
                                 bufferItem[x][y] = Case.GENLAVE+8;
                             }
                         }else{
-                            voisins = getVoisins(tableauItem, x, y);
                             for (int i = 0; i < 4; i++) {
-                                if(Case.getVal(voisins[i])!= Case.GENLAVE) {
-                                    bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
-                                            = Case.LAVE+9;
-                                }
+                                bufferItem[(x - 1 + ((i * 2 + 1) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i * 2 + 1) / 3) + bufferItem[0].length) % bufferItem[0].length]
+                                        = Case.LAVE+9;
                             }
                             bufferItem[x][y] += (pFinErupt>= Math.random())?-1:0;
+                        }
+                        break;
+                        
+                    case Case.GENEAU:
+                        for (int i = 0; i < 9; i++) {
+                            if(i!=4){
+                                bufferItem[(x - 1 + ((i) % 3) + bufferItem.length) % bufferItem.length][(y - 1 + ((i) / 3) + bufferItem[0].length) % bufferItem[0].length]
+                                    = Case.EAU+9;
+                            }
                         }
                         break;
 
