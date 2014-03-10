@@ -37,10 +37,10 @@ public class Sprite extends JPanel {
 	
         
         private Image noirSprite;
-	private int spriteLength = 24;
+	private int spriteLength;
 	
 	private World world;
-
+        
 	public Sprite(World w)
 	{
 		try
@@ -68,17 +68,22 @@ public class Sprite extends JPanel {
                 world =w;
 		frame = new JFrame("World simulator");
 		frame.add(this);
-		frame.setSize(spriteLength*(world.getWidth()),spriteLength*(world.getHeight()));
+		//frame.setSize(spriteLength*(world.getWidth()),spriteLength*(world.getHeight()));
+                //frame.setSize(frame.getToolkit().getScreenSize());
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                
+                spriteLength=Math.min(frame.getWidth()/world.getWidth(), frame.getHeight()/world.getHeight());
 	}
 
 	public void paint(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D)g;
+                spriteLength=Math.min(frame.getWidth()/world.getWidth(), frame.getHeight()/world.getHeight());
                 g2.clearRect(0, 0, this.getWidth(), this.getHeight());
-		for ( int i = 0 ; i < world.getWidth() ; i++ ){
-			for ( int j = 0 ; j < world.getHeight() ; j++ ){
+		for ( int i = 0 ; i < world.getWidth(); i++ ){
+			for ( int j = 0 ; j < world.getHeight(); j++ ){
                             
                             switch(Case.getVal(world.getCellTerrain(i, j))){
                                 case Case.SABLE:
