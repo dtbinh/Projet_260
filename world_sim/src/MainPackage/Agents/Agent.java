@@ -100,8 +100,12 @@ public abstract class Agent {
     abstract public void step();
     
     
-    //Déplacement
-    public void move() {
+    /**
+     * Déplacement
+     * @return true si il a bougé.
+     */
+    public boolean move() {
+        boolean ret=false;
         if(_alive){
             if(!dort){
                 if (_itMS <= 0) {
@@ -111,7 +115,7 @@ public abstract class Agent {
                     }
                     // met a jour: la position de l'agent (depend de l'orientation)
                     tryMove=0;
-                    deplacement();
+                    ret = deplacement();
                     _itMS = _moveSpeed;
                 } else {
                     _itMS--;
@@ -121,15 +125,17 @@ public abstract class Agent {
                 }
             }
         }
+        return false;
     }
     
     /**
      * Déplacement des agents.
      * appelle la fonction de déplacement voulue (torique ou non thorique)
+     * @return true si il a bougé.
      */
-    private void deplacement()
+    private boolean deplacement()
     {
-        deplacementNT();
+        return deplacementNT();
     }
     
     private void deplacementT()
@@ -176,47 +182,53 @@ public abstract class Agent {
             }
     }
     
-    private void deplacementNT()
+    private boolean deplacementNT()
     {
         boolean obstacles[] = obstacles();
             switch (_orient) {
                 case 0: // nord
                     if(obstacles[3] && _y > 0){
                         _y--;
+                        return true;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
                         tryMove++;
-                        deplacement();
+                        return deplacement();
                     }
-                    break;
+                    return false;
                 case 1:	// est
                      if(obstacles[1] && _x < _world.getWidth()-1){
                         _x++;
+                        return true;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
                         tryMove++;
-                        deplacement();
+                        return deplacement();
                     }
-                    break;
+                    return false;
                 case 2:	// sud
                      if(obstacles[2] && _y < _world.getHeight()-1){
                         _y++;
+                        return true;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
                         tryMove++;
-                        deplacement();
+                        return deplacement();
                     }
-                    break;
+                    return false;
                 case 3:	// ouest
                      if(obstacles[0] && _x > 0){
                         _x--;
+                        return true;
                     }else if(tryMove<=3){
                         _orient=(_orient+1)%4;
                         tryMove++;
-                        deplacement();
+                        return deplacement();
                     }
-                    break;
-                    // 4 ou autre = pas bouger
+                     return false;
+                    
+                default:
+                    return false;
             }
     }
     
@@ -333,5 +345,10 @@ public abstract class Agent {
         }else{
             return _vision;
         }
+    }
+    
+    @Override public String toString()
+    {
+        return "This: " + this.getClass() + " X:" + _x + "  Y:" + _y;
     }
 }

@@ -13,7 +13,7 @@ public class Loups extends Agent {
     
     //constructeur reprod
     public Loups(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 800, 2000, 1, 3, 500, _adn);
+        super(__x, __y, __w, 800, 2000, -1, 3, 500, _adn);
         diurne=false;
     }
 

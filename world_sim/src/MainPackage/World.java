@@ -2,6 +2,7 @@ package MainPackage;
 
 import MainPackage.Agents.Agent;
 import java.util.ArrayList;
+import Quadtree.QuadTree;
 
 public class World {
 
@@ -12,6 +13,7 @@ public class World {
     private int[][] tableauAltitude;
     private int[][] tableauTerrain;
     private ArrayList<Agent> agents;
+    private QuadTree quadtree;
     
     private Sprite sprite;
     
@@ -106,6 +108,8 @@ public class World {
                 }
             }// arbres
         }
+        
+        quadtree = new QuadTree(new java.awt.Rectangle(0, 0, _dx, _dy));
         
         sprite = new Sprite(this);
     }
@@ -388,7 +392,9 @@ public class World {
                 agents.get(i).estmort();
         }
         for (Agent a : agents) {
-            a.move();
+            if(a.move()){
+                quadtree.maj(a);
+            }
         }
     }
 
@@ -401,7 +407,7 @@ public class World {
      */
     public ArrayList<Agent> getAgentCase(Agent a) {
         ArrayList<Agent> ret = new ArrayList<Agent>();
-        for (Agent ag : agents) {
+        for(Agent ag: quadtree.retrieve(a)){
             if (a != ag) {
                 if (ag.getX() == a.getX() && ag.getY() == a.getY()) {
                     ret.add(ag);
@@ -426,7 +432,7 @@ public class World {
         for (int i = 0; i < 4; i++) {
             ret[i] = new ArrayList<Agent>();
         }
-        for (Agent ag : agents) {
+        for (Agent ag : quadtree.retrieve(a)) {
             if (a != ag) {
                 if (ag.getX() == a.getX() && ag.getY() == (a.getY() - 1 + getHeight()) % getHeight()) {
                     ret[1].add(ag);
@@ -550,7 +556,7 @@ public class World {
     {
         Agent ret=null;
         int distance=portee;
-        for(Agent a:agents){
+        for(Agent a:quadtree.retrieve(new java.awt.Rectangle(x-portee/2, y-portee/2,portee,portee))){
             if(a.getClass() == type){
                 int dist[]= distance(x, y, a.getX(), a.getY());
                 int dist2=dist[0]+dist[1];
@@ -571,7 +577,7 @@ public class World {
     {
         Agent ret=null;
         int distance=portee;
-        for(Agent a:agents){
+        for(Agent a:quadtree.retrieve(new java.awt.Rectangle(ag.getX()-portee/2, ag.getY()-portee/2,portee,portee))){
             if(a!=ag){
                 if(a.getClass() == type){
                     int dist[]= distance(ag.getX(), ag.getY(), a.getX(), a.getY());
@@ -729,6 +735,7 @@ public class World {
      */
     public void add(Agent agent) {
         agents.add(agent);
+        quadtree.insert(agent);
     }
     
     /**
@@ -738,6 +745,7 @@ public class World {
     public void remove(Agent agent) {
         if (agents.contains(agent)) {
             agents.remove(agent);
+            quadtree.remove(agent);
         }
     }
 
