@@ -120,10 +120,16 @@ public class World {
      * Update the world state and return an array for the current world state (may be used for display)
      * @return
      */
+    int it=0;
+    long val=0;
     public void step() {
         stepEnvironnement();
         stepWorld();
+        val+=System.nanoTime();
         stepAgents();
+        if((it++)%100==0){
+            System.out.println(val/it+" ("+it+")");
+        }
         sprite.repaint();
     }
     
