@@ -12,6 +12,7 @@ public class World {
     private int[][] tableauAltitude;
     private int[][] tableauTerrain;
     private ArrayList<Agent> agents;
+    
     private Sprite sprite;
     
     //Environnement:
