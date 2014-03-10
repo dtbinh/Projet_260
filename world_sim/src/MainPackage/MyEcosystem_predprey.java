@@ -15,10 +15,10 @@ public class MyEcosystem_predprey{
 
         // initialise l'ecosysteme
 
-        World world = new World("world.pgm");
+        World world = new World("world2.pgm");
         
         // Ajouts d'agents
-      for (int i = 0; i != 50; i++) {
+      for (int i = 0; i != 100; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){
@@ -27,7 +27,7 @@ public class MyEcosystem_predprey{
             }
             world.add(new Moutons(valX, valY, world));
         }
-        for (int i = 0; i != 15; i++) {
+        for (int i = 0; i != 30; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){

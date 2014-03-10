@@ -11,9 +11,9 @@ public class Moutons extends Agent {
         this(__x, __y, __w, new ADN());
     }
     
-    //cosntructeur reprod
+    //constructeur reprod
     public Moutons(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 200, 400, 2, 3, 10, _adn);
+        super(__x, __y, __w, 45, 300, 2, 3, 5, _adn);
         diurne=true;
     }
 
@@ -22,9 +22,11 @@ public class Moutons extends Agent {
 
         if (_alive) {
             if(!dort){
-                if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                    _faim += 10;
-                    _world.setCellTerrainVal(_x, _y, Case.TERRE);
+                if(_faim<_faimMax){
+                    if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
+                        _faim += 7;
+                        _world.setCellTerrainVal(_x, _y, Case.TERRE);
+                    }
                 }
             }
             if (_world.containVoisinsItem(_x, _y,Case.FEU) || _world.containVoisinsItem(_x, _y,Case.LAVE)) {
@@ -77,14 +79,14 @@ public class Moutons extends Agent {
             }
         }
         
-        //if(_faim<_faimMax){
+        if(_faim<_faimMax){
             int herbeProche[]=_world.getPlusProcheTerrain(_x,_y,getVision(),Case.HERBE);
             if(herbeProche[0]!=-1){
                 _objectif=herbeProche;
                 _fuis=false;
                 return;
             }
-        //}
+        }
         
         if (Math.random() > 0.5) // au hasard
         {

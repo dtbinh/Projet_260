@@ -103,19 +103,21 @@ public abstract class Agent {
     //Déplacement
     public void move() {
         if(_alive){
-            if (_itMS <= 0) {
-                _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
-                if(_fuis){ //inverse l'orientation si on fuit l'objectif
-                    _orient=(_orient+2)%4;
-                }
-                // met a jour: la position de l'agent (depend de l'orientation)
-                tryMove=0;
-                deplacement();
-                _itMS = _moveSpeed;
-            } else {
-                _itMS--;
-                if(_cours){
+            if(!dort){
+                if (_itMS <= 0) {
+                    _orient=_world.getDirection(_x, _y, _objectif[0], _objectif[1]); //obtient la direction en fct de l'objectif
+                    if(_fuis){ //inverse l'orientation si on fuit l'objectif
+                        _orient=(_orient+2)%4;
+                    }
+                    // met a jour: la position de l'agent (depend de l'orientation)
+                    tryMove=0;
+                    deplacement();
+                    _itMS = _moveSpeed;
+                } else {
                     _itMS--;
+                    if(_cours){
+                        _itMS--;
+                    }
                 }
             }
         }
@@ -260,6 +262,8 @@ public abstract class Agent {
                 sommeil++;
             }else if(_world.getJour() != diurne){
                 sommeil-=2;
+            }else{
+                sommeil --;
             }
             if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
                 dort=true;
@@ -267,6 +271,14 @@ public abstract class Agent {
             if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
                 dort=false;
             }
+            /*
+            if(_world.getJour() == diurne){
+                dort=false;
+            }else{
+                dort=true;
+            }
+             * 
+             */
             if(gestation==0){
                 creationBebe(partenaire);
                 gestation--;

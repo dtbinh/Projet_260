@@ -19,7 +19,7 @@ public class World {
      * Cases:
      * Variables relatives au terrain
      */
-    private final double pHerbe = 0.01; // proba que l'herbe pousse sur de la terre
+    private final double pHerbe = 0.005; // proba que l'herbe pousse sur de la terre
     private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
     private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
@@ -56,7 +56,7 @@ public class World {
      * Parfois les générateurs de lavent entrent en éruption et créent de la lave.
      * 
      */
-    private final double pEruption = 0.001; // probabilité que les genlave entrent en eruption
+    private final double pEruption = 0.0001; // probabilité que les genlave entrent en eruption
     private final double pFinErupt = 0.1; // probabilité que l'eruption diminue
     /*
      * Cycles jours/nuits
@@ -229,6 +229,10 @@ public class World {
                         break;
 
                     case Case.EAU:
+                        //sablifie
+                        if (Case.getVar(tableauItem[x][y]) >4) {
+                            tableauTerrain[x][y]=Case.SABLE;
+                        }
                         //Evaporation
                         if (Case.getVar(tableauItem[x][y]) == 0) {
                             if (pEvaporation >= Math.random()) {

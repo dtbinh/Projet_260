@@ -104,12 +104,6 @@ public class Sprite extends JPanel {
                                 case Case.ARBRE:
                                     g2.drawImage(treeSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;
-                                /*case Case.FEU:
-                                    g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-                                    break;
-                                case Case.CENDRES:
-                                    g2.drawImage(waterSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-                                    break;*/
                                 case Case.EAU:
                                     switch (Case.getVar(world.getCellItem(i, j))) {
                                         case 0:

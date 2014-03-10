@@ -16,6 +16,7 @@ IDEES:
 	- Mettre le monde dans une boite rezisable
 	- Boutons pour que le joueur interagisse avec le monde (déclence la pluie ou des éruptions, etc etc)
 
+	- Trouver une utilitée aux arbres et aux cendres
 A FAIRE:	
 	- Faire des quadtree pour le terrain pour accélérer la recherche.
 	- Ajouter des traits génétiques:
