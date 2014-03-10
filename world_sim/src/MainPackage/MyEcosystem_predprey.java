@@ -9,7 +9,7 @@ public class MyEcosystem_predprey{
 
         // initialisation generale
 
-        int delai = 200;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
+        int delai = 2;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
 
