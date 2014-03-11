@@ -110,3 +110,4 @@ Résolus:
 	- L'eau se répand pas bien du tout.
 	- La simulation bug si un mouton sort du monde par le bas.
 	- Les agents ne se voient plus bien à cause des QuadTree.
+	- Les agents ne sont pas retirés du quadtree. Provoque des fantômes.

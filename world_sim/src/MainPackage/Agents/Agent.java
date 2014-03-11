@@ -128,7 +128,7 @@ public abstract class Agent {
                 }
             }
         }
-        return false;
+        return ret;
     }
     
     /**
@@ -266,6 +266,9 @@ public abstract class Agent {
         if(getAlive()){
             if(hasMeute()){
                 meute.majPos();
+                if(meute.getNbAgents()==1){
+                    meute=null;
+                }
             }
             if (_faim <= 0) {
                 setmort();
@@ -275,7 +278,7 @@ public abstract class Agent {
             if(_age>=_ageMax){
                 _faim-=_age-_ageMax;
             }
-            _age++;
+            _age++;/*
             if(dort){
                 sommeil++;
             }else if(_world.getJour() != diurne){
@@ -288,15 +291,8 @@ public abstract class Agent {
             }
             if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
                 dort=false;
-            }
-            /*
-            if(_world.getJour() == diurne){
-                dort=false;
-            }else{
-                dort=true;
-            }
-             * 
-             */
+            }*/
+            
             if(gestation==0){
                 if(hasMeute()){
                     meute.recrute(creationBebe(partenaire));

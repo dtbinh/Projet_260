@@ -752,8 +752,8 @@ public class World {
      */
     public void remove(Agent agent) {
         if (agents.contains(agent)) {
-            agents.remove(agent);
             quadtree.remove(agent);
+            agents.remove(agent);
         }
     }
 

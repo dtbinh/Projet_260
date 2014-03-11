@@ -114,14 +114,8 @@ public class Moutons extends Agent {
             }
         }
         
-        if (Math.random() > 0.5) // au hasard
-        {
-            _objectif[0]=_x+((Math.random() > 0.5)?(1):(-1));
-            _fuis=false;
-        } else {
-            _objectif[1]=_y+((Math.random() > 0.5)?(1):(-1));
-            _fuis=false;
-        }
+        _objectif[0]=_x+((Math.random() > 0.5)?(1):(-1));
+        _objectif[1]=_y+((Math.random() > 0.5)?(1):(-1));
     }
     
     @Override public Agent creationBebe(Agent reproducteur)

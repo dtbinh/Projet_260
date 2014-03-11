@@ -64,11 +64,52 @@ public class Loups extends Agent {
         }
         
         //tentative de reproduction
-        if(_faim>_faimMax*0.4 && getMature())
+        if(hasMeute()){
+            if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
+                _objectif[0]=meute.getX();
+                _objectif[1]=meute.getY();
+                return;
+            }
+        }
+        
+        //Interaction loups
+        Agent proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+        if(proche!=null)
         {
-            Agent proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
-            if(proche!=null)
+            //MEUTES
+            if(!hasMeute()){
+                //Creation de meute
+                if(!proche.hasMeute()){
+                    meute = new Meute(this, proche);
+                    proche.meute=meute;
+                }else{
+                    proche.meute.tenteRecrute(this);
+                }
+                if(_faim>_faimMax*0.4 && getMature())
+                {
+                    if(proche!=null)
+                    {
+                        if(proche._faim>proche._faimMax*0.4){
+                            _objectif[0]=proche._x;
+                            _objectif[1]=proche._y;
+                            _fuis=false;
+                            return;
+                        }
+                    }
+                }
+            } else {
+                // Fuite et mix des autres meutes
+                if(proche.hasMeute()){
+                    if(proche.meute!=meute){
+                        meute.merge(proche.meute);
+                    }
+                }
+            }
+        }
+        if(hasMeute()){
+            if(_faim>_faimMax*0.4 && getMature())
             {
+                proche=meute.getPlusProche(this);
                 if(proche._faim>proche._faimMax*0.4){
                     _objectif[0]=proche._x;
                     _objectif[1]=proche._y;
@@ -79,7 +120,7 @@ public class Loups extends Agent {
         }
         
         if(_faim<_faimMax){
-            Agent proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
+            proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
             if(proche != null){
                 _objectif[0]=proche._x;
                 _objectif[1]=proche._y;
@@ -88,14 +129,8 @@ public class Loups extends Agent {
             }
         }
         
-        if (Math.random() > 0.5) // au hasard
-        {
-            _objectif[0]=_x+((Math.random() > 0.5)?(1):(-1));
-            _fuis=false;
-        } else {
-            _objectif[1]=_y+((Math.random() > 0.5)?(1):(-1));
-            _fuis=false;
-        }
+        _objectif[0]=_x+((Math.random() > 0.5)?(1):(-1));
+        _objectif[1]=_y+((Math.random() > 0.5)?(1):(-1));
     }
 
     @Override public Agent creationBebe(Agent reproducteur)

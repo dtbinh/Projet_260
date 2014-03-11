@@ -13,7 +13,7 @@ public class MyEcosystem_predprey{
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
         int nbMoutons = 100;
-        int nbLoups = 0;
+        int nbLoups = 60;
         String map = "world2.pgm";
         
         //world.pgm = monde 1er

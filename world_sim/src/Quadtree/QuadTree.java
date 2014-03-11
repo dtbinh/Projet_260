@@ -203,7 +203,7 @@ public class QuadTree {
                 if (index!=-1){
                     nodes[index].insert(Agents.remove(i));
                 }else{
-                    parent.insert(r);
+                    parent.insert(Agents.remove(i));
                 }
             }
             Agents.clear();
@@ -211,42 +211,123 @@ public class QuadTree {
     }
     
     /**
-     * Met à jour l'emplacement des agents dans le quadtree.
-     * Trop manavore, pas utiliser
-     */
-    @Deprecated public void maj(){
-        if(nodes[0]!=null){
-            for(int i=0; i<4; i++){
-                nodes[i].maj();
-            }
-        }else{
-            for (int i=0; i<Agents.size(); i++){
-                int index = getIndex(Agents.get(i));
-                if (index==-1){
-                    parent.insert(Agents.get(i));
-                    Agents.remove(Agents.get(i));
-                }
-            }
-        }
-    }
-    
-    /**
      * Met à jour la position de l'agent dans le quadtree.
      */
     public void maj(Agent r){
+        int index = getIndex(r);
         if(nodes[0]!=null){
-            for(int i=0; i<4; i++){
-                nodes[i].maj(r);
-            }
+            nodes[index].maj(r);
         }else{
-            int index = getIndex(r);
-            if (index==-1){
-                parent.insert(r);
-                Agents.remove(r);
+            if(!Agents.contains(r)){
+                QuadTree test;
+                boolean done=false;
+                test=getLeft();
+                if(test!=null){
+                    if(test.Agents.contains(r)){
+                        test.remove(r);
+                        done=true;
+                    }
+                }
+                if(done=false){
+                    test=getRight();
+                    if(test!=null){
+                        if(test.Agents.contains(r)){
+                            test.remove(r);
+                            done=true;
+                        }
+                    }
+                }
+                if(done=false){
+                    test=getUp();
+                    if(test!=null){
+                        if(test.Agents.contains(r)){
+                            test.remove(r);
+                            done=true;
+                        }
+                    }
+                }
+                if(done=false){
+                    test=getDown();
+                    if(test!=null){
+                        if(test.Agents.contains(r)){
+                            test.remove(r);
+                            done=true;
+                        }
+                    }
+                }
+                insert(r);
             }
         }
     }
-   
+
+    /**
+     * Renvoie le noeud à gauche du noeud courant, null s'il n'y en a pas.
+     * @return 
+     */
+    private QuadTree getLeft(){
+        QuadTree ret=null;
+        if(parent!=null){
+            int index = parent.getIndex(new java.awt.Point(bounds.x-1, bounds.y));
+            if(index==-1){
+                ret = parent.getLeft();
+            }else{
+                ret = parent.nodes[index];
+            }
+        }
+        return ret;
+    }
+    
+    /**
+     * Renvoie le noeud à droite du noeud courant, null s'il n'y en a pas.
+     * @return 
+     */
+    private QuadTree getRight(){
+        QuadTree ret=null;
+        if(parent!=null){
+            int index = parent.getIndex(new java.awt.Point(bounds.x+bounds.width+1, bounds.y));
+            if(index==-1){
+                ret = parent.getRight();
+            }else{
+                ret = parent.nodes[index];
+            }
+        }
+        return ret;
+    }
+    
+    /**
+     * Renvoie le noeud au dessus du noeud courant, null s'il n'y en a pas.
+     * @return 
+     */
+    private QuadTree getUp(){
+        QuadTree ret=null;
+        if(parent!=null){
+            int index = parent.getIndex(new java.awt.Point(bounds.x, bounds.y-1));
+            if(index==-1){
+                ret = parent.getUp();
+            }else{
+                ret = parent.nodes[index];
+            }
+        }
+        return ret;
+    }
+    
+    /**
+     * Renvoie le noeud en dessous du noeud courant, null s'il n'y en a pas.
+     * @return 
+     */
+    private QuadTree getDown(){
+        QuadTree ret=null;
+        if(parent!=null){
+            int index = parent.getIndex(new java.awt.Point(bounds.x, bounds.y+bounds.height+1));
+            if(index==-1){
+                ret = parent.getUp();
+            }else{
+                ret = parent.nodes[index];
+            }
+        }
+        return ret;
+    }
+    
     /**
      * Insert an ArrayList of Agents into this tree
      */
@@ -265,6 +346,9 @@ public class QuadTree {
        }else{
            if(Agents.contains(r)){
                Agents.remove(r);
+           }else{
+               maj(r);
+               remove(r);
            }
        }
    }
@@ -278,8 +362,9 @@ public class QuadTree {
         int index = getIndex(r);
         if (index != -1 && nodes[0] != null){
             retrieveList = nodes[index].retrieve(r);
+        }else{
+            retrieveList.addAll(Agents);
         }
-        retrieveList.addAll(Agents);
         return retrieveList;
     }
    
@@ -289,14 +374,15 @@ public class QuadTree {
     public ArrayList<Agent> retrieve(Rectangle r){
         retrieveList.clear();
         boolean index[] = getIndex(r);
-        if (nodes[0] != null){
+        if(nodes[0] != null){
             for(int i=0; i<4; i++){
                 if(index[i]){
                     retrieveList.addAll(nodes[i].retrieve(r));
                 }
             }
+        }else{
+            retrieveList.addAll(Agents);
         }
-        retrieveList.addAll(Agents);
         return retrieveList;
     }
     
