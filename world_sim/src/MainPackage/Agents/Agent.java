@@ -278,7 +278,7 @@ public abstract class Agent {
             if(_age>=_ageMax){
                 _faim-=_age-_ageMax;
             }
-            _age++;/*
+            _age++;
             if(dort){
                 sommeil++;
             }else if(_world.getJour() != diurne){
@@ -291,7 +291,7 @@ public abstract class Agent {
             }
             if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
                 dort=false;
-            }*/
+            }
             
             if(gestation==0){
                 if(hasMeute()){

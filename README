@@ -92,6 +92,7 @@ DONE:
 	- Quand les agents meurent, leur cadavre reste un moment.
 	- Les loups mangent les cadavres de moutons et pas les moutons vivants.
 	- Les agents ne voient pas la nuit (sauf si ils ont vision nocturne)
+	- Les agents se déplacent en "meute" d'un certain nombre d'individus. Ils ne s'éloigent pas trop des agents de leur groupe.
 	
 	Prog:
 	- Affichage en 2D

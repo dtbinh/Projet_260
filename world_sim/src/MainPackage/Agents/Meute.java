@@ -16,7 +16,6 @@ public class Meute {
     private Agent chef;
     private int nbAgents;
     private int X, Y;
-    private int dirX, dirY;
     private int distanceMax;
     private int nbMax;
     
@@ -46,8 +45,6 @@ public class Meute {
         chef = a;
         X = (a.getX()+b.getX())/2;
         Y = (a.getY()+b.getY())/2;
-        dirX = (a.getX()+b.getX())/2;
-        dirY = (a.getY()+b.getY())/2;
         distanceMax=disM;
         nbMax=nbM;
     }
@@ -122,10 +119,8 @@ public class Meute {
             dirx+=a._objectif[0];
             diry+=a._objectif[1];
         }
-        X=valX/nbAgents;
-        Y=valY/nbAgents;
-        dirX=dirx/nbAgents;
-        dirY=diry/nbAgents;
+        X=dirx/nbAgents;
+        Y=diry/nbAgents;
     }
     
     public int getNbAgents(){return nbAgents;}
@@ -134,9 +129,6 @@ public class Meute {
             
     public int getX(){return X;}
     public int getY(){return Y;}
-    
-    public int getdirX(){return dirX;}
-    public int getdirY(){return dirY;}
     
     public Agent getChef(){return chef;}
     public ArrayList<Agent> getMembres(){return membres;}
