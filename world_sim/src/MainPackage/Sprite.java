@@ -146,13 +146,15 @@ public class Sprite extends JPanel {
                         }
                     }
                 for(Agent a:world.getAgentsArray()){
-                    if(a.getClass()==Moutons.class){
-                        g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
-                    }else if(a.getClass()==Loups.class){
-                        g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
-                    }else{
-                        g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
-                    }
+                    try{
+                        if(a.getClass()==Moutons.class){
+                            g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }else if(a.getClass()==Loups.class){
+                            g2.drawImage(feuSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }else{
+                            g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }
+                    }catch(NullPointerException e){}
                 }
                 if(!world.getJour()){
                     g2.drawImage(noirSprite,0,0,spriteLength*world.getHeight(),spriteLength*world.getWidth(), frame);

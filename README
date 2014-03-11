@@ -2,8 +2,9 @@ Bug:
 	
 Problèmes:
 	- Pas assez équilibré:
-		- Soit les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
-		- Soit les loups disparaissent: supprématie totale des moutons
+		(- Soit les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
+		- Soit les loups disparaissent: supprématie totale des moutons)
+		- Monde trop grand: Les agents se dispersent et finissent par s'éteindre
 	- La vision de cases prend trop de ressources, quadtree ?
 	- A priori la génération aléatoire ne marche pas très bien. (mais de toute façon il faudrait la refaire entièrement)
 ========================================================================
@@ -19,6 +20,7 @@ IDEES:
 
 	- Trouver une utilitée aux arbres et aux cendres
 	- Faire des quadtree pour le terrain pour accélérer la recherche.
+	- Ajouter un "esprit de la meute" pour que les bestioles mangent et chassent en groupes.
 	
 A FAIRE:
 	- Ajouter des traits génétiques:

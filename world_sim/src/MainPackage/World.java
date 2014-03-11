@@ -125,6 +125,13 @@ public class World {
         stepWorld();
         stepAgents();
         sprite.repaint();
+        int nbL=0;
+        for(Agent a:agents){
+            if(a.getClass()==MainPackage.Agents.Loups.class){
+                nbL++;
+            }
+        }
+        System.out.println(nbL+"\n");
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)
