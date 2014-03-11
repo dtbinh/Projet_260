@@ -24,7 +24,7 @@ public class Moutons extends Agent {
             if(!dort){
                 if(_faim<_faimMax){
                     if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                        _faim += 15;
+                        _faim += 25;
                         _world.setCellTerrainVal(_x, _y, Case.TERRE);
                     }
                 }
@@ -68,6 +68,7 @@ public class Moutons extends Agent {
             if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
                 _objectif[0]=meute.getX();
                 _objectif[1]=meute.getY();
+                return;
             }
         }
         
@@ -83,21 +84,14 @@ public class Moutons extends Agent {
                     meute = new Meute(this, proche);
                     proche.meute=meute;
                 }else{
-                //Recrutage de meute, sinon fuite
-                    if(!proche.meute.tenteRecrute(this)){
-                        _objectif[0]=proche.meute.getX();
-                        _objectif[1]=proche.meute.getY();
-                        _fuis=true;
-                        return;
-                    }
+                    proche.meute.tenteRecrute(this);
                 }
             } else {
-                // Fuite des autres meutes
+                // Fuite et mix des autres meutes
                 if(proche.hasMeute()){
-                    _objectif[0]=proche.meute.getX();
-                    _objectif[1]=proche.meute.getY();
-                    _fuis=true;
-                    return;
+                    if(proche.meute!=meute){
+                        meute.merge(proche.meute);
+                    }
                 }
             }
             //tentative de reproduction
@@ -130,9 +124,11 @@ public class Moutons extends Agent {
         }
     }
     
-    @Override public void creationBebe(Agent reproducteur)
+    @Override public Agent creationBebe(Agent reproducteur)
     {
-        _world.add(new Moutons(_x, _y, _world,new ADN(this._adn, reproducteur._adn)));
+        Agent BB=new Moutons(_x, _y, _world,new ADN(this._adn, reproducteur._adn));
+        _world.add(BB);
+        return BB;
     }
     
     @Override public boolean getMature() {

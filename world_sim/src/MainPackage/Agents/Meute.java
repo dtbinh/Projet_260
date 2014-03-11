@@ -26,7 +26,7 @@ public class Meute {
      */
     public Meute(Agent a, Agent b)
     {
-        this(a, b, 10, 10);
+        this(a, b, 15, 20);
     }
     
     /**
@@ -56,7 +56,7 @@ public class Meute {
      */
     public boolean tenteRecrute(Agent a)
     {
-        if(nbAgents < nbMax){
+        if(nbAgents < nbMax && !membres.contains(a)){
             recrute(a);
             return true;
         }else{
@@ -70,8 +70,10 @@ public class Meute {
      */
     public void recrute(Agent a)
     {
-        membres.add(a);
-        nbAgents++;
+        if(!membres.contains(a)){
+            membres.add(a);
+            nbAgents++;
+        }
     }
     
     /**
@@ -91,6 +93,22 @@ public class Meute {
         }
     }
     
+    public boolean merge(Meute x)
+    {
+        if(nbAgents+x.nbAgents >nbMax){
+            return false;
+        }else{
+            Meute petit=(nbAgents>x.nbAgents)?this:x;
+            Meute grand=(nbAgents>x.nbAgents)?x:this;
+            for(int i=getNbAgents()-1; i>=0.;i--){
+                petit.getMembres().get(i).meute=grand;
+                grand.recrute(petit.getMembres().get(i));
+                petit.retire(petit.getMembres().get(i));
+            }
+            return true;
+        }
+    }
+    
     
     public void majPos()
     {
@@ -101,6 +119,7 @@ public class Meute {
         }
         X=valX/nbAgents;
         Y=valY/nbAgents;
+        //System.out.println(this);
     }
     
     public int getNbAgents(){return nbAgents;}
@@ -111,5 +130,14 @@ public class Meute {
     public int getY(){return Y;}
     
     public Agent getChef(){return chef;}
+    public ArrayList<Agent> getMembres(){return membres;}
     
+    @Override public String toString()
+    {
+        String ret="Meute de "+nbAgents+" membres, centre "+X+"/"+Y+" :\n";
+        for(Agent a:membres){
+            ret+=a.toString()+"\n";
+        }
+        return ret;
+    }
 }

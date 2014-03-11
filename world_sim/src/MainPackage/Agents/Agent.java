@@ -264,6 +264,9 @@ public abstract class Agent {
     //passage du temps, morts et naissances
     protected void temps(){
         if(getAlive()){
+            if(hasMeute()){
+                meute.majPos();
+            }
             if (_faim <= 0) {
                 setmort();
             } else {
@@ -295,7 +298,11 @@ public abstract class Agent {
              * 
              */
             if(gestation==0){
-                creationBebe(partenaire);
+                if(hasMeute()){
+                    meute.recrute(creationBebe(partenaire));
+                }else{
+                    meute = new Meute(this, creationBebe(partenaire));
+                }
                 gestation--;
             }else if(gestation>0){
                 gestation--;
@@ -305,6 +312,9 @@ public abstract class Agent {
 
     public void setmort() {
         _alive = false;
+        if(hasMeute()){
+            meute.retire(this);
+        }
     }
 
     public void estmort() {
@@ -339,7 +349,7 @@ public abstract class Agent {
         }
     }
     
-    public abstract void creationBebe(Agent reproducteur);
+    public abstract Agent creationBebe(Agent reproducteur);
     
     protected int getVision()
     {

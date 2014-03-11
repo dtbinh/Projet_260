@@ -98,9 +98,11 @@ public class Loups extends Agent {
         }
     }
 
-    @Override public void creationBebe(Agent reproducteur)
+    @Override public Agent creationBebe(Agent reproducteur)
     {
-        _world.add(new Loups(_x, _y, _world, new ADN(this._adn, reproducteur._adn)));
+        Agent BB = new Loups(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
+        _world.add(BB);
+        return BB;
     }
     
     @Override public boolean getMature()
