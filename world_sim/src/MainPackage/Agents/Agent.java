@@ -40,6 +40,8 @@ public abstract class Agent {
     protected boolean _cours;
     protected int constitution; // représente l'état actuel du mob mort (intact, mangé, pourri...)
     
+    protected Meute meute;
+    
     private int _itMS;
     private int _orient;
     
@@ -77,6 +79,7 @@ public abstract class Agent {
         _adn= __adn;
         _tpsGestation=__tpsGestation;
         sommeil=_world.getDureeJour();
+        meute = null;
         diurne=true;
         
         
@@ -351,4 +354,7 @@ public abstract class Agent {
     {
         return "This: " + this.getClass() + " X:" + _x + "  Y:" + _y;
     }
+    
+    public boolean hasMeute(){return (meute!=null);}
+    public Meute getMeute(){return meute;}
 }

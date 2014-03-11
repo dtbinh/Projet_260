@@ -64,12 +64,45 @@ public class Moutons extends Agent {
             return;
         }
         
-        //tentative de reproduction
-        if(_faim>_faimMax*0.3 && getMature()){
-            proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
-            if(proche!=null)
-            {
-                if(proche._faim>proche._faimMax*0.3){
+        if(hasMeute()){
+            if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
+                _objectif[0]=meute.getX();
+                _objectif[1]=meute.getY();
+            }
+        }
+        
+        //Interaction moutons
+        
+        proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
+        if(proche!=null)
+        {
+            //MEUTES
+            if(!hasMeute()){
+                //Creation de meute
+                if(!proche.hasMeute()){
+                    meute = new Meute(this, proche);
+                    proche.meute=meute;
+                }else{
+                //Recrutage de meute, sinon fuite
+                    if(!proche.meute.tenteRecrute(this)){
+                        _objectif[0]=proche.meute.getX();
+                        _objectif[1]=proche.meute.getY();
+                        _fuis=true;
+                        return;
+                    }
+                }
+            } else {
+                // Fuite des autres meutes
+                if(proche.hasMeute()){
+                    _objectif[0]=proche.meute.getX();
+                    _objectif[1]=proche.meute.getY();
+                    _fuis=true;
+                    return;
+                }
+            }
+            //tentative de reproduction
+            if(_faim>_faimMax*0.3 && getMature()){
+                    if(proche._faim>proche._faimMax*0.3){
                     _objectif[0]=proche._x;
                     _objectif[1]=proche._y;
                     _fuis=false;

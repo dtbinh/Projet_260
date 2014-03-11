@@ -125,13 +125,6 @@ public class World {
         stepWorld();
         stepAgents();
         sprite.repaint();
-        int nbL=0;
-        for(Agent a:agents){
-            if(a.getClass()==MainPackage.Agents.Loups.class){
-                nbL++;
-            }
-        }
-        System.out.println(nbL+"\n");
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)
@@ -626,6 +619,14 @@ public class World {
         ret[0]=((x1-x2) > (x2-x1))?(x1-x2):(x2-x1);
         ret[1]=((y1-y2) > (y2-y1))?(y1-y2):(y2-y1);
         return ret;
+    }
+    
+    /**
+     * renvoie la distance en un entier entre les premiers poinst et le second.
+     */
+    public int distanceTotale(int x1, int y1, int x2, int y2)
+    {
+        return distance(x1, y1, x2, y2)[0]+distance(x1, y1, x2, y2)[1];
     }
     
     /**

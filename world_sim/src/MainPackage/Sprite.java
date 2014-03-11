@@ -150,7 +150,7 @@ public class Sprite extends JPanel {
                         if(a.getClass()==Moutons.class){
                             g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }else if(a.getClass()==Loups.class){
-                            g2.drawImage(feuSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                            g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }else{
                             g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }
