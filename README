@@ -2,8 +2,9 @@ Bug:
 	
 Problèmes:
 	- Pas assez équilibré:
-		- Les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
-	- La vision de cases prend trop de ressources, il faut faire un quadtree.
+		- Soit les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
+		- Soit les loups disparaissent: supprématie totale des moutons
+	- La vision de cases prend trop de ressources, quadtree ?
 	- A priori la génération aléatoire ne marche pas très bien. (mais de toute façon il faudrait la refaire entièrement)
 ========================================================================
 
@@ -17,8 +18,9 @@ IDEES:
 	- Boutons pour que le joueur interagisse avec le monde (déclence la pluie ou des éruptions, etc etc)
 
 	- Trouver une utilitée aux arbres et aux cendres
-A FAIRE:	
 	- Faire des quadtree pour le terrain pour accélérer la recherche.
+	
+A FAIRE:
 	- Ajouter des traits génétiques:
 		-
 	- Les bestioles agissent différement en fonction du jour/nuit:
@@ -91,6 +93,7 @@ DONE:
 	
 	Prog:
 	- Affichage en 2D
+	- QuadTree pour les agents, accélère leur vision
 
 Résolus:
 	- Les moutons mangent la case entière et laissent de la terre derrière eux.
@@ -104,3 +107,4 @@ Résolus:
 	- Le feu et la lave ne tuent pas correctement les agents.
 	- L'eau se répand pas bien du tout.
 	- La simulation bug si un mouton sort du monde par le bas.
+	- Les agents ne se voient plus bien à cause des QuadTree.

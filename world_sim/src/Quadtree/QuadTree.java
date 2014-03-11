@@ -120,6 +120,9 @@ public class QuadTree {
      */
     private boolean[] getIndex(Rectangle r){
         boolean ret[] = new boolean[5];
+        for(int i=0;i<4;i++){
+            ret[i]=false;
+        }
         if(r.getX() + r.getWidth() > bounds.getX() + bounds.getWidth()
                 || r.getX() < bounds.getX()
                 || r.getY() + r.getHeight() > bounds.getY() + bounds.getHeight()
@@ -128,15 +131,15 @@ public class QuadTree {
         }
         double verticalMidpoint = bounds.x + (bounds.width / 2);
         double horizontalMidpoint = bounds.y + (bounds.height / 2);
-        boolean topQuadrant = (r.y < horizontalMidpoint);
+        boolean topQuadrant = (r.y <= horizontalMidpoint);
         boolean bottomQuadrant = (r.y + r.height >= horizontalMidpoint);
-        if (r.x < verticalMidpoint){
+        if (r.x <= verticalMidpoint){
             if (topQuadrant){
                 ret[NW] = true;
             }if (bottomQuadrant){
                 ret[SW] = true;
             }
-        } else if (r.x + r.width >= verticalMidpoint){
+        }if (r.x + r.width >= verticalMidpoint){
             if (topQuadrant){
                 ret[NE] = true;
             }if (bottomQuadrant){

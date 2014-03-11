@@ -120,21 +120,11 @@ public class World {
      * Update the world state and return an array for the current world state (may be used for display)
      * @return
      */
-    int it=0;
-    long val=0;
     public void step() {
         stepEnvironnement();
         stepWorld();
-        long start = System.nanoTime();
         stepAgents();
-        val += (System.nanoTime() - start);
-        if((++it)%1000==0){
-            if(agents.isEmpty()){
-                System.out.println("STAHP");
-            }
-            System.out.println(val/it+" ("+it+")");
-        }
-        //sprite.repaint();
+        sprite.repaint();
     }
     
     public void stepEnvironnement() // Modifie les variables de l'environnement (vent, pluie etc...)

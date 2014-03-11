@@ -12,13 +12,20 @@ public class MyEcosystem_predprey{
         int delai = 2;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
+        int nbMoutons = 100;
+        int nbLoups = 30;
+        String map = "world2.pgm";
+        
+        //world.pgm = monde 1er
+        //world2.pgm = monde version grand
+        //test.pgm = monde 10*10 100% herbe
 
         // initialise l'ecosysteme
 
-        World world = new World("world2.pgm");
+        World world = new World(map);
         
-        // Ajouts d'agents
-      for (int i = 0; i != 100; i++) {
+        // Ajouts d'agents/*
+      for (int i = 0; i < nbMoutons; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){
@@ -27,7 +34,7 @@ public class MyEcosystem_predprey{
             }
             world.add(new Moutons(valX, valY, world));
         }
-        for (int i = 0; i != 30; i++) {
+        for (int i = 0; i < nbLoups; i++) {
           int valX = (int) (Math.random() * world.getWidth());
           int valY = (int) (Math.random() * world.getHeight());
           while(world.getCellTerrain(valX, valY)== Case.SABLE){

@@ -13,10 +13,10 @@ public class Moutons extends Agent {
     
     //constructeur reprod
     public Moutons(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 45, 300, 2, 3, 5, _adn);
+        super(__x, __y, __w, 45, 300, 2, 5, 5, _adn);
         diurne=true;
     }
-
+    
     @Override public void step() {
         temps();
 
@@ -24,7 +24,7 @@ public class Moutons extends Agent {
             if(!dort){
                 if(_faim<_faimMax){
                     if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                        _faim += 7;
+                        _faim += 15;
                         _world.setCellTerrainVal(_x, _y, Case.TERRE);
                     }
                 }
@@ -65,8 +65,7 @@ public class Moutons extends Agent {
         }
         
         //tentative de reproduction
-        if(_faim>_faimMax*0.3 && getMature())
-        {
+        if(_faim>_faimMax*0.3 && getMature()){
             proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
             if(proche!=null)
             {
@@ -97,7 +96,7 @@ public class Moutons extends Agent {
             _fuis=false;
         }
     }
-
+    
     @Override public void creationBebe(Agent reproducteur)
     {
         _world.add(new Moutons(_x, _y, _world,new ADN(this._adn, reproducteur._adn)));
