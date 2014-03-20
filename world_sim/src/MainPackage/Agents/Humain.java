@@ -37,37 +37,35 @@ public class Humain extends Agent {
                 }
                 
                 
-                
-                
-                switch(humeur){
-                    case MANGE:
-                        if(inventaire.containsKey("nourriture")){
-                                _faim += 50;
-                                retirerInventaire("nourriture");
-                                break;
-                        }
-                    case CHASSE:
-                        ArrayList<Agent> mmcase = _world.getAgentCase(this);
-                        if (!mmcase.isEmpty()) {
-                            for (Agent ag : mmcase) {
-                                if (ag.getClass() == Moutons.class) {
-                                    if(ag.getAlive()){
-                                        ag.setmort();
-                                    }else{
-                                        ajouterInventaire("nourriture", 3);
-                                    }
-                                }else if (ag.getClass() == Loups.class) {
-                                    if(ag.getAlive()){
-                                        ag.setmort();
-                                    }else{
-                                        ajouterInventaire("nourriture", 4);
-                                    }
+                if(humeur == MANGE){
+                    if(inventaire.containsKey("nourriture")){
+                            _faim += 50;
+                            retirerInventaire("nourriture");
+                    }
+                    ArrayList<Agent> mmcase = _world.getAgentCase(this);
+                    if (!mmcase.isEmpty()) {
+                        for (Agent ag : mmcase) {
+                            if (ag.getClass() == Moutons.class) {
+                                if(ag.getAlive()){
+                                    ag.setmort();
+                                }else{
+                                    ajouterInventaire("nourriture", 3);
+                                }
+                            }else if (ag.getClass() == Loups.class) {
+                                if(ag.getAlive()){
+                                    ag.setmort();
+                                }else{
+                                    ajouterInventaire("nourriture", 4);
                                 }
                             }
                         }
-                        break;
-                        
-                        
+                    }
+                    // TODO, modifier ça pour que les humains ne mangent pas de l'herbe :D
+                    if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
+                        ajouterInventaire("nourriture", 1);
+                        _world.setCellTerrainVal(_x, _y, Case.TERRE);
+                    }
+                    
                 }
                 
             }
@@ -110,13 +108,6 @@ public class Humain extends Agent {
         }
         
         
-        if(hasMeute()){
-            if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
-                _objectif[0]=meute.getX();
-                _objectif[1]=meute.getY();
-                return;
-            }
-        }
         
         //Interaction humain
         proche = _world.getAgentsProches(this, Humain.class, getVision()*2);
@@ -153,12 +144,13 @@ public class Humain extends Agent {
             }
         }
         if(hasMeute()){
-            if(_faim>_faimMax*0.4 && getMature())
+            if( humeur == BEZ)
             {
                 proche=meute.getPlusProche(this);
-                if(proche._faim>proche._faimMax*0.4){
-                    _objectif[0]=proche._x;
-                    _objectif[1]=proche._y;
+                Humain pr = (Humain) proche;
+                if(pr.humeur == BEZ){
+                    _objectif[0]=pr._x;
+                    _objectif[1]=pr._y;
                     _fuis=false;
                     return;
                 }
@@ -177,6 +169,13 @@ public class Humain extends Agent {
             if(proche != null){
                 _objectif[0]=proche._x;
                 _objectif[1]=proche._y;
+                _fuis=false;
+                return;
+            }
+            // TODO: créer les buissons et modifier ça pour que les humains broutent pas.
+            int buissonProche[]=_world.getPlusProcheTerrain(_x,_y,getVision(),Case.HERBE);
+            if(buissonProche[0]!=-1){
+                _objectif=buissonProche;
                 _fuis=false;
                 return;
             }

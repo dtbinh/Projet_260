@@ -158,6 +158,8 @@ public class Sprite extends JPanel {
                             g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }else if(a.getClass()==Crocodile.class){
                             g2.drawImage(crocodileSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }else if(a.getClass()==Humain.class){
+                            g2.drawImage(humainSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }
                     }catch(NullPointerException e){}
                 }

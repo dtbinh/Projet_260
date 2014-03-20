@@ -32,7 +32,12 @@ A FAIRE:
 		-
 	- Les bestioles agissent différement en fonction du jour/nuit:
 		-
-	- Humains qui coupent des arbres, construisent des maisons, chassent les moutons et les loups
+	- Humains:
+		- coupent les arbres
+		- construisent des maisons
+		- fuyent les crocodiles
+		- reviennent chez eux pour dormir
+		- font des villages
 	- buissons avec des fruits récoltables
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt?
@@ -100,7 +105,8 @@ DONE:
 	- Les agents se déplacent en "meute" d'un certain nombre d'individus. Ils ne s'éloigent pas trop des agents de leur groupe.
 	- Les agents restent en meute, ils mangent et chassent en groupes.
 	- Ajout de crocodiles: Ils mangent les loups et les moutons, et ils essayent de rester dans l'eau le plus possible.
-	
+	- Ajout d'humains:
+		- chassent les moutons et les loups
 	Prog:
 	- Affichage en 2D
 	- QuadTree pour les agents, accélère leur vision
