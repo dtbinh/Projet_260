@@ -34,6 +34,8 @@ public class Sprite extends JPanel {
         
 	private Image loupSprite;
 	private Image moutonSprite;
+	private Image crocodileSprite;
+	private Image humainSprite;
 	
         
         private Image noirSprite;
@@ -57,6 +59,9 @@ public class Sprite extends JPanel {
                         
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
+                        crocodileSprite = ImageIO.read(new File("crocodile.png"));
+                        humainSprite = ImageIO.read(new File("humain.png"));
+                        
                         noirSprite = ImageIO.read(new File("sombre.png"));
 		}
 		catch(Exception e)
@@ -151,8 +156,8 @@ public class Sprite extends JPanel {
                             g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }else if(a.getClass()==Loups.class){
                             g2.drawImage(loupSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
-                        }else{
-                            g2.drawImage(moutonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }else if(a.getClass()==Crocodile.class){
+                            g2.drawImage(crocodileSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }
                     }catch(NullPointerException e){}
                 }

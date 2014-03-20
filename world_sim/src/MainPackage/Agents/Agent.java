@@ -252,7 +252,7 @@ public abstract class Agent {
             j=(j+1)%4;
         }
         for (int i=0; i<4; i++){
-            if((Case.getVal(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2) || (Case.getVal(voisins[i]) == Case.LAVE) || (Case.getVal(voisins[i]) == Case.FEU)) {
+            if((Case.getVal(voisins[i]) == Case.EAU && Case.getVar(voisins[i]) > 2 && !_aquatique) || (Case.getVal(voisins[i]) == Case.LAVE) || (Case.getVal(voisins[i]) == Case.FEU)) {
                 ret[i]=false;
             }else{
                 ret[i]=true;
@@ -295,7 +295,7 @@ public abstract class Agent {
             
             if(gestation==0){
                 if(hasMeute()){
-                    meute.recrute(creationBebe(partenaire));
+                    meute.tenteRecrute(creationBebe(partenaire));
                 }else{
                     meute = new Meute(this, creationBebe(partenaire));
                 }

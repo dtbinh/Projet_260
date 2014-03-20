@@ -68,7 +68,7 @@ public class Meute {
      * Ajoute un agent à la meute
      * @param a : L'agent à ajouter
      */
-    public void recrute(Agent a)
+    private void recrute(Agent a)
     {
         if(!membres.contains(a)){
             membres.add(a);

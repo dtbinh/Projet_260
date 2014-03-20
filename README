@@ -1,10 +1,16 @@
 Bug:
 	
 Problèmes:
-	- Pas assez équilibré:
+	- Pas assez équilibré DU TOUT DU TOUT HIHI:
 		(- Soit les loups finissent quasiment toujours en surnombre => plus assez de moutons => extinction des deux espèces.
 		- Soit les loups disparaissent: supprématie totale des moutons)
 		- Monde trop grand: Les agents se dispersent et finissent par s'éteindre
+	- PAS EQUILIBRE
+	- L'EQUILIBRAGE EST POURRI
+	- C'est pas très bien équilibré
+	- Niveau équilibre, ça se casse la gueule
+	- Il faudrait équilibrer un peu le monde.
+	- HAHZEIORAIOJAIOJB BLABLABLA EQUILIBRAGE.
 	- La vision de cases prend trop de ressources, quadtree ?
 	- A priori la génération aléatoire ne marche pas très bien. (mais de toute façon il faudrait la refaire entièrement)
 ========================================================================
@@ -20,7 +26,6 @@ IDEES:
 
 	- Trouver une utilitée aux arbres et aux cendres
 	- Faire des quadtree pour le terrain pour accélérer la recherche.
-	- Ajouter un "esprit de la meute" pour que les bestioles mangent et chassent en groupes.
 	
 A FAIRE:
 	- Ajouter des traits génétiques:
@@ -29,9 +34,8 @@ A FAIRE:
 		-
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt?
-	- Crocodiles! (sont dans l'eau, sortent pour bouffer les bêtes)
 	- Apprentissage des bestioles*
-	- Chasseur qui sort pour "équilibrer" en tuant les bestioles en trop
+	- Humains qui coupent des arbres, construisent des maisons, chassent les moutons et les loups
 
 
 Si on a plus rien d'autre à faire:
@@ -93,6 +97,8 @@ DONE:
 	- Les loups mangent les cadavres de moutons et pas les moutons vivants.
 	- Les agents ne voient pas la nuit (sauf si ils ont vision nocturne)
 	- Les agents se déplacent en "meute" d'un certain nombre d'individus. Ils ne s'éloigent pas trop des agents de leur groupe.
+	- Les agents restent en meute, ils mangent et chassent en groupes.
+	- Ajout de crocodiles: Ils mangent les loups et les moutons, et ils essayent de rester dans l'eau le plus possible.
 	
 	Prog:
 	- Affichage en 2D

@@ -4,17 +4,16 @@ import MainPackage.Case;
 import MainPackage.World;
 import java.util.ArrayList;
 
-public class Loups extends Agent {
+public class Humain extends Agent {
 
     //constructeur initial
-    public Loups(int __x, int __y, World __w) {
+    public Humain(int __x, int __y, World __w) {
         this(__x, __y, __w, new ADN());
     }
     
     //constructeur reprod
-    public Loups(int __x, int __y, World __w, ADN _adn) {
+    public Humain(int __x, int __y, World __w, ADN _adn) {
         super(__x, __y, __w, 800, 2000, 1, 4, 200, _adn);
-        diurne=false;
     }
 
     @Override public void step() {
@@ -82,7 +81,7 @@ public class Loups extends Agent {
         }
         
         //Interaction loups
-        proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+        proche = _world.getAgentsProches(this, Humain.class, getVision()*2);
         if(proche!=null)
         {
             //MEUTES
@@ -144,7 +143,7 @@ public class Loups extends Agent {
 
     @Override public Agent creationBebe(Agent reproducteur)
     {
-        Agent BB = new Loups(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
+        Agent BB = new Humain(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
         _world.add(BB);
         return BB;
     }

@@ -4,17 +4,17 @@ import MainPackage.Case;
 import MainPackage.World;
 import java.util.ArrayList;
 
-public class Loups extends Agent {
+public class Crocodile extends Agent {
 
     //constructeur initial
-    public Loups(int __x, int __y, World __w) {
+    public Crocodile(int __x, int __y, World __w) {
         this(__x, __y, __w, new ADN());
     }
     
     //constructeur reprod
-    public Loups(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 800, 2000, 1, 4, 200, _adn);
-        diurne=false;
+    public Crocodile(int __x, int __y, World __w, ADN _adn) {
+        super(__x, __y, __w, 1200, 2000, 1, 4, 100, _adn);
+        _aquatique=true;
     }
 
     @Override public void step() {
@@ -26,12 +26,12 @@ public class Loups extends Agent {
                     ArrayList<Agent> mmcase = _world.getAgentCase(this);
                     if (!mmcase.isEmpty()) {
                         for (Agent ag : mmcase) {
-                            if (ag.getClass() == Moutons.class) {
+                            if (ag.getClass() == Moutons.class || ag.getClass() == Loups.class) {
                                 if(ag.getAlive()){
                                     ag.setmort();
                                 }else{
                                     ag.constitution--;
-                                    _faim += 200;
+                                    _faim += 400;
                                 }
                             }
                         }
@@ -63,16 +63,6 @@ public class Loups extends Agent {
             return;
         }
         
-        Agent proche = _world.getAgentsProches(this, Crocodile.class, getVision());
-        if(proche!=null)
-        {
-            _objectif[0]=proche._x;
-            _objectif[1]=proche._y;
-            _fuis=true;
-            return;
-        }
-        
-        
         if(hasMeute()){
             if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
                 _objectif[0]=meute.getX();
@@ -81,8 +71,8 @@ public class Loups extends Agent {
             }
         }
         
-        //Interaction loups
-        proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+        //Interaction Crocodiles
+        Agent proche = _world.getAgentsProches(this, Crocodile.class, getVision()*2);
         if(proche!=null)
         {
             //MEUTES
@@ -136,6 +126,22 @@ public class Loups extends Agent {
                 _fuis=false;
                 return;
             }
+            proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+            if(proche != null){
+                _objectif[0]=proche._x;
+                _objectif[1]=proche._y;
+                _fuis=false;
+                return;
+            }
+        }
+        
+        if(Case.getVal(_world.getCellItem(_x, _y)) != Case.EAU){
+            int eauProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.EAU);
+            if(eauProche[0]!=-1){
+                _objectif=eauProche;
+                _fuis=false;
+                return;
+            }
         }
         
         _objectif[0]=_x+((Math.random() > 0.5)?(1):(-1));
@@ -144,13 +150,13 @@ public class Loups extends Agent {
 
     @Override public Agent creationBebe(Agent reproducteur)
     {
-        Agent BB = new Loups(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
+        Agent BB = new Crocodile(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
         _world.add(BB);
         return BB;
     }
     
     @Override public boolean getMature()
     {
-        return (_age>_ageMax*0.2);
+        return (_age>_ageMax*0.4);
     }
 }

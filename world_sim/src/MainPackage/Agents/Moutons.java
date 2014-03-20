@@ -14,7 +14,6 @@ public class Moutons extends Agent {
     //constructeur reprod
     public Moutons(int __x, int __y, World __w, ADN _adn) {
         super(__x, __y, __w, 45, 300, 4, 5, 5, _adn);
-        diurne=true;
     }
     
     @Override public void step() {
@@ -56,6 +55,15 @@ public class Moutons extends Agent {
         }
         
         Agent proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+        if(proche!=null)
+        {
+            _objectif[0]=proche._x;
+            _objectif[1]=proche._y;
+            _fuis=true;
+            return;
+        }
+        
+        proche = _world.getAgentsProches(this, Crocodile.class, getVision());
         if(proche!=null)
         {
             _objectif[0]=proche._x;
