@@ -47,7 +47,6 @@ A FAIRE:
 Si on a plus rien d'autre à faire:
 	- Loups et moutons de différentes couleurs
 	- Un joueur
-	- Les humains peuvent couper du bois et construire des truc avec.
 
 
 
@@ -107,6 +106,7 @@ DONE:
 	- Ajout de crocodiles: Ils mangent les loups et les moutons, et ils essayent de rester dans l'eau le plus possible.
 	- Ajout d'humains:
 		- chassent les moutons et les loups
+		
 	Prog:
 	- Affichage en 2D
 	- QuadTree pour les agents, accélère leur vision
