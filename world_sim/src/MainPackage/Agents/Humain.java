@@ -3,9 +3,15 @@ package MainPackage.Agents;
 import MainPackage.Case;
 import MainPackage.World;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Humain extends Agent {
 
+    private HashMap<String, Integer> inventaire;
+    private String equipement;
+    private int humeur;
+    private final int GLANDE=0, CHASSE=1, MANGE=2, BEZ=3, FATIGUE=4;
+    
     //constructeur initial
     public Humain(int __x, int __y, World __w) {
         this(__x, __y, __w, new ADN());
@@ -14,6 +20,9 @@ public class Humain extends Agent {
     //constructeur reprod
     public Humain(int __x, int __y, World __w, ADN _adn) {
         super(__x, __y, __w, 800, 2000, 1, 4, 200, _adn);
+        inventaire = new HashMap<String, Integer>();
+        equipement="";
+        humeur=GLANDE;
     }
 
     @Override public void step() {
@@ -22,27 +31,56 @@ public class Humain extends Agent {
         if (_alive) {
             if(!dort){
                 if(_faim<_faimMax){
-                    ArrayList<Agent> mmcase = _world.getAgentCase(this);
-                    if (!mmcase.isEmpty()) {
-                        for (Agent ag : mmcase) {
-                            if (ag.getClass() == Moutons.class) {
-                                if(ag.getAlive()){
-                                    ag.setmort();
-                                }else{
-                                    ag.constitution--;
-                                    _faim += 200;
+                    humeur = MANGE;
+                }else{
+                    humeur = CHASSE;
+                }
+                
+                
+                
+                
+                switch(humeur){
+                    case MANGE:
+                        if(inventaire.containsKey("nourriture")){
+                                _faim += 50;
+                                retirerInventaire("nourriture");
+                                break;
+                        }
+                    case CHASSE:
+                        ArrayList<Agent> mmcase = _world.getAgentCase(this);
+                        if (!mmcase.isEmpty()) {
+                            for (Agent ag : mmcase) {
+                                if (ag.getClass() == Moutons.class) {
+                                    if(ag.getAlive()){
+                                        ag.setmort();
+                                    }else{
+                                        ajouterInventaire("nourriture", 3);
+                                    }
+                                }else if (ag.getClass() == Loups.class) {
+                                    if(ag.getAlive()){
+                                        ag.setmort();
+                                    }else{
+                                        ajouterInventaire("nourriture", 4);
+                                    }
                                 }
                             }
                         }
-                    }
+                        break;
+                        
+                        
                 }
+                
             }
+            
+            
+            
+            
+            
+            
             if (_world.containVoisinsItem(_x, _y,Case.FEU) || _world.containVoisinsItem(_x, _y,Case.LAVE)) {
                 setmort();
                 constitution=-1;
             }
-            
-            
             setDir();
             reproduction();
         }
@@ -80,7 +118,7 @@ public class Humain extends Agent {
             }
         }
         
-        //Interaction loups
+        //Interaction humain
         proche = _world.getAgentsProches(this, Humain.class, getVision()*2);
         if(proche!=null)
         {
@@ -127,8 +165,15 @@ public class Humain extends Agent {
             }
         }
         
-        if(_faim<_faimMax){
+        if(humeur == CHASSE){
             proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
+            if(proche != null){
+                _objectif[0]=proche._x;
+                _objectif[1]=proche._y;
+                _fuis=false;
+                return;
+            }
+            proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
             if(proche != null){
                 _objectif[0]=proche._x;
                 _objectif[1]=proche._y;
@@ -151,5 +196,25 @@ public class Humain extends Agent {
     @Override public boolean getMature()
     {
         return (_age>_ageMax*0.2);
+    }
+    
+    private void retirerInventaire(String s)
+    {
+        int nbr = inventaire.get(s)-1;
+        if(nbr==0){
+            inventaire.remove(s);
+        }else{
+            inventaire.put(s, nbr);
+        }
+    }
+    
+    private void ajouterInventaire(String s, int i)
+    {
+        if(inventaire.containsKey(s)){
+            int nbr = inventaire.get(s)+i;
+            inventaire.put(s, nbr);
+        }else{
+            inventaire.put(s, i);
+        }
     }
 }
