@@ -1,3 +1,8 @@
+Mail des prof:
+	Mettre en objet [LI260] THIERRY - BARRY
+	arthur.bernard@isir.upmc.fr
+	nicolas.bredeche@upmc.fr 
+
 Bug:
 	
 Problèmes:
@@ -17,7 +22,6 @@ Problèmes:
 
 TODO:
 IDEES:
-	- Trouver des images pour les cendres?
 	!!	- TEST UNITAIRES 
 	- Ajouter constructeur de monde (à la paint, pour créer soit même son monde avec ses variables)
 	- Trouver quelque chose pour voir le relief
@@ -38,7 +42,6 @@ A FAIRE:
 		- fuyent les crocodiles
 		- reviennent chez eux pour dormir
 		- font des villages
-	- buissons avec des fruits récoltables
 	- Les agents courent quand ils sont en danger (ou qu'ils chassent) et marchent en temps normal.
 	- Les loups vivent dans la forêt?
 	- Apprentissage des bestioles*
@@ -81,7 +84,7 @@ DONE:
 	- Générateur de lave
 	- L'herbe repousse.
 	- Générateur d'eau fonctionnel (rivière)
-	
+	- buissons avec des fruits récoltables
 	
 	Agents:
 	- Se déplacent.

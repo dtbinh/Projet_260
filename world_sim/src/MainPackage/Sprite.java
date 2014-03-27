@@ -31,6 +31,7 @@ public class Sprite extends JPanel {
         private Image flaqueSprite;
         private Image laveSprite;
         private Image feuSprite;
+        private Image bushSprite;
         
 	private Image loupSprite;
 	private Image moutonSprite;
@@ -56,6 +57,7 @@ public class Sprite extends JPanel {
                         flaqueSprite = ImageIO.read(new File("flaque.png"));
                         laveSprite = ImageIO.read(new File("lave.png"));
                         feuSprite = ImageIO.read(new File("feu.png"));
+                        bushSprite = ImageIO.read(new File("bush.png"));
                         
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
@@ -108,6 +110,9 @@ public class Sprite extends JPanel {
                             switch(Case.getVal(world.getCellItem(i, j))){
                                 case Case.ARBRE:
                                     g2.drawImage(treeSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+                                    break;
+                                case Case.BUISSON:
+                                    g2.drawImage(bushSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
                                     break;
                                 case Case.EAU:
                                     switch (Case.getVar(world.getCellItem(i, j))) {

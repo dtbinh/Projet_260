@@ -27,6 +27,8 @@ public class World {
     private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
     private final double pEvaporation = 0.01; //proba d'évaporation de l'eau
+    private final double pBuisson = 0.0001; // Proba qu'un puisson pop in the wild
+    private final double pBuissonPourri = 0.05; // Proba que les baies d'un buisson pourrissent
     
     private double varFeu = 0.; // % de variation du feu selon l'environnement
     
@@ -177,6 +179,11 @@ public class World {
                                 bufferItem[x][y] = Case.ARBRE;
                                 break;
                             }
+                            if (pBuisson >= Math.random()) {
+                                bufferItem[x][y] = Case.BUISSON+8;
+                                break;
+                                
+                            }
                         }
                         if (pluie) {
                             if (pGoutte >= Math.random()) {
@@ -185,7 +192,16 @@ public class World {
                             }
                         }
                         break;
-
+                    
+                    case Case.BUISSON:
+                        if (pBuissonPourri >= Math.random()){
+                            bufferItem[x][y] = tableauItem[x][y]-1;
+                        }
+                        if(Case.getVar(tableauItem[x][y]) == 0){
+                            bufferItem[x][y] = Case.VIDE;
+                        }
+                        break;
+                        
                     case Case.ARBRE:
                         voisins = getVoisins(tableauItem, x, y);
                         boolean feu = false;

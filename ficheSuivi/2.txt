@@ -1,6 +1,7 @@
-Ajouté la génération par image en nuances de gris,
-Les arbres apparaissent les un à coté des autres et pas n'importe où au pif.
-On a ajouté des éruptions volcaniques et de la lave qui met le feu aux arbres.
-Les agents peuvent se noyer, et fuient le feu et la lave.
-On a enlevé le code qui servait à l'affichage par pixel et gardé seulement celui pour l'affichage avec sprite. (Mais on a des backup, au cas où)
-On a pensé à créer des rivières
+20/02/14:
+- Ajouté la génération par image en nuances de gris,
+- Les arbres apparaissent les un à coté des autres et pas n'importe où au pif.
+- On a ajouté des éruptions volcaniques et de la lave qui met le feu aux arbres.
+- Les agents peuvent se noyer, et fuient le feu et la lave.
+- On a enlevé le code qui servait à l'affichage par pixel et gardé seulement celui pour l'affichage avec sprite. (Mais on a des backup, au cas où)
+- On a pensé à créer des rivières

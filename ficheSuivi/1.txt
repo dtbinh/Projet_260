@@ -1,6 +1,6 @@
 13/02/2014:
-On a ajouté la génération de monde avec le bruit de Perlin.
-On a commencé à ajouter des graphisme en 2D
-On a ajouté une nouvelle technique pour avoir un terrain indépendant de ce qui se trouve dessus
-On a pensé à faire une génération à partir d'une image plutôt que générée aléatoirement.
-On a découvert que github c'est génial
+- On a ajouté la génération de monde avec le bruit de Perlin.
+- On a commencé à ajouter des graphisme en 2D
+- On a ajouté une nouvelle technique pour avoir un terrain indépendant de ce qui se trouve dessus
+- On a pensé à faire une génération à partir d'une image plutôt que générée aléatoirement.
+- On a découvert que github c'est génial
