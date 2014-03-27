@@ -1,0 +1,4 @@
+13/03/14
+- On a résolu le problème de l'eau, elle s'écoule correctement.
+- On a corrigé des bug qui permettaient aux agents d'aller dans l'eau
+- On a ajouté le système de meute qui permet aux agents de rester groupés

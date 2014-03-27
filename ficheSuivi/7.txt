@@ -1,0 +1,7 @@
+27/03/14
+- On a ajouté des buissons qui feront pousser des baies récoltables
+- On a implémenté les humains.
+- Les humains peuvent construire des maisons
+- Les humains forment des villages
+- Les humains peuvent récolter des fruits et faire des réserves de nourriture
+- Les humains remplissent leur cheminées de bois pour mieux dormir

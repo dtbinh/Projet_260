@@ -1,0 +1,3 @@
+06/03/14:
+- On a ajouté la possibilité à notre monde d'avoir des rivières
+- On a trouvé un bug qui empêche l'eau de s'écouler correctement

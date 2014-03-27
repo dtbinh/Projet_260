@@ -1,0 +1,4 @@
+20/03/14
+- On a modifié le fonctionnement des caractères génétiques pour qu'il soit plus souple
+- On a ajouté des crocodiles qui peuvent aller dans l'eau
+- On a commencé à implémenter des humains.
