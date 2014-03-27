@@ -42,6 +42,12 @@ public class Humain extends Agent {
                             _faim += 50;
                             retirerInventaire("nourriture");
                     }
+                }
+                if( humeur == MANGE || humeur == CHASSE){
+                    if (Case.getVal(_world.getCellItem(_x, _y)) == Case.BUISSON && Case.getVar(_world.getCellItem(_x, _y)) > 0) {
+                        ajouterInventaire("nourriture", 1);
+                        _world.setCellTypeVal(_x, _y, _world.getCellItem(_x, _y)-1);
+                    }
                     ArrayList<Agent> mmcase = _world.getAgentCase(this);
                     if (!mmcase.isEmpty()) {
                         for (Agent ag : mmcase) {
@@ -60,13 +66,9 @@ public class Humain extends Agent {
                             }
                         }
                     }
-                    // TODO, modifier ça pour que les humains ne mangent pas de l'herbe :D
-                    if (_world.getCellTerrain(_x, _y) == Case.HERBE) {
-                        ajouterInventaire("nourriture", 1);
-                        _world.setCellTerrainVal(_x, _y, Case.TERRE);
-                    }
-                    
                 }
+                
+                
                 
             }
             
@@ -107,6 +109,32 @@ public class Humain extends Agent {
             return;
         }
         
+        if(humeur == CHASSE || humeur == MANGE){
+            int buissonProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.BUISSON);
+            if(buissonProche[0]!=-1){
+                _objectif=buissonProche;
+                _fuis=false;
+                return;
+            }
+            
+            proche = _world.getAgentsProches(this, Moutons.class, getVision()*2);
+            if(proche!=null)
+            {
+                _objectif[0]=proche._x;
+                _objectif[1]=proche._y;
+                _fuis=false;
+                return;
+            }
+            
+            proche = _world.getAgentsProches(this, Loups.class, getVision()*2);
+            if(proche!=null)
+            {
+                _objectif[0]=proche._x;
+                _objectif[1]=proche._y;
+                _fuis=false;
+                return;
+            }
+        }
         
         
         //Interaction humain

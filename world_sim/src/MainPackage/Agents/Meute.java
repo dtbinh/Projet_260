@@ -12,12 +12,12 @@ import java.util.ArrayList;
  */
 public class Meute {
     
-    private ArrayList<Agent> membres;
-    private Agent chef;
-    private int nbAgents;
-    private int X, Y;
-    private int distanceMax;
-    private int nbMax;
+    protected ArrayList<Agent> membres;
+    protected Agent chef;
+    protected int nbAgents;
+    protected int X, Y;
+    protected int distanceMax;
+    protected int nbMax;
     
     /**
      * Pour créer une meute, il faut au moins un couple d'agents.

@@ -721,7 +721,7 @@ public class World {
     }
 
     /**
-     * Renvoie l'index de la valeur (seulement les dizaines) de tableauItem à la position x/y
+     * Renvoie la valeur de tableauItem à la position x/y
      * @param x, y
      */
     public int getCellItem(int x, int y) {

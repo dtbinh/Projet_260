@@ -3,6 +3,7 @@ package MainPackage;
 import MainPackage.Agents.Loups;
 import MainPackage.Agents.Moutons;
 import MainPackage.Agents.Crocodile;
+import MainPackage.Agents.Humain;
 
 public class MyEcosystem_predprey{
 
@@ -13,9 +14,10 @@ public class MyEcosystem_predprey{
         int delai = 200;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
-        int nbMoutons = 50;
-        int nbLoups = 10;
-        int nbCroco = 50;
+        int nbMoutons = 100;
+        int nbLoups = 20;
+        int nbCroco = 20;
+        int nbHumain = 10;
         String map = "world.pgm";
         
         //world.pgm = monde 1er
@@ -53,6 +55,15 @@ public class MyEcosystem_predprey{
             valY = (int) (Math.random() * world.getHeight());
             }
             world.add(new Crocodile(valX, valY, world));
+        }
+        for (int i = 0; i < nbHumain; i++) {
+          int valX = (int) (Math.random() * world.getWidth());
+          int valY = (int) (Math.random() * world.getHeight());
+          while(world.getCellTerrain(valX, valY)== Case.SABLE){
+            valX = (int) (Math.random() * world.getWidth());
+            valY = (int) (Math.random() * world.getHeight());
+            }
+            world.add(new Humain(valX, valY, world));
         }
         // mise a jour de l'�tat du monde
 
