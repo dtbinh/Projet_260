@@ -23,7 +23,7 @@ public class World {
      * Variables relatives au terrain
      */
     private final double pHerbe = 0.005; // proba que l'herbe pousse sur de la terre
-    private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
+    private final double pArbreFeu = 0.;//0.00001; //proba qu'un arbre prenne spontanément feu
     private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
     private final double pEvaporation = 0.01; //proba d'évaporation de l'eau

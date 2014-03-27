@@ -32,6 +32,7 @@ public class Sprite extends JPanel {
         private Image laveSprite;
         private Image feuSprite;
         private Image bushSprite;
+        private Image maisonSprite;
         
 	private Image loupSprite;
 	private Image moutonSprite;
@@ -58,6 +59,7 @@ public class Sprite extends JPanel {
                         laveSprite = ImageIO.read(new File("lave.png"));
                         feuSprite = ImageIO.read(new File("feu.png"));
                         bushSprite = ImageIO.read(new File("bush.png"));
+                        maisonSprite = ImageIO.read(new File("maison.png"));
                         
                         loupSprite = ImageIO.read(new File("loupN.png"));
                         moutonSprite = ImageIO.read(new File("moutonB.png"));
@@ -165,6 +167,8 @@ public class Sprite extends JPanel {
                             g2.drawImage(crocodileSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }else if(a.getClass()==Humain.class){
                             g2.drawImage(humainSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
+                        }else if(a.getClass()==Maison.class){
+                            g2.drawImage(maisonSprite,spriteLength*a.getX(),spriteLength*a.getY(),spriteLength,spriteLength, frame);
                         }
                     }catch(NullPointerException e){}
                 }

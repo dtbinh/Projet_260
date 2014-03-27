@@ -10,9 +10,8 @@ public class Humain extends Agent {
     private HashMap<String, Integer> inventaire;
     private String equipement;
     private int humeur;
-    private final int GLANDE=0, CHASSE=1, MANGE=2, BEZ=3, FATIGUE=4, BUILD=5, CHERCHE=6, BUCHERON=7;
+    private final int CHASSE=1, BEZ=3, FATIGUE=4, BUILD=5, CHERCHE=6, BUCHERON=7;
     private Maison maison;
-    private Humain  fam;
     
     //constructeur initial
     public Humain(int __x, int __y, World __w) {
@@ -21,12 +20,11 @@ public class Humain extends Agent {
     
     //constructeur reprod
     public Humain(int __x, int __y, World __w, ADN _adn) {
-        super(__x, __y, __w, 800, 2000, 1, 4, 200, _adn);
+        super(__x, __y, __w, 800, 3000, 1, 4, 30, _adn);
         inventaire = new HashMap<String, Integer>();
         equipement="";
-        humeur=GLANDE;
+        humeur=CHASSE;
         maison = null;
-        fam = null;
     }
 
     @Override public void step() {
@@ -34,30 +32,29 @@ public class Humain extends Agent {
 
         if (_alive) {
             if(!dort){
-                if(_faim <_faimMax*0.75){
-                    humeur = MANGE;
-                }else if(!inventaire.containsKey("nourriture")){
+                if( _faim < _faimMax){
+                    if(inventaire.containsKey("nourriture")){
+                        _faim += 150;
+                        retirerInventaire("nourriture");
+                    }
+                }
+                
+                if(_faim <_faimMax*0.25){
                     humeur = CHASSE;
-                }else if(sommeil <=50){
-                    humeur = FATIGUE;
-                }else if(maison == null && fam != null){
+                }else if(maison == null){
                     humeur = BUILD;
-                }else if (getMature() && fam != null){
-                    if(fam.gestation == -1 && gestation == -1)
-                        humeur = BEZ;
-                    else
-                        humeur = GLANDE;
-                }else {
-                    humeur = GLANDE;
+                }else if(sommeil <40){
+                    humeur = FATIGUE;
+                }else if ((getMature())?gestation == -1:false){
+                    humeur = BEZ;
+                }else if(!maison.cheminay()){
+                    humeur = BUCHERON;
+                }else{
+                    humeur = CHASSE;
                 }
                 
                 ArrayList<Agent> mmcase = _world.getAgentCase(this);
                 switch(humeur){
-                    case MANGE:
-                        if(inventaire.containsKey("nourriture")){
-                                _faim += 50;
-                                retirerInventaire("nourriture");
-                        }
                     case CHASSE:
                         if (Case.getVal(_world.getCellItem(_x, _y)) == Case.BUISSON && Case.getVar(_world.getCellItem(_x, _y)) > 0) {
                             ajouterInventaire("nourriture", 1);
@@ -84,15 +81,23 @@ public class Humain extends Agent {
                     case FATIGUE:
                         if(maison != null){
                             if(_x == maison._x && _y == maison._y){
+                                while(inventaire.containsKey("bois")){
+                                    maison.ajouterInventaire("bois", 1);
+                                    retirerInventaire("bois");
+                                }
                                 dort = true;
+                                if(maison.cheminay()){
+                                    sommeil+=2;
+                                }
                             }
                             break;
                         }
                     case BUILD:
                         if(inventaire.containsKey("bois")){
-                            if(inventaire.get("bois") >= 4){
+                            if(inventaire.get("bois") >= 5){
                                 if((hasMeute())?_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax() : false){
                                     humeur = CHERCHE;
+                                    break;
                                 }else{
                                     if (!mmcase.isEmpty()) {
                                         for (Agent ag : mmcase) {
@@ -105,16 +110,16 @@ public class Humain extends Agent {
                                         retirerInventaire("bois");
                                         retirerInventaire("bois");
                                         retirerInventaire("bois");
+                                        retirerInventaire("bois");
                                         Maison mezon = new Maison(_x, _y, _world);
                                         _world.add(mezon);
                                         maison = mezon;
-                                        fam.maison= mezon;
+                                        break;
                                     }
                                 }
-                            } else {
-                                humeur = BUCHERON;
                             }
                         }
+                        humeur = BUCHERON;
                     case BUCHERON:
                         if (Case.getVal(_world.getCellItem(_x, _y)) == Case.ARBRE){
                             _world.setCellTypeVal(_x, _y, Case.VIDE);
@@ -122,12 +127,7 @@ public class Humain extends Agent {
                         }
                         break;
                     case BEZ:
-                        if(fam.humeur == BEZ){
-                            if((_x == maison._x && _y == maison._y) && (fam._x == maison._x && fam._y == maison._y)){
-                                reproduction(fam);
-                            }
-                        }
-                        
+                        reproduction();
                         break;
                 }
                 
@@ -174,24 +174,12 @@ public class Humain extends Agent {
                 if(proche.hasMeute()){
                     if(proche.meute!=meute){
                         meute.merge(proche.meute);
-                    }else{ // Si ils sont dans la même meutes et n'ont pas de fam
-                        Humain h = (Humain) proche;
-                        if(fam == null && h.fam == null){
-                            fam = h;
-                            h.fam = this;
-                            if(maison!=null){
-                                fam.maison=maison;
-                            }else if(fam.maison!=null){
-                                maison=fam.maison;
-                            }
-                        }
                     }
                 }
             }
         }
         
         switch(humeur){
-                case MANGE:
                 case CHASSE:
                     // Si on a faim, ou si on mange, on cherche la nourriture la plus proche
                     int buissonProche[]=_world.getPlusProcheItem(_x,_y,getVision(),Case.BUISSON);
@@ -242,19 +230,27 @@ public class Humain extends Agent {
                 case CHERCHE:
                     // En mode cherche, on cherche un emplacement vide près du centre du village
                     // CAD, si on est loin, on s'en rapproche, sinon même que GLANDE
-                    if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
-                        _objectif[0] = meute.getX();
-                        _objectif[1] = meute.getX();
-                        _fuis = false;
-                        return;
+                    if(hasMeute()){
+                        if(_world.distanceTotale(_x, _y, meute.getX(), meute.getY()) > meute.getDistMax()){
+                            _objectif[0] = meute.getX();
+                            _objectif[1] = meute.getX();
+                            _fuis = false;
+                            return;
+                        }
                     }
                 case BEZ:
-                    // En mode BEZ, si fam est d'humeur, on va à la maison, sinon on glande
-                    if(fam.humeur == BEZ){
-                        _objectif[0]=maison._x;
-                        _objectif[1]=maison._y;
+                    if(hasMeute()){
+                        proche=meute.getPlusProche(this);
+                    }else{
+                        proche = _world.getAgentsProches(this, Humain.class, getVision()*2);
+                    }
+                    if(proche!=null){
+                        if(proche._faim>proche._faimMax*0.4){
+                        _objectif[0]=proche._x;
+                        _objectif[1]=proche._y;
                         _fuis=false;
                         return;
+                        }
                     }
                     break;
             }
@@ -266,14 +262,17 @@ public class Humain extends Agent {
 
     @Override public Agent creationBebe(Agent reproducteur)
     {
-        Agent BB = new Humain(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
+        Humain BB = new Humain(_x, _y, _world, new ADN(this._adn, reproducteur._adn));
         _world.add(BB);
-        return BB;
+        if(0.5 >= Math.random()){
+            BB.maison = maison;
+        }
+        return (Agent) BB;
     }
     
     @Override public boolean getMature()
     {
-        return (_age>_ageMax*0.2);
+        return (_age>_ageMax*0.05);
     }
     
     private void retirerInventaire(String s)

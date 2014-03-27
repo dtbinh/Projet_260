@@ -11,13 +11,13 @@ public class MyEcosystem_predprey{
 
         // initialisation generale
 
-        int delai = 200;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
+        int delai = 20;//200; // -- delay before refreshing display -- program is hold during delay, even if no screen update was requested. USE WITH CARE. 
         int nombreDePasMaximum = Integer.MAX_VALUE;
         int it = 0;
-        int nbMoutons = 100;
-        int nbLoups = 20;
-        int nbCroco = 20;
-        int nbHumain = 10;
+        int nbMoutons = 50;
+        int nbLoups = 0;
+        int nbCroco = 0;
+        int nbHumain = 20;
         String map = "world.pgm";
         
         //world.pgm = monde 1er
