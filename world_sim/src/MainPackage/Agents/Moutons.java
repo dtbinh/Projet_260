@@ -37,7 +37,6 @@ public class Moutons extends Agent {
             setDir();
             reproduction();
         }
-
     }
 
     private void setDir() {

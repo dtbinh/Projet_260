@@ -31,7 +31,7 @@ public abstract class Agent {
     protected boolean diurne;
     
     private int tryMove;
-    private int sommeil;
+    protected int sommeil;
     
     protected ADN _adn;
     
@@ -286,7 +286,7 @@ public abstract class Agent {
             }else{
                 sommeil --;
             }
-            if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 50 && _faim>_faimMax/10)){
+            if(sommeil<-10 || (_world.getJour() != diurne && sommeil < 30 && _faim>_faimMax/10)){
                 dort=true;
             }
             if(sommeil>90 || (_world.getJour() == diurne && sommeil > 20) || (sommeil>0 && _faim<_faimMax/10)){
@@ -331,7 +331,7 @@ public abstract class Agent {
         return (_age>_ageMax*0.2);
     }
     
-    public void reproduction() { 
+    public void reproduction() {
         if(_faim>(_faimMax*0.3) && getMature() && gestation==-1){
             Agent proche = _world.getAgentsProches(this, this.getClass(), 1);
             if (proche!=null) {
