@@ -23,7 +23,7 @@ public class World {
      * Variables relatives au terrain
      */
     private final double pHerbe = 0.005; // proba que l'herbe pousse sur de la terre
-    private final double pArbreFeu = 0.;//0.00001; //proba qu'un arbre prenne spontanément feu
+    private final double pArbreFeu = 0.00001; //proba qu'un arbre prenne spontanément feu
     private final double pArbreApparait = 0.005; //proba qu'un arbre apparaisse à coté d'un autre arbre (cumulable: 2 arbre = pArbreApparait * 2)
     private final double pCendreDisparait = 0.20; //proba qu'une cendre disparaisse (0.20 = 5 iteration en moyenne)
     private final double pEvaporation = 0.01; //proba d'évaporation de l'eau
@@ -39,8 +39,9 @@ public class World {
      * Quand il pleut, le feu a moins de chances de se propager
      * Quand il pleut, les cases vides peuvent se remplir d'eau.
      */
+    // LA PLUIE BUG,NE PAS L'ACTIVER
     private boolean pluie = false;
-    private final double pDebutPluie = 0.000;//5; //chances qu'il commence à pleuvoir
+    private final double pDebutPluie = 0.;//0.0005; //chances qu'il commence à pleuvoir
     private final double pFinPluie = 0.10; //chances qu'il s'arrete de pleuvoir
     private final double pGoutte = 0.01; //chance qu'une goutte fasse augmenter la taille d'une case d'eau
     private final double vfPluie = -0.25; //réduction du feu quand il pleut
