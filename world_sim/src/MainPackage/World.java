@@ -209,7 +209,7 @@ public class World {
                         if ((pArbreFeu * (1 + varFeu)) >= Math.random()) {
                             feu = true;
                         } else {
-                            for (int i = 0; i < 4; i++) {
+                            for (int i = 0; i < 4; i++) { // modifier le 4 => 8 pour Moore
                                 if (voisins[i] == Case.FEU) {
                                     if (i == vent.getVal()) {
                                         if((1 + varFeu) >= Math.random()) {
@@ -686,10 +686,13 @@ public class World {
      * @param tab, cellX, cellY
      */
     public static int[] getVoisins(int tab[][], int cellX, int cellY) {
+        // Pour von neuman, changer la taille du tableau à 8
         int voisins[] = new int[4];
         int j = 0;
-        for (int i = 1; i < 8; i += 2) {
-            voisins[j] = tab[(cellX - 1 + i % 3 + tab.length) % tab.length][(cellY - 1 + i / 3 + tab[0].length) % tab[0].length];
+        for (int i = 1; i < 8; i += 2) { // commencer à 0, changer le 8 en 9, incrémenter de 1
+            //if(i!=4){
+                voisins[j] = tab[(cellX - 1 + i % 3 + tab.length) % tab.length][(cellY - 1 + i / 3 + tab[0].length) % tab[0].length];
+            //}
             j++;
         }
         return voisins;
